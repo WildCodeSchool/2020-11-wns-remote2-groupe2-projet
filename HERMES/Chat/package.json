@@ -1,0 +1,30 @@
+{
+  "name": "2020-11-wns-remote2-groupe2-projet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "apollo-server": "^2.19.0",
+    "graphql": "^15.4.0",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.3.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WildCodeSchool/2020-11-wns-remote2-groupe2-projet.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WildCodeSchool/2020-11-wns-remote2-groupe2-projet/issues"
+  },
+  "homepage": "https://github.com/WildCodeSchool/2020-11-wns-remote2-groupe2-projet#readme"
+}
