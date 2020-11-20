@@ -1,0 +1,14 @@
+$blue :#166FE5;
+$green: #53A521;
+// $border-radius : 0;
+@import"~bootstrap/scss/bootstrap.scss";
+
+body{
+  min-height: 100vh;
+  background: linear-gradient(
+    203deg,
+    rgba(131,58,180,0.9)0%,
+    rgba(184, 12, 12, 0.9)50%,
+    rgba(243, 229, 35, 0.9)100%,
+  );
+}
