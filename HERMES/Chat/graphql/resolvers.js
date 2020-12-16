@@ -9,11 +9,11 @@ module.exports = {
   Query: {
     getUsers: async (_, __, context) => {
       try {
-        let user 
-        if(context.req && context.req.headers.authorization) {
+        let user
+        if (context.req && context.req.headers.authorization) {
           const token = context.req.headers.authorization.split('Bearer ')[1]
           jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-            if(err) {
+            if (err) {
               throw new AuthenticationError('Unauthenticated')
             }
             user = decodedToken
@@ -32,10 +32,10 @@ module.exports = {
       const { username, password } = await args
       let errors = {}
       try {
-        if(username.trim() === '') errors.username = 'username must not be empty'
-        if(password === '') errors.password = 'password must not be empty'
+        if (username.trim() === '') errors.username = 'username must not be empty'
+        if (password === '') errors.password = 'password must not be empty'
 
-        if(Object.keys(errors).length > 0) {
+        if (Object.keys(errors).length > 0) {
           throw new UserInputError('bad input', { errors })
         }
 
@@ -51,15 +51,14 @@ module.exports = {
 
         if (!correctPassword) {
           errors.password = 'password incorrect'
-          throw new AuthenticationError('password incorrect', { errors })
+          throw new UserInputError('password incorrect', { errors })
         }
-        const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: 60 * 60 });
+        const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: 60 * 60 })
         console.log(token)
         return {
           ...user.toJSON(),
           createdAt: user.createdAt.toISOString(),
           token
-          
         }
       } catch (err) {
         console.log(err)
