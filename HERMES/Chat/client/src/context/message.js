@@ -4,7 +4,7 @@ const MessageStateContext = createContext()
 const MessageDispatchContext = createContext()
 
 const messageReducer = (state, action) => {
-    let usersCopy
+  let usersCopy
   switch (action.type) {
     case 'SET_USERS':
       return {
@@ -33,7 +33,7 @@ const messageReducer = (state, action) => {
         users: usersCopy
       }
     default:
-      throw new Error(`Unknow action type: ${action.type}`)
+      throw new Error(`Cette action est inconnue: ${action.type}`)
   }
 }
 
