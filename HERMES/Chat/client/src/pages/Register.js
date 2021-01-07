@@ -46,11 +46,11 @@ export default function Register(props) {
     return (
         <Row className="bg-white py-5 justify-content-center">
             <Col sm={8} md={6} lg={4}>
-                <h1 className="text-center">Register</h1>
+                <h1 className="text-center">Inscription</h1>
                 <Form onSubmit={submitRegisterForm}>
                     <Form.Group>
                         <Form.Label className={errors.email && 'text-danger'}>
-                            {errors.email ?? 'Email address'}
+                            {errors.email ?? 'Email :'}
                         </Form.Label>
                         <Form.Control
                             type="email"
@@ -63,7 +63,7 @@ export default function Register(props) {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label className={errors.username && 'text-danger'}>
-                            {errors.username ?? 'Username'}
+                            {errors.username ?? 'Identifiant :'}
                         </Form.Label>
                         <Form.Control
                             type="text"
@@ -76,7 +76,7 @@ export default function Register(props) {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label className={errors.password && 'text-danger'}>
-                            {errors.password ?? 'Password'}
+                            {errors.password ?? 'Mot de passe :'}
                         </Form.Label>
                         <Form.Control
                             type="password"
@@ -89,7 +89,7 @@ export default function Register(props) {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label className={errors.confirmPassword && 'text-danger'}>
-                            {errors.confirmPassword ?? 'Confirm password'}
+                            {errors.confirmPassword ?? 'Confirmation mot de passe :'}
                         </Form.Label>
                         <Form.Control
                             type="password"
@@ -105,10 +105,10 @@ export default function Register(props) {
                     </Form.Group>
                     <div className="text-center">
                         <Button variant="success" type="submit" disabled={loading}>
-                            {loading ? 'loading..' : 'Register'}
+                            {loading ? 'loading..' : 'Inscription'}
                         </Button>
                         <br />
-                        <small>Already have an account? <Link to={"/login"}>Login</Link></small>
+                        <small>Vous avez un compte ? <Link to={"/login"}>Se connecter</Link></small>
                     </div>
                 </Form>
             </Col>

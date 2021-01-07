@@ -41,11 +41,11 @@ export default function Register(props) {
   return (
     <Row className="bg-white py-5 justify-content-center">
       <Col sm={8} md={6} lg={4}>
-        <h1 className="text-center">Login</h1>
+        <h1 className="text-center">Connexion Hermes</h1>
         <Form onSubmit={submitLoginForm}>
           <Form.Group>
             <Form.Label className={errors.username && "text-danger"}>
-              {errors.username ?? "Username"}
+              {errors.username ?? "Identifiant"}
             </Form.Label>
             <Form.Control
               type="text"
@@ -58,7 +58,7 @@ export default function Register(props) {
           </Form.Group>
           <Form.Group>
             <Form.Label className={errors.password && "text-danger"}>
-              {errors.password ?? "Password"}
+              {errors.password ?? "Mot de passe"}
             </Form.Label>
             <Form.Control
               type="password"
@@ -71,11 +71,11 @@ export default function Register(props) {
           </Form.Group>
           <div className="text-center">
             <Button variant="success" type="submit" disabled={loading}>
-              {loading ? "loading.." : "Login"}
+              {loading ? "loading.." : "Se connecter"}
             </Button>
             <br />
             <small>
-              Don't have an account? <Link to="/register">Register</Link>
+              Vous n'avez pas de compte ? <Link to="/register">S'inscrire</Link>
             </small>
           </div>
         </Form>
