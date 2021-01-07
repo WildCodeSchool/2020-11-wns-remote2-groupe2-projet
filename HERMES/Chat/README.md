@@ -34,10 +34,10 @@ query login {
 
 mutation createUser {
   register(
-    username: "Adrien"
-    email: "a.a@gmail.com"
-    password: "123456"
-    confirmPassword: "123456"
+    username: ""
+    email: ""
+    password: ""
+    confirmPassword: ""
   ) {
     username
     email
@@ -55,7 +55,7 @@ query getUsers {
 }
 
 mutation sendMessage {
-  sendMessage(to: "Adrien", content: "Hello Adrien") {
+  sendMessage(to: "", content: "") {
     uuid
     content
     from}}
@@ -63,4 +63,5 @@ mutation sendMessage {
 
 # graphql  header commandes for users acces 
 
-
+{
+  "Authorization": "Bearer {replace here your users token }" }
