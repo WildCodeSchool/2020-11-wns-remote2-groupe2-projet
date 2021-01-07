@@ -11,9 +11,26 @@ module.exports = {
       try {
         if (!user) throw new AuthenticationError("Unauthenticated");
 
-        const users = await User.findAll({
+        let users = await User.findAll({
+          attributes:['username','imageUrl','createdAt'],
           where: { username: { [Op.ne]: user.username } },
+          order:[['createdAt', 'DESC']]
         });
+
+        const allUsersMessages = await Message.findAll({
+          where: {
+            [Op.or]: [{ from: user.username}, { to: user.username}]
+          }
+        })
+
+        users = users.map(otherUser => {
+          const latestMessage = allUsersMessages.find(
+            m => m.from === otherUser.username || m.to === otherUser.username
+          )
+          otherUser.latestMessage = latestMessage
+          return otherUser
+        })
+
         return users;
       } catch (err) {
         console.error(err);
