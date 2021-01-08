@@ -1,5 +1,5 @@
 import React from "react";
-import cx from "classnames";
+import classNames from "classnames";
 import moment from "moment";
 import "moment/locale/fr";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
