@@ -1,4 +1,5 @@
-import React, { createContext, useReducer, useContext } from "react"
+
+import React, { createContext, useReducer, useContext } from 'react'
 
 const MessageStateContext = createContext()
 const MessageDispatchContext = createContext()
@@ -6,10 +7,12 @@ const MessageDispatchContext = createContext()
 const messageReducer = (state, action) => {
   let usersCopy, userIndex
   const { username, message, messages } = action.payload
+
   switch (action.type) {
     case 'SET_USERS':
       return {
         ...state,
+
         users: action.payload
       }
     case 'SET_USER_MESSAGES':
@@ -49,6 +52,7 @@ const messageReducer = (state, action) => {
 
     default:
       throw new Error(`Cette action est inconnue: ${action.type}`)
+
   }
 }
 
@@ -62,7 +66,9 @@ export const MessageProvider = ({ children }) => {
       </MessageStateContext.Provider>
     </MessageDispatchContext.Provider>
   )
+
 };
 
 export const useMessageState = () => useContext(MessageStateContext)
 export const useMessageDispatch = () => useContext(MessageDispatchContext)
+

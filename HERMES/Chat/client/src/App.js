@@ -16,15 +16,15 @@ function App () {
     <ApolloProvider>
       <AuthProvider>
         <MessageProvider>
-          <BrowserRouter>
-            <Container className='pt-5'>
-              <Switch>
-                <DynamicRoute exact path='/' component={Home} authenticated />
-                <DynamicRoute path='/login' component={Login} guest />
-                <DynamicRoute path='/register' component={Register} guest />
-              </Switch>
-            </Container>
-          </BrowserRouter>
+        <BrowserRouter>
+          <Container className="pt-5">
+            <Switch>
+              <DynamicRoute exact path={"/"} component={Home} authenticated />
+              <DynamicRoute path={"/login"} component={Login} guest />
+              <DynamicRoute path={"/register"} component={Register} guest />
+            </Switch>
+          </Container>
+        </BrowserRouter>
         </MessageProvider>
       </AuthProvider>
     </ApolloProvider>

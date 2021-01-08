@@ -24,6 +24,7 @@ const GET_MESSAGES = gql`
       createdAt
     }
   }
+<<<<<<< HEAD
 `
 
 export default function Messages () {

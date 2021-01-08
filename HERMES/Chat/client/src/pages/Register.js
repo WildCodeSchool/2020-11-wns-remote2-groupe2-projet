@@ -1,47 +1,47 @@
-import React, { useState } from 'react'
-import { Row, Col, Form, Button } from 'react-bootstrap'
-import { gql, useMutation } from '@apollo/client'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import { Row, Col, Form, Button } from "react-bootstrap";
+import { gql, useMutation } from "@apollo/client";
+import { Link } from "react-router-dom";
 
 const REGISTER_USER = gql`
-    mutation register(
-        $username: String!
-        $email: String!
-        $password: String!
-        $confirmPassword: String!
+  mutation register(
+    $username: String!
+    $email: String!
+    $password: String!
+    $confirmPassword: String!
+  ) {
+    register(
+      username: $username
+      email: $email
+      password: $password
+      confirmPassword: $confirmPassword
     ) {
-        register(
-            username: $username
-            email: $email
-            password: $password
-            confirmPassword: $confirmPassword
-        ) {
-            username
-            email
-            createdAt
-        }
+      username
+      email
+      createdAt
     }
-`
+  }
+`;
 
 export default function Register(props) {
-    const [variables, setVariables] = useState({
-        email: '',
-        username: '',
-        password: '',
-        confirmPassword: '',
-    })
-    const [errors, setErrors] = useState({})
+  const [variables, setVariables] = useState({
+    email: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState({});
 
-    const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-        update: (_, __) => props.history.push('/login'),
-        onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
-    })
+  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+    update: (_, __) => props.history.push("/login"),
+    onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
+  });
 
-    const submitRegisterForm = (e) => {
-        e.preventDefault()
+  const submitRegisterForm = (e) => {
+    e.preventDefault();
 
-        registerUser({ variables })
-    }
+    registerUser({ variables });
+  };
 
     return (
         <Row className="bg-white py-5 justify-content-center">

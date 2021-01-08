@@ -20,3 +20,48 @@ sequelize init:seeders Initializes seeders
 sequelize migration:generate Generates a new migration file [aliases: migration:create]
 sequelize model:generate Generates a model and its migration [aliases: model:create]
 sequelize seed:generate Generates a new seed file [aliases: seed:create]
+
+# graphql commandes for users acces 
+
+query login {
+  login(username: "bateau", password: "123456") {
+    username
+    email
+    createdAt
+    token
+  }
+}
+
+mutation createUser {
+  register(
+    username: ""
+    email: ""
+    password: ""
+    confirmPassword: ""
+  ) {
+    username
+    email
+    createdAt
+    token
+  }
+}
+
+query getUsers {
+  getUsers {
+    username
+    email
+    createdAt
+  }
+}
+
+mutation sendMessage {
+  sendMessage(to: "", content: "") {
+    uuid
+    content
+    from}}
+
+
+# graphql  header commandes for users acces 
+
+{
+  "Authorization": "Bearer {replace here your users token }" }

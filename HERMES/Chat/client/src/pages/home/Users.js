@@ -20,6 +20,7 @@ const GET_USERS = gql`
       }
     }
   }
+<<<<<<< HEAD
 `
 
 export default function Users () {
