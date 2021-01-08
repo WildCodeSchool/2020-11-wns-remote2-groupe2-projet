@@ -71,7 +71,7 @@ export default function Register(props) {
           </Form.Group>
           <div className="text-center">
             <Button variant="success" type="submit" disabled={loading}>
-              {loading ? "loading.." : "Login"}
+              {loading ? "loading…" : "Login"}
             </Button>
             <br />
             <small>
