@@ -1,0 +1,36 @@
+$blue: #166fe5;
+$green: #53a521;
+// $border-radius : 0;
+$paragraph-margin-bottom: 0;
+$gray-600: rgb(245, 245, 245);
+@import "~bootstrap/scss/bootstrap.scss";
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(
+    203deg,
+    rgba(131, 58, 180, 0.9) 0%,
+    rgba(184, 12, 12, 0.9) 50%,
+    rgba(243, 229, 35, 0.9) 100%
+  );
+}
+
+.user-div:hover {
+  background-color: rgb(250, 250, 250);
+}
+
+.messages-box {
+  height: 500px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.user-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}
