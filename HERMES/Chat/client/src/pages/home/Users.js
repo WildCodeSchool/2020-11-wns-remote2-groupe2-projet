@@ -47,7 +47,7 @@ export default function Users () {
           key={user.username} 
           onClick={() => 
             dispatch({ type: 'SET_SELECTED_USER', payload: user.username })}>
-          <Image src={user.imageUrl} className='user-image mr-md-2' />
+          <Image src={user.imageUrl || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'} className='user-image mr-md-2' />
           <div className="d-none d-md-block">
             <p className='text-success'>{user.username}</p>
             <p className='font-weight-light'>
