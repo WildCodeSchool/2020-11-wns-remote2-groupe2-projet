@@ -2,7 +2,7 @@ $blue :#166FE5;
 $green: #53A521;
 // $border-radius : 0;
 $paragraph-margin-bottom: 0;
-$gray-600 : rgb(245,245,245);
+$gray-600 : rgb(245, 245, 245);
 @import"~bootstrap/scss/bootstrap.scss";
 
 body{
@@ -13,4 +13,8 @@ body{
     rgba(184, 12, 12, 0.9)50%,
     rgba(243, 229, 35, 0.9)100%,
   );
+}
+
+.user-div:hover{
+  background-color: rgb(250, 250, 250);
 }
