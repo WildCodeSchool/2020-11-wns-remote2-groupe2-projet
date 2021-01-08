@@ -1,34 +1,38 @@
-import React, { Fragment } from "react";
-import { Row, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { useAuthDispatch } from "../../context/auth";
-import Users from "./Users";
-import Messages from "./Messages";
+import React from 'react'
+import { Row, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
-export default function Home({ history }) {
-  const dispatch = useAuthDispatch();
+import { useAuthDispatch } from '../../context/auth'
+
+import Users from './Users'
+import Messages from './Messages'
+
+export default function Home ({ history }) {
+  const dispatch = useAuthDispatch()
+
+
   const logout = () => {
-    dispatch({ type: "LOGOUT" });
-    window.location.href = "/login";
-  };
+    dispatch({ type: 'LOGOUT' })
+    window.location.href = '/login'
+  }
 
   return (
-    <Fragment>
-      <Row className="bg-white justify-content-around mb-1">
-        <Link to="/login">
-          <Button variant="link">Login</Button>
+    <>
+      <Row className='bg-white justify-content-around mb-1'>
+        <Link to='/login'>
+          <Button variant='link'>Se connecter</Button>
         </Link>
-        <Link to="/register">
-          <Button variant="link">Register</Button>
+        <Link to='/register'>
+          <Button variant='link'>Inscription</Button>
         </Link>
-        <Button variant="link" onClick={logout}>
-          Logout
+        <Button variant='link' onClick={logout}>
+          Se déconnecter
         </Button>
       </Row>
-      <Row className="bg-white">
+      <Row className='bg-white'>
         <Users />
         <Messages />
       </Row>
-    </Fragment>
-  );
+    </>
+  )
 }

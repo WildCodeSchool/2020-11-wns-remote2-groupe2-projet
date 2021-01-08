@@ -22,8 +22,10 @@ body {
 .messages-box {
   height: 500px;
   overflow-y: scroll;
+
   scrollbar-width: none;
   &::-webkit-scrollbar {
+
     display: none;
   }
 }
@@ -34,3 +36,15 @@ body {
   object-fit: cover;
   border-radius: 50%;
 }
+
+
+.message-intput::placeholder{
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.info-text {
+  color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
