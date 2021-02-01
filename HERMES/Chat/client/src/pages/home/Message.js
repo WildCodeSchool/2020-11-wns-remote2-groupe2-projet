@@ -1,5 +1,5 @@
 import React from "react";
-import cx from "classnames";
+import classNames from "classnames";
 import moment from "moment";
 import "moment/locale/fr";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -21,23 +21,20 @@ export default function Message({ message }) {
       }
       transition={false}
     >
-      <div
-        className={cx("d-flex my-3", {
-          "ml-auto": sent,
-          "mr-auto": received,
+      <div className={classNames('d-flex my-3', {
+        'ml-auto': sent,
+        'mr-auto': received
+      })}>
+        <div className={classNames('py-2 px-3 rounded-pill', {
+          'bg-primary': sent,
+          'bg-secondary': received
         })}
-      >
-        <div
-          className={cx("py-2 px-3 rounded-pill", {
-            "bg-primary": sent,
-            "bg-secondary": received,
-          })}
         >
-          <p className={cx({ "text-white": sent })} key={message.uuid}>
-            {message.content}
-          </p>
+          <p className={classNames({ 'text-white': sent })} key={message.uuid}>{message.content}</p>
         </div>
+
       </div>
     </OverlayTrigger>
-  );
+
+  )
 }
