@@ -68,7 +68,6 @@ module.exports = {
         console.log(token)
         return {
           ...user.toJSON(),
-          createdAt: user.createdAt.toISOString(),
           token
         }
       } catch (err) {
