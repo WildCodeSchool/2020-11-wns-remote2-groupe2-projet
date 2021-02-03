@@ -58,7 +58,34 @@ mutation sendMessage {
   sendMessage(to: "", content: "") {
     uuid
     content
-    from}}
+    from
+    }
+  }
+
+// subscription
+
+subscription newMessage{
+  newMessage {
+    uuid
+    from
+    content
+    to
+    createdAt
+  }
+}
+
+subscription newReaction{
+  newReaction {
+    uuid
+    content
+    createdAt
+    Message {
+      uuid
+      content
+    }
+  }
+}
+
 
 
 # graphql  header commandes for users acces 
