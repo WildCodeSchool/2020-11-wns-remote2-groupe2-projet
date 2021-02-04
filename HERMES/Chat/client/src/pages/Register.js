@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { gql, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
+import Logo from "../img/hermes1.png";
 
 const REGISTER_USER = gql`
   mutation register(
@@ -44,7 +45,8 @@ export default function Register(props) {
   };
 
     return (
-        <Row className="bg-white py-5 justify-content-center">
+        <Row className="bg-chat py-5 justify-content-center align-items-center" style={{margin: '206px 0 0 0'}}>
+            <img className="img-connexion" src={Logo} alt="logo hermes" />
             <Col sm={8} md={6} lg={4}>
                 <h1 className="text-center">Inscription</h1>
                 <Form onSubmit={submitRegisterForm}>
