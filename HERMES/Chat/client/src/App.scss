@@ -1,22 +1,61 @@
 $blue: #166fe5;
 $green: #53a521;
-// $border-radius : 0;
+$border-radius: 0;
 $paragraph-margin-bottom: 0;
 $gray-600: rgb(245, 245, 245);
 @import "~bootstrap/scss/bootstrap.scss";
 
 body {
   min-height: 100vh;
-  background: linear-gradient(
-    203deg,
-    rgba(131, 58, 180, 0.9) 0%,
-    rgba(184, 12, 12, 0.9) 50%,
-    rgba(243, 229, 35, 0.9) 100%
-  );
+  background-image: url("https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #e3decb;
+}
+
+.bg-row-opacity {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 5px;
+}
+
+.img-connexion {
+  width: 62%;
+  justify-content: center;
+}
+
+.logo-hermes {
+  width: 19%;
+}
+
+.logo-logout {
+  width: 32%;
+  margin: -20px 34px -72px -85px;
+}
+
+.conteneur {
+  display: inline-block;
+}
+
+.content {
+  opacity: 0;
+}
+
+.conteneur:hover .content {
+  opacity: 1;
+}
+
+.bg-chat {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  margin-top: -49px;
+}
+
+.toolbar {
+  background-color: #fff;
 }
 
 .user-div:hover {
-  background-color: rgb(250, 250, 250);
+  background-color: rgb(255, 255, 255);
 }
 
 .messages-box {

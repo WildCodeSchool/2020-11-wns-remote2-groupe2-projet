@@ -8,6 +8,9 @@ import { useMessageDispatch } from "../../context/message";
 
 import Users from "./Users";
 import Messages from "./Messages";
+import logo from "../../../src/img/hermes1.png";
+import logOut from "../../../src/img/logout.svg";
+import "../../App.scss";
 
 const NEW_MESSAGE = gql`
   subscription newMessage {
@@ -94,18 +97,27 @@ export default function Home({ history }) {
 
   return (
     <Fragment>
-      <Row className="bg-white justify-content-around mb-1">
-        <Link to="/login">
-          <Button variant="link">Login</Button>
+      <Row style={{ margin: "0 auto" }}>
+        <Link to="/">
+          <img className="logo-hermes" src={logo} alt="logo-hermes" />
         </Link>
-        <Link to="/register">
-          <Button variant="link">Register</Button>
-        </Link>
-        <Button variant="link" onClick={logout}>
-          Logout
+        <Button
+          variant="link"
+          style={{
+            fontWeight: 900,
+            color: "#39414f",
+          }}
+          onClick={logout}
+        >
+          <div className="conteneur">
+            <img className="logo-logout" src={logOut} alt="logout" />
+            <div className="content">
+              <p style={{ marginLeft: "17px" }}>Déconnexion</p>
+            </div>
+          </div>
         </Button>
       </Row>
-      <Row className="bg-white">
+      <Row className="bg-chat">
         <Users />
         <Messages />
       </Row>
