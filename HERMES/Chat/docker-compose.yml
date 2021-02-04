@@ -1,37 +1,40 @@
 version: "3.8"
 
 services:
-  client:
-    build: .
-    volumes:
-      - "./client:/app"
-    ports:
-      - 3001:3000
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    depends_on:
+  # Create client container
+  client: # Name of our service
+    build: ./client # path to dockerfile
+    stdin_open: true
+    tty: true
+    ports: # Port binding to host from docker container
+      - "3000:3000" # Bind port 3000 of host to 3000 of container
+    container_name: client-docker
+    restart: always # What to do if container crashes
+    links:
       - api
-
+  # Create api container
   api:
-    build: .
-    volumes:
-      - "./api:/app"
+    # Create api container
+    build: ./api
     ports:
-      - 8327:4000
-    depends_on:
+      - "8080:4000"
+    container_name: api-docker
+    restart: always
+    links:
       - db
 
   db:
     image: mysql:5.7
+    container_name: db-docker
     restart: always
     environment:
-      MYSQL_DATABASE: "chat"
+      - MYSQL_DATABASE=${DATABASE}
       # So you don't have to use root, but you can if you like
-      MYSQL_USER: "user"
+      - MYSQL_USER=${USER}
       # You can use whatever password you like
-      MYSQL_PASSWORD: "password"
+      - MYSQL_PASSWORD=${PASSWORD}
       # Password for root access
-      MYSQL_ROOT_PASSWORD: "password"
+      - MYSQL_ROOT_PASSWORD=${ROOT_PASSWORD}
     ports:
       # <Port exposed> : < MySQL Port running inside container>
       - "3306:3306"
@@ -41,3 +44,9 @@ services:
       # Where our data will be persisted
     volumes:
       - ./docker/data/db:/var/lib/mysql
+    command:
+      [
+        "mysqld",
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+      ]
