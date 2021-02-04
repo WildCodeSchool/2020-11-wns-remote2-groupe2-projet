@@ -1,94 +1,35 @@
-### sequelize <command>
+# Getting Started with HERMES
 
-Commands:
-sequelize db:migrate Run pending migrations
-sequelize db:migrate:schema:timestamps:add Update migration table to have timestamps
-sequelize db:migrate:status List the status of all migrations
-sequelize db:migrate:undo Reverts a migration
-sequelize db:migrate:undo:all Revert all migrations ran
-sequelize db:seed Run specified seeder
-sequelize db:seed:undo Deletes data from the database
-sequelize db:seed:all Run every seeder
-sequelize db:seed:undo:all Deletes data from the database
-sequelize db:create Create database specified by configuration
-sequelize db:drop Drop database specified by configuration
-sequelize init Initializes project
-sequelize init:config Initializes configuration
-sequelize init:migrations Initializes migrations
-sequelize init:models Initializes models
-sequelize init:seeders Initializes seeders
-sequelize migration:generate Generates a new migration file [aliases: migration:create]
-sequelize model:generate Generates a model and its migration [aliases: model:create]
-sequelize seed:generate Generates a new seed file [aliases: seed:create]
+- Docker
 
-# graphql commandes for users acces 
+TODO: --watch
+TODO: encoding mysql db utf8mb4
 
-query login {
-  login(username: "bateau", password: "123456") {
-    username
-    email
-    createdAt
-    token
-  }
-}
+.env
 
-mutation createUser {
-  register(
-    username: ""
-    email: ""
-    password: ""
-    confirmPassword: ""
-  ) {
-    username
-    email
-    createdAt
-    token
-  }
-}
+```
+DATABASE=<db_name>
+USER=<mysql_user>
+PASSWORD=<mysql_pw>
+ROOT_PASSWORD=<mysql_root_pw
+```
 
-query getUsers {
-  getUsers {
-    username
-    email
-    createdAt
-  }
-}
+start application **chat**:
 
-mutation sendMessage {
-  sendMessage(to: "", content: "") {
-    uuid
-    content
-    from
-    }
-  }
+```
+docker-compose up --build
+```
 
-// subscription
+you can see you env var with (during container running)
 
-subscription newMessage{
-  newMessage {
-    uuid
-    from
-    content
-    to
-    createdAt
-  }
-}
+```
+docker-compose config
+```
 
-subscription newReaction{
-  newReaction {
-    uuid
-    content
-    createdAt
-    Message {
-      uuid
-      content
-    }
-  }
-}
+# Tips
 
+entrer dans un conteneur :
 
-
-# graphql  header commandes for users acces 
-
-{
-  "Authorization": "Bearer {replace here your users token }" }
+```
+docker exec -it <nom du conteneur OU id> bash (ou ash)
+```
