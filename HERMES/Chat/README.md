@@ -4,6 +4,7 @@
 
 TODO: --watch
 TODO: encoding mysql db utf8mb4
+TODO: docker file : install sequelize-cli &&
 
 .env
 

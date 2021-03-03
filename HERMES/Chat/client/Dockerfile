@@ -8,6 +8,7 @@ RUN mkdir -p /hermes/chat/client
 WORKDIR /hermes/chat/client
 # Copy package json and install dependencies
 COPY package*.json ./
+COPY yarn.lock ./
 RUN yarn add node-sass
 RUN npm install --silent
 # Copy our app

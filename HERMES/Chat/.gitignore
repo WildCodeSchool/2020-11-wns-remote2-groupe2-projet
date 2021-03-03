@@ -1,6 +1,5 @@
 node_modules
 .env
 docker/data/db/**
-.env
 development.env
 production.env
