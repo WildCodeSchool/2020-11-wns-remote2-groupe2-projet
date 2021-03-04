@@ -68,7 +68,7 @@ export default function Home({ history }) {
         },
       });
     }
-  }, [messageError, messageData]);
+  }, [messageError, messageData, messageDispatch, user]);
 
   useEffect(() => {
     if (reactionError) console.log(reactionError);
@@ -88,7 +88,7 @@ export default function Home({ history }) {
         },
       });
     }
-  }, [reactionError, reactionData]);
+  }, [reactionError, reactionData, messageDispatch, user]);
 
   const logout = () => {
     authDispatch({ type: "LOGOUT" });

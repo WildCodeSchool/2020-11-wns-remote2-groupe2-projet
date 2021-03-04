@@ -12,6 +12,7 @@ RUN yarn add node-sass
 RUN npm install --silent
 # Copy our app
 COPY . .
+RUN npm rebuild node-sass
 # Expose port to access server
 EXPOSE 3000
 # Command to run our app
