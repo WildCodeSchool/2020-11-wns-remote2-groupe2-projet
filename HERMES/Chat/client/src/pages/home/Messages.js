@@ -55,7 +55,7 @@ export default function Messages() {
     if (selectedUser && !selectedUser.messages) {
       getMessages({ variables: { from: selectedUser.username } });
     }
-  }, [selectedUser]);
+  }, [selectedUser, getMessages]);
 
   useEffect(() => {
     if (messagesData) {
@@ -67,7 +67,7 @@ export default function Messages() {
         },
       });
     }
-  }, [messagesData]);
+  }, [selectedUser, messagesData, dispatch]);
 
   const submitMessage = (e) => {
     e.preventDefault();
