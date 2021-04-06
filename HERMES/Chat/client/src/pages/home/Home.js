@@ -68,7 +68,7 @@ export default function Home({ history }) {
         },
       });
     }
-  }, [messageError, messageData, messageDispatch, user]);
+  }, [messageError, messageData]);
 
   useEffect(() => {
     if (reactionError) console.log(reactionError);
