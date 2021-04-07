@@ -10,46 +10,65 @@ const REGISTER_USER = gql`
     $email: String!
     $password: String!
     $confirmPassword: String!
+    $file: Upload!
   ) {
     register(
       username: $username
       email: $email
       password: $password
       confirmPassword: $confirmPassword
+      file: $file
     ) {
       username
       email
       createdAt
+      file
     }
   }
 `;
 
 export default function Register(props) {
-  const [variables, setVariables] = useState({
-    email: "",
-    username: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [errors, setErrors] = useState({});
+    const [variables, setVariables] = useState({
+        email: "",
+        username: "",
+        password: "",
+        confirmPassword: "",
+        file: ""
+    });
+    const [errors, setErrors] = useState({});
 
-  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-    update: (_, __) => props.history.push("/login"),
-    onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
-  });
+    const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+        update: (_, __) => props.history.push("/login"),
+        onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
+    });
 
-  const submitRegisterForm = (e) => {
-    e.preventDefault();
-
-    registerUser({ variables });
-  };
+    const submitRegisterForm = (e) => {
+        e.preventDefault();
+        console.log({ variables })
+        registerUser({ variables });
+    };
+    console.log("test", variables.file.name)
 
     return (
-        <Row className="bg-chat py-5 justify-content-center align-items-center" style={{margin: '206px 0 0 0'}}>
+        <Row className="bg-chat py-5 justify-content-center align-items-center" style={{ margin: '206px 0 0 0' }}>
             <img className="img-connexion" src={Logo} alt="logo hermes" />
             <Col sm={8} md={6} lg={4}>
                 <h1 className="text-center">Inscription</h1>
                 <Form onSubmit={submitRegisterForm}>
+
+                    <Form.Group>
+                        <Form.Label className={errors.file && 'text-danger'}>
+                            {errors.file ?? 'Image de profil :'}
+                        </Form.Label>
+                        <Form.Control
+                            type="file"
+                            className={errors.file && 'is-invalid'}
+                            onChange={(e) =>
+                                setVariables({ ...variables, file: e.target.files[0] })
+                            }
+                        />
+                    </Form.Group>
+
                     <Form.Group>
                         <Form.Label className={errors.email && 'text-danger'}>
                             {errors.email ?? 'Email :'}

@@ -1,5 +1,7 @@
 const bcrypt = require("bcryptjs");
 const { UserInputError, AuthenticationError } = require("apollo-server");
+const path = require('path')
+const fs = require('fs')
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
 
@@ -82,7 +84,12 @@ module.exports = {
   },
   Mutation: {
     register: async (_, args) => {
-      let { username, email, password, confirmPassword } = args;
+      let { username, email, password, confirmPassword, file } = args;
+      const { createReadStream, filename } = await file;
+      console.log("file", file)
+
+
+
       let errors = {};
 
       try {
@@ -112,11 +119,17 @@ module.exports = {
         // Hash password
         password = await bcrypt.hash(password, 6);
 
+        // Upload image
+        const stream = createReadStream()
+        const pathName = path.join(__dirname, `/public/images/${filename}`)
+        await stream.pipe(fs.createWriteStream(pathName))
+
         // Create user
         const user = await User.create({
           username,
           email,
           password,
+          imageUrl: file
         });
 
         // Return user

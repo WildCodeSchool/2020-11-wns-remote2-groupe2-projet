@@ -9,10 +9,15 @@ import {
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { setContext } from "@apollo/client/link/context";
 import { getMainDefinition } from "@apollo/client/utilities";
+import { createUploadLink } from "apollo-upload-client"
 
 let httpLink = createHttpLink({
   uri: `http://localhost:8080/graphql` || `http://localhost:4000/graphql`,
 });
+
+let uploadLink = createUploadLink({
+  uri: `http://localhost:8080/graphql` || `http://localhost:4000/graphql`,
+})
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -47,7 +52,8 @@ const splitLink = split(
     );
   },
   wsLink,
-  httpLink
+  httpLink,
+  uploadLink
 );
 
 const client = new ApolloClient({
