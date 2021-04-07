@@ -1,17 +1,12 @@
 # Getting Started with HERMES
 
-- Docker
-
-TODO: --watch
-TODO: encoding mysql db utf8mb4
-
 .env
 
 ```
 DATABASE=<db_name>
 USER=<mysql_user>
 PASSWORD=<mysql_pw>
-ROOT_PASSWORD=<mysql_root_pw
+ROOT_PASSWORD=<mysql_root_pw>
 ```
 
 start application **chat**:
@@ -20,7 +15,7 @@ start application **chat**:
 docker-compose up --build
 ```
 
-you can see you env var with (during container running)
+you can see your env var with (during container running)
 
 ```
 docker-compose config
