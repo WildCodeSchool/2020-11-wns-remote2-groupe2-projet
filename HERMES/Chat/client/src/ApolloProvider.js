@@ -10,7 +10,6 @@ import { setContext } from "@apollo/client/link/context";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { createUploadLink } from "apollo-upload-client"
 
-
 let uploadLink = createUploadLink({
   uri: `http://localhost:4000/graphql`,
 })
