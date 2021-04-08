@@ -1,8 +1,7 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Col, Image } from "react-bootstrap";
 import classNames from "classnames";
-
+import { Container, Box, Image, Text } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
 
 const GET_USERS = gql`
@@ -42,8 +41,8 @@ export default function Users() {
 		usersMarkup = users.map((user) => {
 			const selected = selectedUser === user.username;
 			return (
-				<div
-					role="button"
+				<Container
+					as="button"
 					className={classNames(
 						"user-div d-flex justify-content-center justify-content-md-start p-3",
 						{ "bg-white": selected },
@@ -60,18 +59,18 @@ export default function Users() {
 						}
 						className="user-image mr-md-2"
 					/>
-					<div className="d-none d-md-block">
-						<p className="text-success">{user.username}</p>
-						<p className="font-weight-light">
+					<Box className="d-none d-md-block">
+						<Text className="text-success">{user.username}</Text>
+						<Text className="font-weight-light">
 							{user.latestMessage ? user.latestMessage.content : "En ligne"}
-						</p>
-					</div>
-				</div>
+						</Text>
+					</Box>
+				</Container>
 			);
 		});
 	}
 	return (
-		<Col
+		<Container
 			xs={2}
 			md={4}
 			className="p-0"
@@ -83,6 +82,6 @@ export default function Users() {
 			}}
 		>
 			{usersMarkup}
-		</Col>
+		</Container>
 	);
 }

@@ -5,107 +5,70 @@ $paragraph-margin-bottom: 0;
 $gray-600: rgb(245, 245, 245);
 @import "~bootstrap/scss/bootstrap.scss";
 
-body {
-  min-height: 100vh;
-  background-image: url("https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: #e3decb;
-}
-
 .bg-row-opacity {
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 5px;
+	background: rgba(255, 255, 255, 0.7);
+	border-radius: 5px;
 }
 
 .img-connexion {
-  width: 62%;
-  justify-content: center;
-}
-
-.logo-hermes {
-  width: 19%;
-}
-
-.logo-logout {
-  width: 32%;
-  margin: -20px 34px -72px -85px;
-}
-
-.conteneur {
-  display: inline-block;
+	width: 62%;
+	justify-content: center;
 }
 
 .content {
-  opacity: 0;
+	opacity: 0;
 }
 
 .conteneur:hover .content {
-  opacity: 1;
-}
-
-.bg-chat {
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 10px;
-  margin-top: -49px;
+	opacity: 1;
 }
 
 .toolbar {
-  background-color: #fff;
+	background-color: #fff;
 }
 
 .user-div:hover {
-  background-color: rgb(255, 255, 255);
-}
-
-.messages-box {
-  height: 500px;
-  overflow-y: scroll;
-
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+	background-color: rgb(255, 255, 255);
 }
 
 .user-image {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	object-fit: cover;
+	border-radius: 50%;
 }
 
 .message-intput::placeholder {
-  color: rgba(0, 0, 0, 0.5);
+	color: rgba(0, 0, 0, 0.5);
 }
 
 .info-text {
-  color: rgba(0, 0, 0, 0.5);
-  text-align: center;
-  margin-bottom: 0.5rem;
+	color: rgba(0, 0, 0, 0.5);
+	text-align: center;
+	margin-bottom: 0.5rem;
 }
 
 .react-button-popover {
-  height: 30px;
+	height: 30px;
 }
 
 .react-icon-button {
-  padding: 0 0.25rem 0 0.25rem;
-  font-size: 1rem;
-  transition: 0.25s;
-  &:hover {
-    text-decoration: none;
-    font-size: 2rem;
-  }
+	padding: 0 0.25rem 0 0.25rem;
+	font-size: 1rem;
+	transition: 0.25s;
+	&:hover {
+		text-decoration: none;
+		font-size: 2rem;
+	}
 }
 
 .btn:focus {
-  box-shadow: none;
+	box-shadow: none;
 }
 
 .reactions-div {
-  position: absolute;
-  right: -10px;
-  bottom: -25px;
-  font-size: 0.9rem;
+	position: absolute;
+	right: -10px;
+	bottom: -25px;
+	font-size: 0.9rem;
 }
