@@ -24,7 +24,6 @@ const GET_USERS = gql`
 
 
 const baseURL = process.env.REACT_APP_BASE_URL || '';
-console.log("baseURL", baseURL)
 
 export default function Users() {
 	const dispatch = useMessageDispatch();
@@ -45,7 +44,6 @@ export default function Users() {
 	} else if (users.length > 0) {
 		usersMarkup = users.map((user) => {
 			const selected = selectedUser === user.username;
-			console.log("USER", user)
 			return (
 				<div
 					role="button"

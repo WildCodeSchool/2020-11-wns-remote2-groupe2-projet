@@ -86,9 +86,6 @@ module.exports = {
   Mutation: {
     register: async (_, args) => {
       let { username, email, password, confirmPassword, imageUrl } = args;
-      console.log("imageUrl", imageUrl)
-
-
 
       let errors = {};
 
@@ -118,29 +115,38 @@ module.exports = {
         // Hash password
         password = await bcrypt.hash(password, 6);
 
-        // Upload image
-        const { createReadStream, filename } = await imageUrl;
-        console.log("imageUrl", imageUrl)
+        if (imageUrl !== "") {
+          const { createReadStream, filename } = await imageUrl;
+          const { ext } = path.parse(filename)
+          const stream = await createReadStream()
 
-        const { ext } = path.parse(filename)
-        const stream = await createReadStream()
+          const randomName = generateRandomString(12) + ext
+          const pathName = path.join(__dirname, `../../public/images/${randomName}`)
 
-        const randomName = generateRandomString(12) + ext
-        const pathName = path.join(__dirname, `../../public/images/${randomName}`)
+          // Create user
+          const user = await User.create({
+            username,
+            email,
+            password,
+            imageUrl: `/images/${randomName}`
+          });
 
-        // Create user
-        const user = await User.create({
-          username,
-          email,
-          password,
-          imageUrl: `/images/${randomName}`
-        });
+          // Upload profil image in public/images folder
+          await stream.pipe(createWriteStream(pathName))
 
-        // Upload profil image in public/images folder
-        await stream.pipe(createWriteStream(pathName))
-        console.log("user", user)
+          return user;
 
-        return user;
+        } else {
+          const user = await User.create({
+            username,
+            email,
+            password,
+            imageUrl: `/default_user.png`
+          });
+
+          return user;
+        }
+
       } catch (err) {
         console.log(err);
         if (err.name === "SequelizeUniqueConstraintError") {

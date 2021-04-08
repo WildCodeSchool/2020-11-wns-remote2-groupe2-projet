@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import { gql, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import Logo from "../img/hermes1.png";
@@ -36,6 +36,29 @@ export default function Register(props) {
         imageUrl: ""
     });
     const [errors, setErrors] = useState({});
+    const [imagePreview, setImagePreview] = useState(false);
+
+
+    const getImagePreview = (e) => {
+        setImagePreview(false);
+        setVariables({ ...variables, imageUrl: e.target.files[0] })
+        if (e.target.files) {
+            if (e.target.files.length !== 0) {
+                if (e.target.files[0].type === 'image/jpeg'
+                    || e.target.files[0].type === 'image/png'
+                    || e.target.files[0].type === 'image/gif'
+                ) {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(e.target.files[0]);
+                    reader.onloadend = (event) => {
+
+                        setImagePreview(event.target.result);
+
+                    };
+                }
+            };
+        }
+    }
 
     const [registerUser, { loading }] = useMutation(REGISTER_USER, {
         update: (_, __) => props.history.push("/login"),
@@ -62,11 +85,16 @@ export default function Register(props) {
                             type="file"
                             accept="image/*"
                             className={errors.imageUrl && 'is-invalid'}
-                            onChange={(e) =>
-                                setVariables({ ...variables, imageUrl: e.target.files[0] })
-                            }
+                            onChange={getImagePreview}
                         />
                     </Form.Group>
+                    {imagePreview && (
+                        <Image
+                            src={imagePreview}
+                            className="user-image mr-md-2"
+                            alt="Preview"
+                        />
+                    )}
 
                     <Form.Group>
                         <Form.Label className={errors.email && 'text-danger'}>
