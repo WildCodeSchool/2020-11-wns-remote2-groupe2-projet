@@ -10,19 +10,19 @@ const REGISTER_USER = gql`
     $email: String!
     $password: String!
     $confirmPassword: String!
-    $file: Upload!
+    $imageUrl: Upload!
   ) {
     register(
       username: $username
       email: $email
       password: $password
       confirmPassword: $confirmPassword
-      file: $file
+      imageUrl: $imageUrl
     ) {
       username
       email
       createdAt
-      file
+      imageUrl
     }
   }
 `;
@@ -33,7 +33,7 @@ export default function Register(props) {
         username: "",
         password: "",
         confirmPassword: "",
-        file: ""
+        imageUrl: ""
     });
     const [errors, setErrors] = useState({});
 
@@ -44,10 +44,8 @@ export default function Register(props) {
 
     const submitRegisterForm = (e) => {
         e.preventDefault();
-        console.log({ variables })
         registerUser({ variables });
     };
-    console.log("test", variables.file.name)
 
     return (
         <Row className="bg-chat py-5 justify-content-center align-items-center" style={{ margin: '206px 0 0 0' }}>
@@ -57,14 +55,15 @@ export default function Register(props) {
                 <Form onSubmit={submitRegisterForm}>
 
                     <Form.Group>
-                        <Form.Label className={errors.file && 'text-danger'}>
-                            {errors.file ?? 'Image de profil :'}
+                        <Form.Label className={errors.imageUrl && 'text-danger'}>
+                            {errors.imageUrl ?? 'Image de profil :'}
                         </Form.Label>
                         <Form.Control
                             type="file"
-                            className={errors.file && 'is-invalid'}
+                            accept="image/*"
+                            className={errors.imageUrl && 'is-invalid'}
                             onChange={(e) =>
-                                setVariables({ ...variables, file: e.target.files[0] })
+                                setVariables({ ...variables, imageUrl: e.target.files[0] })
                             }
                         />
                     </Form.Group>

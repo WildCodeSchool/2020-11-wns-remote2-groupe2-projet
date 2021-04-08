@@ -22,6 +22,10 @@ const GET_USERS = gql`
 	}
 `;
 
+
+const baseURL = process.env.REACT_APP_BASE_URL || '';
+console.log("baseURL", baseURL)
+
 export default function Users() {
 	const dispatch = useMessageDispatch();
 	const { users } = useMessageState();
@@ -41,6 +45,7 @@ export default function Users() {
 	} else if (users.length > 0) {
 		usersMarkup = users.map((user) => {
 			const selected = selectedUser === user.username;
+			console.log("USER", user)
 			return (
 				<div
 					role="button"
@@ -54,10 +59,7 @@ export default function Users() {
 					}
 				>
 					<Image
-						src={
-							user.imageUrl ||
-							"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-						}
+						src={baseURL + user.imageUrl}
 						className="user-image mr-md-2"
 					/>
 					<div className="d-none d-md-block">

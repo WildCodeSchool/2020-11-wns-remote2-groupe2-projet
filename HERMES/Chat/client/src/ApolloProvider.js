@@ -3,7 +3,6 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider as Provider,
-  createHttpLink,
   split,
 } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
@@ -11,12 +10,9 @@ import { setContext } from "@apollo/client/link/context";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { createUploadLink } from "apollo-upload-client"
 
-let httpLink = createHttpLink({
-  uri: `http://localhost:8080/graphql` || `http://localhost:4000/graphql`,
-});
 
 let uploadLink = createUploadLink({
-  uri: `http://localhost:8080/graphql` || `http://localhost:4000/graphql`,
+  uri: `http://localhost:4000/graphql`,
 })
 
 const authLink = setContext((_, { headers }) => {
@@ -31,10 +27,9 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-httpLink = authLink.concat(httpLink);
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:8080/graphql` || `ws://localhost:4000/graphql`,
+  uri: `ws://localhost:4000/graphql`,
   options: {
     reconnect: true,
     connectionParams: {
@@ -52,8 +47,7 @@ const splitLink = split(
     );
   },
   wsLink,
-  httpLink,
-  uploadLink
+  authLink.concat(uploadLink),
 );
 
 const client = new ApolloClient({

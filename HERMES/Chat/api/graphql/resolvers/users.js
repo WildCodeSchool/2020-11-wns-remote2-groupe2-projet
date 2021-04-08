@@ -1,9 +1,10 @@
 const bcrypt = require("bcryptjs");
 const { UserInputError, AuthenticationError } = require("apollo-server");
 const path = require('path')
-const fs = require('fs')
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
+const { createWriteStream } = require('fs');
+const generateRandomString = require("../../utils/generateRandomString");
 
 const { Message, User } = require("../../models");
 
@@ -84,9 +85,8 @@ module.exports = {
   },
   Mutation: {
     register: async (_, args) => {
-      let { username, email, password, confirmPassword, file } = args;
-      const { createReadStream, filename } = await file;
-      console.log("file", file)
+      let { username, email, password, confirmPassword, imageUrl } = args;
+      console.log("imageUrl", imageUrl)
 
 
 
@@ -101,7 +101,6 @@ module.exports = {
           errors.password = "password must not be empty";
         if (confirmPassword.trim() === "")
           errors.confirmPassword = "repeat password must not be empty";
-
         if (password !== confirmPassword)
           errors.confirmPassword = "passwords must match";
 
@@ -120,19 +119,27 @@ module.exports = {
         password = await bcrypt.hash(password, 6);
 
         // Upload image
-        const stream = createReadStream()
-        const pathName = path.join(__dirname, `/public/images/${filename}`)
-        await stream.pipe(fs.createWriteStream(pathName))
+        const { createReadStream, filename } = await imageUrl;
+        console.log("imageUrl", imageUrl)
+
+        const { ext } = path.parse(filename)
+        const stream = await createReadStream()
+
+        const randomName = generateRandomString(12) + ext
+        const pathName = path.join(__dirname, `../../public/images/${randomName}`)
 
         // Create user
         const user = await User.create({
           username,
           email,
           password,
-          imageUrl: file
+          imageUrl: `/images/${randomName}`
         });
 
-        // Return user
+        // Upload profil image in public/images folder
+        await stream.pipe(createWriteStream(pathName))
+        console.log("user", user)
+
         return user;
       } catch (err) {
         console.log(err);
