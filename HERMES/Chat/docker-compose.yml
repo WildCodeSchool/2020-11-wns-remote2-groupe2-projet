@@ -2,39 +2,43 @@ version: "3.8"
 
 services:
   # Create client container
-  client: # Name of our service
+  client:
     build: ./client # path to dockerfile
     stdin_open: true
     tty: true
     ports: # Port binding to host from docker container
-      - "3001:3000" # Bind port 3000 of host to 3000 of container
+      - "3000:3000" # Bind port 3001 of host to 3000 of container
     container_name: client-docker
-    restart: always # What to do if container crashes
+    restart: always
+    volumes:
+      - ./client:/hermes/chat/client
     links:
       - api
+
   # Create api container
   api:
-    # Create api container
     build: ./api
     ports:
       - "8080:4000"
     container_name: api-docker
+    environment:
+      - ./api/.env
     restart: always
+    volumes:
+      - ./api:/hermes/chat/api
     links:
       - db
 
+  # Create db container
   db:
     image: mysql:5.7
     container_name: db-docker
     restart: always
     environment:
-      - MYSQL_DATABASE=${DATABASE}
-      # So you don't have to use root, but you can if you like
-      - MYSQL_USER=${USER}
-      # You can use whatever password you like
-      - MYSQL_PASSWORD=${PASSWORD}
-      # Password for root access
-      - MYSQL_ROOT_PASSWORD=${ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: chat
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
     ports:
       # <Port exposed> : < MySQL Port running inside container>
       - "3306:3306"
