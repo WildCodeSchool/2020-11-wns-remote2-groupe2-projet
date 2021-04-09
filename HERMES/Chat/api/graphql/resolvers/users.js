@@ -87,7 +87,6 @@ module.exports = {
 		register: async (_, args) => {
 			let { username, email, password, confirmPassword, imageUrl } = args;
 			const { createReadStream, filename } = await imageUrl;
-
 			let errors = {};
 
 			try {

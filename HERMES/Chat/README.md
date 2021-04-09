@@ -1,25 +1,35 @@
+# Required:
+
+node v12.18.3
+
+nodemon -g
+
 # Getting Started with HERMES
 
-.env
+voir .env.dist de chaque fichier
 
+# Start client server : 
 ```
-DATABASE=<db_name>
-USER=<mysql_user>
-PASSWORD=<mysql_pw>
-ROOT_PASSWORD=<mysql_root_pw>
+npm start
 ```
 
-start application **chat**:
+# Start api server : 
+```
+nodemon serveur.js
+```
 
+# Gestion base de donnée :
+
+clean BDD:
 ```
-docker-compose up --build
+sequelize db:migrate:undo:all
 ```
 
-you can see your env var with (during container running)
+création des tables : 
+```
+sequelize db:migrate
+```
 
-```
-docker-compose config
-```
 
 # Tips
 
@@ -28,3 +38,5 @@ entrer dans un conteneur :
 ```
 docker exec -it <nom du conteneur OU id> bash (ou ash)
 ```
+
+Par **Adrien Bruno Moshtagh Victor**
