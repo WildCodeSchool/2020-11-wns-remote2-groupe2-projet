@@ -86,6 +86,7 @@ module.exports = {
   Mutation: {
     register: async (_, args) => {
       let { username, email, password, confirmPassword, imageUrl } = args;
+      const { createReadStream, filename } = await imageUrl;
 
       let errors = {};
 
@@ -115,37 +116,28 @@ module.exports = {
         // Hash password
         password = await bcrypt.hash(password, 6);
 
-        if (imageUrl !== "") {
-          const { createReadStream, filename } = await imageUrl;
+
+        if (filename) {
           const { ext } = path.parse(filename)
-          const stream = await createReadStream()
-
-          const randomName = generateRandomString(12) + ext
-          const pathName = path.join(__dirname, `../../public/images/${randomName}`)
-
-          // Create user
-          const user = await User.create({
-            username,
-            email,
-            password,
-            imageUrl: `/images/${randomName}`
-          });
-
-          // Upload profil image in public/images folder
-          await stream.pipe(createWriteStream(pathName))
-
-          return user;
-
-        } else {
-          const user = await User.create({
-            username,
-            email,
-            password,
-            imageUrl: `/default_user.png`
-          });
-
-          return user;
+          randomName = generateRandomString(12) + ext
         }
+
+        // Create user
+        const user = await User.create({
+          username,
+          email,
+          password,
+          imageUrl: imageUrl ? `/images/${randomName}` : '/default_user.png'
+        });
+
+        if (imageUrl) {
+          const stream = await createReadStream()
+          const pathName = path.join(__dirname, `../../public/images/${randomName}`)
+          await stream.pipe(createWriteStream(pathName))
+        }
+
+        return user;
+
 
       } catch (err) {
         console.log(err);

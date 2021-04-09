@@ -28,6 +28,9 @@ const REGISTER_USER = gql`
 `;
 
 export default function Register(props) {
+
+    const [errors, setErrors] = useState({});
+    const [imagePreview, setImagePreview] = useState(false);
     const [variables, setVariables] = useState({
         email: "",
         username: "",
@@ -35,27 +38,22 @@ export default function Register(props) {
         confirmPassword: "",
         imageUrl: ""
     });
-    const [errors, setErrors] = useState({});
-    const [imagePreview, setImagePreview] = useState(false);
 
 
     const getImagePreview = (e) => {
         setImagePreview(false);
         setVariables({ ...variables, imageUrl: e.target.files[0] })
-        if (e.target.files) {
-            if (e.target.files.length !== 0) {
-                if (e.target.files[0].type === 'image/jpeg'
-                    || e.target.files[0].type === 'image/png'
-                    || e.target.files[0].type === 'image/gif'
-                ) {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(e.target.files[0]);
-                    reader.onloadend = (event) => {
+        if (e.target.files && e.target.files.length !== 0) {
+            if (e.target.files[0].type === 'image/jpeg'
+                || e.target.files[0].type === 'image/png'
+            ) {
+                const reader = new FileReader();
+                reader.readAsDataURL(e.target.files[0]);
+                reader.onloadend = (event) => {
 
-                        setImagePreview(event.target.result);
+                    setImagePreview(event.target.result);
 
-                    };
-                }
+                };
             };
         }
     }
@@ -77,24 +75,6 @@ export default function Register(props) {
                 <h1 className="text-center">Inscription</h1>
                 <Form onSubmit={submitRegisterForm}>
 
-                    <Form.Group>
-                        <Form.Label className={errors.imageUrl && 'text-danger'}>
-                            {errors.imageUrl ?? 'Image de profil :'}
-                        </Form.Label>
-                        <Form.Control
-                            type="file"
-                            accept="image/*"
-                            className={errors.imageUrl && 'is-invalid'}
-                            onChange={getImagePreview}
-                        />
-                    </Form.Group>
-                    {imagePreview && (
-                        <Image
-                            src={imagePreview}
-                            className="user-image mr-md-2"
-                            alt="Preview"
-                        />
-                    )}
 
                     <Form.Group>
                         <Form.Label className={errors.email && 'text-danger'}>
@@ -151,6 +131,25 @@ export default function Register(props) {
                             }
                         />
                     </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label className={errors.imageUrl && 'text-danger'}>
+                            {errors.imageUrl ?? 'Image de profil :'}
+                        </Form.Label>
+                        <Form.Control
+                            type="file"
+                            accept="image/*"
+                            className={errors.imageUrl && 'is-invalid'}
+                            onChange={getImagePreview}
+                        />
+                    </Form.Group>
+                    {imagePreview && (
+                        <Image
+                            src={imagePreview}
+                            className="user-image mr-md-2"
+                            alt="Preview"
+                        />
+                    )}
                     <div className="text-center">
                         <Button variant="success" type="submit" disabled={loading}>
                             {loading ? 'loading..' : 'Inscription'}
