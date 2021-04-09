@@ -102,7 +102,7 @@ export default function Register(props) {
 										type="name"
 										placeholder="Identifiant"
 										// eslint-disable-next-line jsx-a11y/aria-props
-										aria-lable="Username"
+										aria-label="Username"
 										bg="#fff"
 									/>
 								</InputGroup>
@@ -121,7 +121,7 @@ export default function Register(props) {
 										type="password"
 										placeholder="Mot de passe"
 										// eslint-disable-next-line jsx-a11y/aria-props
-										aria-lable="Password"
+										aria-label="Password"
 										bg="#fff"
 									/>
 								</InputGroup>
