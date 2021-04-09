@@ -1,8 +1,6 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Col, Image } from "react-bootstrap";
-import classNames from "classnames";
-
+import { Container, Box, Image, Text } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
 
 const GET_USERS = gql`
@@ -22,8 +20,7 @@ const GET_USERS = gql`
 	}
 `;
 
-
-const baseURL = process.env.REACT_APP_BASE_URL || '';
+const baseURL = process.env.REACT_APP_BASE_URL || "";
 
 export default function Users() {
 	const dispatch = useMessageDispatch();
@@ -44,45 +41,47 @@ export default function Users() {
 	} else if (users.length > 0) {
 		usersMarkup = users.map((user) => {
 			const selected = selectedUser === user.username;
+
 			return (
-				<div
-					role="button"
-					className={classNames(
-						"user-div d-flex justify-content-center justify-content-md-start p-3",
-						{ "bg-white": selected },
-					)}
+				<Container
+					as="button"
+					display="flex"
+					justifyContent={{ base: "center", md: "start" }}
+					p="3"
+					bg={selected ? "white" : ""}
 					key={user.username}
 					onClick={() =>
 						dispatch({ type: "SET_SELECTED_USER", payload: user.username })
 					}
 				>
 					<Image
+						w="50px"
+						h="50px"
+						objectFit="cover"
+						borderRadius="50%"
+						mr={{ md: "2" }}
 						src={baseURL + user.imageUrl}
-						className="user-image mr-md-2"
 					/>
-					<div className="d-none d-md-block">
-						<p className="text-success">{user.username}</p>
-						<p className="font-weight-light">
+					<Box display={{ base: "none", md: "block" }}>
+						<Text color="green">{user.username}</Text>
+						<Text fontWeight="light">
 							{user.latestMessage ? user.latestMessage.content : "En ligne"}
-						</p>
-					</div>
-				</div>
+						</Text>
+					</Box>
+				</Container>
 			);
 		});
 	}
 	return (
-		<Col
-			xs={2}
-			md={4}
-			className="p-0"
-			style={{
-				marginTop: "56px",
-				borderRadius: "10px",
-				backgroundColor: "rgba(244,239,230,0.8)",
-				color: "#39414F",
-			}}
+		<Container
+			maxWidth={{ xs: 2, md: 4 }}
+			p={0}
+			marginTop="56px"
+			borderRadius="10px"
+			backgroundColor="rgba(244,239,230,0.8)"
+			color="#39414F"
 		>
 			{usersMarkup}
-		</Col>
+		</Container>
 	);
 }
