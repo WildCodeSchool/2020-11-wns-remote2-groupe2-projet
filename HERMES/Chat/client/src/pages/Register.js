@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Col, Form, Button, Image } from "react-bootstrap";
 import { gql, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import Logo from "../img/hermes1.png";
@@ -10,46 +10,72 @@ const REGISTER_USER = gql`
     $email: String!
     $password: String!
     $confirmPassword: String!
+    $imageUrl: Upload!
   ) {
     register(
       username: $username
       email: $email
       password: $password
       confirmPassword: $confirmPassword
+      imageUrl: $imageUrl
     ) {
       username
       email
       createdAt
+      imageUrl
     }
   }
 `;
 
 export default function Register(props) {
-  const [variables, setVariables] = useState({
-    email: "",
-    username: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [errors, setErrors] = useState({});
 
-  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-    update: (_, __) => props.history.push("/login"),
-    onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
-  });
+    const [errors, setErrors] = useState({});
+    const [imagePreview, setImagePreview] = useState(false);
+    const [variables, setVariables] = useState({
+        email: "",
+        username: "",
+        password: "",
+        confirmPassword: "",
+        imageUrl: ""
+    });
 
-  const submitRegisterForm = (e) => {
-    e.preventDefault();
 
-    registerUser({ variables });
-  };
+    const getImagePreview = (e) => {
+        setImagePreview(false);
+        setVariables({ ...variables, imageUrl: e.target.files[0] })
+        if (e.target.files && e.target.files.length !== 0) {
+            if (e.target.files[0].type === 'image/jpeg'
+                || e.target.files[0].type === 'image/png'
+            ) {
+                const reader = new FileReader();
+                reader.readAsDataURL(e.target.files[0]);
+                reader.onloadend = (event) => {
+
+                    setImagePreview(event.target.result);
+
+                };
+            };
+        }
+    }
+
+    const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+        update: (_, __) => props.history.push("/login"),
+        onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
+    });
+
+    const submitRegisterForm = (e) => {
+        e.preventDefault();
+        registerUser({ variables });
+    };
 
     return (
-        <Row className="bg-chat py-5 justify-content-center align-items-center" style={{margin: '206px 0 0 0'}}>
+        <Row className="bg-chat py-5 justify-content-center align-items-center" style={{ margin: '206px 0 0 0' }}>
             <img className="img-connexion" src={Logo} alt="logo hermes" />
             <Col sm={8} md={6} lg={4}>
                 <h1 className="text-center">Inscription</h1>
                 <Form onSubmit={submitRegisterForm}>
+
+
                     <Form.Group>
                         <Form.Label className={errors.email && 'text-danger'}>
                             {errors.email ?? 'Email :'}
@@ -105,6 +131,25 @@ export default function Register(props) {
                             }
                         />
                     </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label className={errors.imageUrl && 'text-danger'}>
+                            {errors.imageUrl ?? 'Image de profil :'}
+                        </Form.Label>
+                        <Form.Control
+                            type="file"
+                            accept="image/*"
+                            className={errors.imageUrl && 'is-invalid'}
+                            onChange={getImagePreview}
+                        />
+                    </Form.Group>
+                    {imagePreview && (
+                        <Image
+                            src={imagePreview}
+                            className="user-image mr-md-2"
+                            alt="Preview"
+                        />
+                    )}
                     <div className="text-center">
                         <Button variant="success" type="submit" disabled={loading}>
                             {loading ? 'loading..' : 'Inscription'}

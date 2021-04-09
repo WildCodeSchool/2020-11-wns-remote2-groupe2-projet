@@ -6,7 +6,7 @@ module.exports = gql`
     email: String
     createdAt: String!
     token: String
-    imageUrl: String
+    imageUrl: String!
     latestMessage: Message
   }
   type Message {
@@ -35,6 +35,7 @@ module.exports = gql`
       email: String
       password: String!
       confirmPassword: String!
+      imageUrl: Upload!
     ): User!
     sendMessage(to: String!, content: String!): Message!
     reactToMessage(uuid: String!, content: String!): Reaction!
