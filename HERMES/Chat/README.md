@@ -6,14 +6,7 @@ nodemon -g
 
 # Getting Started with HERMES
 
-.env
-
-```
-DATABASE=<db_name>
-USER=<mysql_user>
-PASSWORD=<mysql_pw>
-ROOT_PASSWORD=<mysql_root_pw>
-```
+voir .env.dist de chaque fichier
 
 # Start client server : 
 ```
@@ -45,3 +38,5 @@ entrer dans un conteneur :
 ```
 docker exec -it <nom du conteneur OU id> bash (ou ash)
 ```
+
+Par **Adrien Bruno Moshtagh Victor**
