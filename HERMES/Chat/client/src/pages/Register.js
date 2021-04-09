@@ -24,28 +24,50 @@ const REGISTER_USER = gql`
 		$email: String!
 		$password: String!
 		$confirmPassword: String!
+		$imageUrl: Upload!
 	) {
 		register(
 			username: $username
 			email: $email
 			password: $password
 			confirmPassword: $confirmPassword
+			imageUrl: $imageUrl
 		) {
 			username
 			email
 			createdAt
+			imageUrl
 		}
 	}
 `;
 
 export default function Register(props) {
+	const [errors, setErrors] = useState({});
+	const [imagePreview, setImagePreview] = useState(false);
 	const [variables, setVariables] = useState({
 		email: "",
 		username: "",
 		password: "",
 		confirmPassword: "",
+		imageUrl: "",
 	});
-	const [errors, setErrors] = useState({});
+
+	const getImagePreview = (e) => {
+		setImagePreview(false);
+		setVariables({ ...variables, imageUrl: e.target.files[0] });
+		if (e.target.files && e.target.files.length !== 0) {
+			if (
+				e.target.files[0].type === "image/jpeg" ||
+				e.target.files[0].type === "image/png"
+			) {
+				const reader = new FileReader();
+				reader.readAsDataURL(e.target.files[0]);
+				reader.onloadend = (event) => {
+					setImagePreview(event.target.result);
+				};
+			}
+		}
+	};
 
 	const [registerUser, { loading }] = useMutation(REGISTER_USER, {
 		update: (_, __) => props.history.push("/login"),
@@ -107,8 +129,7 @@ export default function Register(props) {
 									<Input
 										type="email"
 										placeholder="Adresse email"
-										// eslint-disable-next-line jsx-a11y/aria-props
-										aria-lable="Email"
+										aria-label="Email"
 										bg="#fff"
 									/>
 								</InputGroup>
@@ -128,8 +149,7 @@ export default function Register(props) {
 									<Input
 										type="name"
 										placeholder="Identifiant"
-										// eslint-disable-next-line jsx-a11y/aria-props
-										aria-lable="Username"
+										aria-label="Username"
 										bg="#fff"
 									/>
 								</InputGroup>
@@ -149,8 +169,7 @@ export default function Register(props) {
 									<Input
 										type="password"
 										placeholder="Mot de passe"
-										// eslint-disable-next-line jsx-a11y/aria-props
-										aria-lable="Password"
+										aria-label="Password"
 										bg="#fff"
 									/>
 								</InputGroup>
@@ -173,10 +192,30 @@ export default function Register(props) {
 									<Input
 										type="password"
 										placeholder="Confirmation mot de passe"
-										// eslint-disable-next-line jsx-a11y/aria-props
-										aria-lable="Password"
+										aria-label="Password"
 										bg="#fff"
 									/>
+								</InputGroup>
+								<InputGroup>
+									<InputLeftElement children={<LockIcon />} />
+									<Input
+										type="file"
+										aria-label="File"
+										onChange={getImagePreview}
+										accept="image/*"
+										bg="#fff"
+									/>
+									{imagePreview && (
+										<Image
+											w="50px"
+											h="50px"
+											objectFit="cover"
+											borderRadius="50%"
+											mr={{ md: "2" }}
+											src={imagePreview}
+											alt="Preview"
+										/>
+									)}
 								</InputGroup>
 							</FormControl>
 							<Divider />

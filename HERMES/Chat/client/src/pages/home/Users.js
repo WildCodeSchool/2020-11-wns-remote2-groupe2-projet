@@ -20,6 +20,8 @@ const GET_USERS = gql`
 	}
 `;
 
+const baseURL = process.env.REACT_APP_BASE_URL || "";
+
 export default function Users() {
 	const dispatch = useMessageDispatch();
 	const { users } = useMessageState();
@@ -58,7 +60,7 @@ export default function Users() {
 						objectFit="cover"
 						borderRadius="50%"
 						mr={{ md: "2" }}
-						src={user.imageUrl}
+						src={baseURL + user.imageUrl}
 					/>
 					<Box display={{ base: "none", md: "block" }}>
 						<Text color="green">{user.username}</Text>
