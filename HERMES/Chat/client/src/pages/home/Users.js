@@ -1,6 +1,5 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import classNames from "classnames";
 import { Container, Box, Image, Text } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
 
@@ -40,28 +39,30 @@ export default function Users() {
 	} else if (users.length > 0) {
 		usersMarkup = users.map((user) => {
 			const selected = selectedUser === user.username;
+
 			return (
 				<Container
 					as="button"
-					className={classNames(
-						"user-div d-flex justify-content-center justify-content-md-start p-3",
-						{ "bg-white": selected },
-					)}
+					display="flex"
+					justifyContent={{ base: "center", md: "start" }}
+					p="3"
+					bg={selected ? "white" : ""}
 					key={user.username}
 					onClick={() =>
 						dispatch({ type: "SET_SELECTED_USER", payload: user.username })
 					}
 				>
 					<Image
-						src={
-							user.imageUrl ||
-							"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-						}
-						className="user-image mr-md-2"
+						w="50px"
+						h="50px"
+						objectFit="cover"
+						borderRadius="50%"
+						mr={{ md: "2" }}
+						src={user.imageUrl}
 					/>
-					<Box className="d-none d-md-block">
-						<Text className="text-success">{user.username}</Text>
-						<Text className="font-weight-light">
+					<Box display={{ base: "none", md: "block" }}>
+						<Text color="green">{user.username}</Text>
+						<Text fontWeight="light">
 							{user.latestMessage ? user.latestMessage.content : "En ligne"}
 						</Text>
 					</Box>
@@ -71,15 +72,12 @@ export default function Users() {
 	}
 	return (
 		<Container
-			xs={2}
-			md={4}
-			className="p-0"
-			style={{
-				marginTop: "56px",
-				borderRadius: "10px",
-				backgroundColor: "rgba(244,239,230,0.8)",
-				color: "#39414F",
-			}}
+			maxWidth={{ xs: 2, md: 4 }}
+			p={0}
+			marginTop="56px"
+			borderRadius="10px"
+			backgroundColor="rgba(244,239,230,0.8)"
+			color="#39414F"
 		>
 			{usersMarkup}
 		</Container>

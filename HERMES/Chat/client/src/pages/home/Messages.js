@@ -1,11 +1,10 @@
 import React, { useEffect, Fragment, useState } from "react";
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
-import { Form } from "react-bootstrap";
-
+import { FaPaperPlane } from "react-icons/fa";
 import { useMessageDispatch, useMessageState } from "../../context/message";
 
 import Message from "./Message";
-import { Container, Box, Spacer } from "@chakra-ui/react";
+import { Container, Box, Spacer, FormControl, Input } from "@chakra-ui/react";
 
 const SEND_MESSAGE = gql`
 	mutation sendMessage($to: String!, $content: String!) {
@@ -56,7 +55,7 @@ export default function Messages() {
 		if (selectedUser && !selectedUser.messages) {
 			getMessages({ variables: { from: selectedUser.username } });
 		}
-	}, [getMessages, selectedUser]);
+	}, [selectedUser]);
 
 	useEffect(() => {
 		if (messagesData) {
@@ -68,7 +67,7 @@ export default function Messages() {
 				},
 			});
 		}
-	}, [dispatch, messagesData, selectedUser]);
+	}, [messagesData]);
 
 	const submitMessage = (e) => {
 		e.preventDefault();
@@ -118,23 +117,28 @@ export default function Messages() {
 			</Box>
 			<Spacer />
 			<Box px={3} py={2}>
-				<Form onSubmit={submitMessage}>
-					<Form.Group className="d-flex align-items-center m-0">
-						<Form.Control
+				<form onSubmit={submitMessage}>
+					<FormControl display="flex" alignItems="center" m={0}>
+						<Input
+							borderRadius="20px"
+							p={6}
+							bg="#f5f5f5"
+							border="0"
+							css={{
+								"::placeholder": {
+									color: "rgba(0, 0, 0, 0.5)",
+								},
+							}}
 							type="text"
-							className="message-intput rounded-pill p-4 bg-secondary border-0"
 							placeholder="Entrer un message .."
 							value={content}
 							onChange={(e) => setContent(e.target.value)}
 						/>
-						<i
-							className="fas fa-paper-plane fa-2x text-primary ml-2"
-							onClick={submitMessage}
-						>
-							{" "}
-						</i>
-					</Form.Group>
-				</Form>
+						<Box color="#406fe5" ml={2} onClick={submitMessage}>
+							<FaPaperPlane size="30px" />
+						</Box>
+					</FormControl>
+				</form>
 			</Box>
 		</Container>
 	);
