@@ -86,15 +86,11 @@ export default function Register(props) {
                 columns={2}
                 spacing={80}
                 bg="rgba(255, 255, 255, 0.8)"
-                w="242%"
-                h="49vh"
-                pl="96px"
                 position="relative"
                 top="268px"
-                right="342px"
                 borderRadius="10px"
             >
-                <Box marginTop="113px" w="140%">
+                <Box>
                     <Image src={Logo} alt="logo hermes" width="100%" />
                 </Box>
 

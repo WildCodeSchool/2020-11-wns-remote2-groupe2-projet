@@ -6,20 +6,25 @@ import { useAuthDispatch, useAuthState } from "../../context/auth";
 import { useMessageDispatch } from "../../context/message";
 import {
 	Box,
-	Image,
-	Tabs,
-	TabList,
-	TabPanels,
-	Tab,
-	TabPanel,
-	Container,
+	Button,
+	Flex,
+	Badge,
+	Avatar,
 	Text,
+	useDisclosure,
+	Modal,
+	ModalOverlay,
+	ModalContent,
+	ModalHeader,
+	ModalCloseButton,
+	ModalBody,
+	Container
 } from "@chakra-ui/react";
 
 import Users from "./Users";
 import Messages from "./Messages";
-import logOut from "../../../src/img/logout-svg.png";
 import "../../App.scss";
+import { ModalFooter } from "react-bootstrap";
 
 const NEW_MESSAGE = gql`
 	subscription newMessage {
@@ -48,6 +53,7 @@ const NEW_REACTION = gql`
 `;
 
 export default function Home({ history }) {
+	const { isOpen, onOpen, onClose } = useDisclosure()
 	const authDispatch = useAuthDispatch();
 	const messageDispatch = useMessageDispatch();
 
@@ -105,117 +111,56 @@ export default function Home({ history }) {
 	};
 
 	return (
-		<Fragment>
-			<Tabs
-				isFitted
-				variant="enclosed-colored"
-				size="lg"
-				position="relative"
-				top="210px"
-			>
-				<Box>
-					<Container maxWidth="xl">
-						<TabList color="white">
-							<Tab
-								fontSize="2xl"
-								fontWeight={600}
-								color="#39414f"
-								border="1px"
-								borderColor="#39414f"
-								bg="transparent"
-								_selected={{
-									color: "white",
-									bg: "#39414f",
-									boxShadow: "none",
-								}}
-							>
-								CHAT
-							</Tab>
-							<Tab
-								fontSize="2xl"
-								fontWeight={600}
-								color="#39414f"
-								border="1px"
-								borderColor="#39414f"
-								bg="transparent"
-								_selected={{
-									color: "white",
-									bg: "#39414f",
-									boxShadow: "none",
-								}}
-							>
-								VISIO
-							</Tab>
-						</TabList>
-					</Container>
-				</Box>
-				<TabPanels>
-					<TabPanel p={0}>
-						<Box
-							bg="#39414f"
-							width="203%"
-							marginTop="-1px"
-							position="relative"
-							right="264px"
-							height="6vh"
-						>
-							<Box display="inline-block">
-								<Image
-									onClick={logout}
-									width="58%"
-									display="flex"
-									position="relative"
-									top="14px"
-									left="34px"
-									src={logOut}
-									alt="logout"
-									cursor="pointer"
-								/>
-							</Box>
+		<Container
+			maxW="90vw"
+			bg="#39414f"
+		>
+			<Box display="flex"
+				justifyContent="space-between"
+				alignItems="center"
+				m={3}>
+				<Button
+					onClick={onOpen}
+				>Se déconnecter
+				</Button>
+				<Modal
+					isCentered
+					onClose={onClose}
+					isOpen={isOpen}
+					motionPreset="slideInBottom"
+				>
+					<ModalOverlay />
+					<ModalContent>
+						<ModalHeader textAlign="center" >Etes-vous sur de vouloir vous déconnecter de HERMES ?</ModalHeader>
+						<Box m={3} display="flex" justifyContent="space-between">
+							<Button bg="#39414f" color="white" width="33%" onClick={onClose}>Non</Button>
+							<Button bg="#39414f" color="white" width="33%" onClick={logout}>Oui</Button>
 						</Box>
-						<Container maxWidth="4xl">
-							<Box
-								bg="rgba(255, 255, 255, 0.7)"
-								border-radius="10px"
-								display="flex"
-								position="relative"
-								width="217%"
-								right="281px"
-							>
-								<Users />
-								<Messages />
-							</Box>
-						</Container>
-					</TabPanel>
-					<TabPanel p={0}>
-						<Box
-							bg="#39414f"
-							width="203%"
-							marginTop="-1px"
-							position="relative"
-							right="264px"
-							height="6vh"
-						>
-							<Box display="inline-block">
-								<Image
-									onClick={logout}
-									width="58%"
-									display="flex"
-									position="relative"
-									top="14px"
-									left="34px"
-									src={logOut}
-									alt="logout"
-									cursor="pointer"
-								/>
-							</Box>
-						</Box>
-						<Text fontSize="3xl" fontWeight={600} textAlign="center">
-							LA VISIO BIENTÔT DISPONIBLE
+					</ModalContent>
+				</Modal>
+				<Flex>
+					<Box>
+						<Text fontWeight="bold" color="white">
+							Segun Adebayo
+     					 <Badge ml="1"
+								colorScheme="green">
+								New
+      					</Badge>
 						</Text>
-					</TabPanel>
-				</TabPanels>
-			</Tabs>
-		</Fragment>
+						<Text fontSize="sm" color="white">UI Engineer</Text>
+					</Box>
+					<Avatar m="1" src="https://bit.ly/sage-adebayo" />
+				</Flex>
+			</Box>
+
+			<Box
+				bg="rgba(255, 255, 255, 0.7)"
+				border-radius="10px"
+				display="flex"
+			>
+				<Users />
+				<Messages />
+			</Box>
+		</Container>
 	);
 }

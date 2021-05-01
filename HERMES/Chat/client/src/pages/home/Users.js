@@ -1,7 +1,9 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Container, Box, Image, Text } from "@chakra-ui/react";
+import { Container, Box, Image, Text, Button } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
+import { PhoneIcon, AddIcon, WarningIcon } from '@chakra-ui/icons'
+
 
 const GET_USERS = gql`
 	query getUsers {
@@ -43,41 +45,44 @@ export default function Users() {
 			const selected = selectedUser === user.username;
 
 			return (
-				<Container
-					as="button"
-					display="flex"
-					justifyContent={{ base: "center", md: "start" }}
-					p="3"
+				<Container display="flex" justifyContent="space-between"
 					bg={selected ? "white" : ""}
+					as="button"
+					p="5"
 					key={user.username}
 					onClick={() =>
 						dispatch({ type: "SET_SELECTED_USER", payload: user.username })
-					}
-				>
-					<Image
-						w="50px"
-						h="50px"
-						objectFit="cover"
-						borderRadius="50%"
-						mr={{ md: "2" }}
-						src={baseURL + user.imageUrl}
-					/>
-					<Box display={{ base: "none", md: "block" }}>
-						<Text color="green">{user.username}</Text>
-						<Text fontWeight="light">
-							{user.latestMessage ? user.latestMessage.content : "En ligne"}
-						</Text>
+					}>
+					<Box
+						display="flex"
+						justifyContent={{ base: "center", md: "start" }}>
+						<Image
+							w="50px"
+							h="48px"
+							objectFit="cover"
+							borderRadius="50%"
+							src={baseURL + user.imageUrl}
+						/>
+						<Box display={{ base: "none", md: "block" }}>
+							<Text color="green">{user.username}</Text>
+							<Text fontWeight="light">
+								{user.latestMessage ? user.latestMessage.content : "En ligne"}
+							</Text>
+						</Box>
+
 					</Box>
-				</Container>
+					<Button borderRadius="50%"
+						bg={!selected ? "white" : "#39414f"}>
+						<PhoneIcon color="green" />
+					</Button>
+				</Container >
 			);
 		});
 	}
 	return (
 		<Container
-			maxWidth={{ xs: 2, md: 4 }}
+			maxWidth="40%"
 			p={0}
-			marginTop="56px"
-			borderRadius="10px"
 			backgroundColor="rgba(244,239,230,0.8)"
 			color="#39414F"
 		>
