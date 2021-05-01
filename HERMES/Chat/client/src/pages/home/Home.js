@@ -143,7 +143,8 @@ export default function Home({ history }) {
 			/> : (
 				<Fragment>
 
-					<Box display="flex"
+					<Box
+						display="flex"
 						justifyContent="space-between"
 						alignItems="center"
 						m={3}>
@@ -185,6 +186,7 @@ export default function Home({ history }) {
 						bg="rgba(255, 255, 255, 0.7)"
 						border-radius="10px"
 						display="flex"
+						height="90%"
 					>
 						<Users />
 						<Messages />

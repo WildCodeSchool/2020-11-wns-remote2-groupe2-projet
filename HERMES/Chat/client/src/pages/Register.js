@@ -168,7 +168,7 @@ export default function Register(props) {
                                         bg="#fff"
                                     />
                                 </InputGroup>
-                                {errors.confirmPassword && <Text fontSize="13px" color="tomato">Le mot de passe est incorrect</Text>}
+                                {errors.password && <Text fontSize="13px" color="tomato">Le mot de passe est incorrect</Text>}
                             </FormControl>
                             <FormControl
                                 isRequired

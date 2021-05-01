@@ -100,13 +100,13 @@ export default function Messages() {
 	}
 
 	return (
-		<Container xs={10} md={8} p={0}>
+		<Container display="flex" flexDirection="column" maxWidth="none">
 			<Box
 				display="flex"
 				flexDirection="column-reverse"
 				p={3}
 				css={{
-					height: "500px",
+					height: "95%",
 					overflowY: "scroll",
 					"&::-webkit-scrollbar": {
 						display: "none",
