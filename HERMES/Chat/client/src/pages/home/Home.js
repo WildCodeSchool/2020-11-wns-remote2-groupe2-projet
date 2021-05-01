@@ -16,15 +16,14 @@ import {
 	ModalOverlay,
 	ModalContent,
 	ModalHeader,
-	ModalCloseButton,
-	ModalBody,
+	Spinner,
 	Container
 } from "@chakra-ui/react";
 
 import Users from "./Users";
 import Messages from "./Messages";
 import "../../App.scss";
-import { ModalFooter } from "react-bootstrap";
+import { useQuery } from "@apollo/client";
 
 const NEW_MESSAGE = gql`
 	subscription newMessage {
@@ -52,12 +51,31 @@ const NEW_REACTION = gql`
 	}
 `;
 
+
+const GET_ME = gql`
+	query getUsers {
+		getUsers {
+			username
+			imageUrl
+		}
+	}
+`;
+
 export default function Home({ history }) {
 	const { isOpen, onOpen, onClose } = useDisclosure()
 	const authDispatch = useAuthDispatch();
 	const messageDispatch = useMessageDispatch();
+	const dispatch = useMessageDispatch();
+
 
 	const { user } = useAuthState();
+
+	// TODO affichage profil
+	const { loading } = useQuery(GET_ME, {
+		onCompleted: (data) =>
+			dispatch({ type: "SET_USERS", payload: data.getUsers }),
+		onError: (err) => console.log(err),
+	});
 
 	const { data: messageData, error: messageError } = useSubscription(
 		NEW_MESSAGE,
@@ -69,7 +87,6 @@ export default function Home({ history }) {
 
 	useEffect(() => {
 		if (messageError) console.log(messageError);
-
 		if (messageData) {
 			const message = messageData.newMessage;
 			const otherUser =
@@ -113,54 +130,67 @@ export default function Home({ history }) {
 	return (
 		<Container
 			maxW="90vw"
-			bg="#39414f"
 		>
-			<Box display="flex"
-				justifyContent="space-between"
-				alignItems="center"
-				m={3}>
-				<Button
-					onClick={onOpen}
-				>Se déconnecter
-				</Button>
-				<Modal
-					isCentered
-					onClose={onClose}
-					isOpen={isOpen}
-					motionPreset="slideInBottom"
-				>
-					<ModalOverlay />
-					<ModalContent>
-						<ModalHeader textAlign="center" >Etes-vous sur de vouloir vous déconnecter de HERMES ?</ModalHeader>
-						<Box m={3} display="flex" justifyContent="space-between">
-							<Button bg="#39414f" color="white" width="33%" onClick={onClose}>Non</Button>
-							<Button bg="#39414f" color="white" width="33%" onClick={logout}>Oui</Button>
-						</Box>
-					</ModalContent>
-				</Modal>
-				<Flex>
-					<Box>
-						<Text fontWeight="bold" color="white">
-							Segun Adebayo
-     					 <Badge ml="1"
-								colorScheme="green">
-								New
-      					</Badge>
-						</Text>
-						<Text fontSize="sm" color="white">UI Engineer</Text>
-					</Box>
-					<Avatar m="1" src="https://bit.ly/sage-adebayo" />
-				</Flex>
-			</Box>
+			{loading ? <Spinner
+				thickness="3px"
+				speed="0.70s"
+				emptyColor="gray.200"
+				color="#39414f"
+				size="xl"
+				position="absolute"
+				top="50%"
+				left="50%"
+			/> : (
+				<Fragment>
 
-			<Box
-				bg="rgba(255, 255, 255, 0.7)"
-				border-radius="10px"
-				display="flex"
-			>
-				<Users />
-				<Messages />
-			</Box>
+					<Box display="flex"
+						justifyContent="space-between"
+						alignItems="center"
+						m={3}>
+						<Button
+							onClick={onOpen}
+						>Se déconnecter
+				</Button>
+						<Modal
+							isCentered
+							onClose={onClose}
+							isOpen={isOpen}
+							motionPreset="slideInBottom"
+						>
+							<ModalOverlay />
+							<ModalContent>
+								<ModalHeader textAlign="center" >Etes-vous sur de vouloir vous déconnecter de HERMES ?</ModalHeader>
+								<Box m={3} display="flex" justifyContent="space-between">
+									<Button bg="#39414f" color="white" width="33%" onClick={onClose}>Non</Button>
+									<Button bg="#39414f" color="white" width="33%" onClick={logout}>Oui</Button>
+								</Box>
+							</ModalContent>
+						</Modal>
+						<Flex>
+							<Box>
+								<Text fontWeight="bold" color="white">
+									Nombalier Adrien
+     					 <Badge ml="1"
+										colorScheme="green">
+										New
+      					</Badge>
+								</Text>
+								<Text fontSize="sm" color="white">Developer</Text>
+							</Box>
+							<Avatar icon={<Spinner />} m={1} src="https://bit.ly/sage-adebayo" />
+						</Flex>
+					</Box>
+
+					<Box
+						bg="rgba(255, 255, 255, 0.7)"
+						border-radius="10px"
+						display="flex"
+					>
+						<Users />
+						<Messages />
+					</Box>
+				</Fragment>
+			)}
 		</Container>
 	);
 }

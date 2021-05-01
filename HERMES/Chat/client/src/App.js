@@ -16,7 +16,7 @@ function App() {
 			maxW="100vw"
 			minHeight="100vh"
 			backgroundColor="#39414f"
-			centerContent
+			display="flex"
 		>
 			<ApolloProvider>
 				<AuthProvider>

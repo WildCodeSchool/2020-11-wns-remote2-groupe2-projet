@@ -16,6 +16,7 @@ import {
 	Button,
 	Divider,
 	SimpleGrid,
+	Spinner,
 } from "@chakra-ui/react";
 import { LockIcon, InfoIcon } from "@chakra-ui/icons";
 
@@ -56,25 +57,17 @@ export default function Register(props) {
 		<Container>
 			<SimpleGrid
 				columns={2}
-				spacing={80}
 				bg="rgba(255, 255, 255, 0.8)"
-				w="242%"
-				h="49vh"
-				pl="96px"
-				position="relative"
-				top="268px"
-				right="342px"
 				borderRadius="10px"
+				display="flex"
+				flexDirection="column"
+				alignItems="center"
+				mt="50%"
 			>
-				<Box marginTop="113px" w="140%">
-					<Image src={Logo} alt="logo hermes" width="100%" />
-				</Box>
-
-				<Box marginTop="133px">
-					<Text
+				<Image fallback={<Spinner size="lg" m={1} />} src={Logo} alt="logo hermes" width="50%" />
+				<Box >
+					<Text textAlign="center"
 						fontSize="3xl"
-						marginLeft="53px"
-						marginBottom="5px"
 						fontWeight="600"
 					>
 						Connexion
@@ -82,14 +75,12 @@ export default function Register(props) {
 					<form onSubmit={submitLoginForm}>
 						<Stack
 							spacing={5}
-							w="72%"
 							justifyContent="center"
 							alignItems="center"
 						>
 							<FormControl
 								isRequired
 								value={variables.username}
-								className={errors.username && "is-invalid"}
 								onChange={(e) =>
 									setVariables({ ...variables, username: e.target.value })
 								}
@@ -99,18 +90,18 @@ export default function Register(props) {
 								<InputGroup>
 									<InputLeftElement children={<InfoIcon />} />
 									<Input
+										isInvalid={errors.username}
 										type="name"
 										placeholder="Identifiant"
-										// eslint-disable-next-line jsx-a11y/aria-props
 										aria-label="Username"
 										bg="#fff"
 									/>
 								</InputGroup>
+								{errors.username && <Text fontSize="13px" color="tomato">Nom d'utilisateur inconnu</Text>}
 							</FormControl>
 							<FormControl
 								isRequired
 								value={variables.password}
-								className={errors.password && "is-invalid"}
 								onChange={(e) =>
 									setVariables({ ...variables, password: e.target.value })
 								}
@@ -118,6 +109,7 @@ export default function Register(props) {
 								<InputGroup>
 									<InputLeftElement children={<LockIcon />} />
 									<Input
+										isInvalid={errors.password}
 										type="password"
 										placeholder="Mot de passe"
 										// eslint-disable-next-line jsx-a11y/aria-props
@@ -125,6 +117,7 @@ export default function Register(props) {
 										bg="#fff"
 									/>
 								</InputGroup>
+								{errors.password && <Text fontSize="13px" color="tomato">Mot de passe incorrect</Text>}
 							</FormControl>
 							<Divider />
 							<Button

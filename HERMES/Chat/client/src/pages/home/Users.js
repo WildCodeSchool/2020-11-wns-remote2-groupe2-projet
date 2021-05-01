@@ -1,8 +1,8 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Container, Box, Image, Text, Button } from "@chakra-ui/react";
+import { Container, Box, Image, Text, Button, Circle, Avatar, Spinner } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
-import { PhoneIcon, AddIcon, WarningIcon } from '@chakra-ui/icons'
+import { PhoneIcon } from '@chakra-ui/icons'
 
 
 const GET_USERS = gql`
@@ -45,43 +45,42 @@ export default function Users() {
 			const selected = selectedUser === user.username;
 
 			return (
-				<Container display="flex" justifyContent="space-between"
+				<Container
+					display="flex"
+					justifyContent="space-between"
 					bg={selected ? "white" : ""}
 					as="button"
-					p="5"
+					p="3"
 					key={user.username}
 					onClick={() =>
 						dispatch({ type: "SET_SELECTED_USER", payload: user.username })
 					}>
-					<Box
-						display="flex"
+					<Box display="flex"
 						justifyContent={{ base: "center", md: "start" }}>
-						<Image
-							w="50px"
-							h="48px"
-							objectFit="cover"
-							borderRadius="50%"
-							src={baseURL + user.imageUrl}
-						/>
-						<Box display={{ base: "none", md: "block" }}>
-							<Text color="green">{user.username}</Text>
-							<Text fontWeight="light">
+						<Circle size="70px" p={0} m={0}>
+							<Avatar icon={<Spinner />} m={1} src={baseURL + user.imageUrl} />
+						</Circle>
+						<Box display={{ base: "none", md: "block" }} alignSelf="center">
+							<Text color="green" textAlign="left">{user.username}</Text>
+							<Text fontWeight="light" textAlign="left">
 								{user.latestMessage ? user.latestMessage.content : "En ligne"}
 							</Text>
 						</Box>
 
 					</Box>
-					<Button borderRadius="50%"
-						bg={!selected ? "white" : "#39414f"}>
-						<PhoneIcon color="green" />
-					</Button>
+					<Box display="flex" alignSelf="center">
+						<Circle size="40px" bg={!selected ? "white" : "#39414f"} color={selected ? "white" : "#39414f"}>
+							<PhoneIcon />
+						</Circle>
+					</Box>
 				</Container >
 			);
 		});
 	}
 	return (
 		<Container
-			maxWidth="40%"
+			width="35vw"
+			m={0}
 			p={0}
 			backgroundColor="rgba(244,239,230,0.8)"
 			color="#39414F"
