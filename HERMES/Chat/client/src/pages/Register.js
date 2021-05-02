@@ -15,8 +15,10 @@ import {
     Button,
     Divider,
     SimpleGrid,
+    Avatar,
+    useToast
 } from "@chakra-ui/react";
-import { LockIcon, InfoIcon, AtSignIcon, ViewIcon } from "@chakra-ui/icons";
+import { LockIcon, InfoIcon, AtSignIcon } from "@chakra-ui/icons";
 
 const REGISTER_USER = gql`
 	mutation register(
@@ -42,6 +44,7 @@ const REGISTER_USER = gql`
 `;
 
 export default function Register(props) {
+    const toast = useToast()
     const [errors, setErrors] = useState({});
     const [imagePreview, setImagePreview] = useState(false);
     const [variables, setVariables] = useState({
@@ -70,18 +73,31 @@ export default function Register(props) {
     };
 
     const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-        update: (_, __) => props.history.push("/login"),
+        update: (_, __) => props.history.push("/login", { username: variables.username }),
         onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
     });
 
-    const submitRegisterForm = (e) => {
+    const submitRegisterForm = async (e) => {
         e.preventDefault();
 
-        registerUser({ variables });
+        await registerUser({ variables }).then((ok) => {
+            if (ok) (
+                toast({
+                    title: `Félicitation ${variables.username}`,
+                    description: "Votre compte a été créé avec succès !",
+                    status: "success",
+                    duration: 5000,
+                    isClosable: true,
+                })
+            )
+        }
+        );
     };
 
     return (
-        <Container>
+        <Container
+            data-aos="fade-down"
+            backgroundColor="#39414f">
             <SimpleGrid
                 columns={2}
                 bg="rgba(255, 255, 255, 0.8)"
@@ -197,28 +213,33 @@ export default function Register(props) {
                             <FormControl
                                 onChange={getImagePreview}
                                 justifyContent="center"
-                                alignItems="center">
+                                alignItems="center"
+                            >
                                 <InputGroup>
-                                    <InputLeftElement children={<ViewIcon />} />
-                                    <Input
-                                        type="file"
-                                        aria-label="File"
-                                        accept="image/*"
-                                        bg="#fff"
+                                    <Button alignSelf="center">
+                                        <Input
+                                            type="file"
+                                            aria-label="File"
+                                            accept="image/*"
+                                            bg="#fff"
+                                            cursor="pointer"
+                                            boxSizing="border-box"
+                                            opacity="0"
+                                            position="absolute"
+                                        />{"Charger une image de profil"}
+                                    </Button>
+                                    <Avatar
+                                        loading="eager"
+                                        w="50px"
+                                        h="50px"
+                                        objectFit="cover"
+                                        borderRadius="50%"
+                                        m={1}
+                                        src={imagePreview}
+                                        alt="Preview"
                                     />
                                 </InputGroup>
                             </FormControl>
-                            {imagePreview && (
-                                <Image
-                                    w="50px"
-                                    h="50px"
-                                    objectFit="cover"
-                                    borderRadius="50%"
-                                    mr={{ md: "2" }}
-                                    src={imagePreview}
-                                    alt="Preview"
-                                />
-                            )}
                             <Divider />
                             <Button
                                 variant="success"
@@ -237,6 +258,6 @@ export default function Register(props) {
                     </form>
                 </Box>
             </SimpleGrid>
-        </Container>
+        </Container >
     );
 }

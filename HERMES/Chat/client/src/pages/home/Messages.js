@@ -100,7 +100,7 @@ export default function Messages() {
 	}
 
 	return (
-		<Container display="flex" flexDirection="column" maxWidth="none">
+		<Container display="flex" flexDirection="column" maxWidth="none" >
 			<Box
 				display="flex"
 				flexDirection="column-reverse"

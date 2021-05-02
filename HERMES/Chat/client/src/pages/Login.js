@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Logo from "../img/hermes1.png";
 import { useAuthDispatch } from "../context/auth";
 import {
@@ -32,8 +32,9 @@ const LOGIN_USER = gql`
 `;
 
 export default function Register(props) {
+	const location = useLocation()
 	const [variables, setVariables] = useState({
-		username: "",
+		username: location?.state?.username,
 		password: "",
 	});
 	const [errors, setErrors] = useState({});
@@ -52,9 +53,10 @@ export default function Register(props) {
 
 		loginUser({ variables });
 	};
-
 	return (
-		<Container>
+		<Container
+			data-aos="fade-down"
+			backgroundColor="#39414f">
 			<SimpleGrid
 				columns={2}
 				bg="rgba(255, 255, 255, 0.8)"
@@ -95,6 +97,7 @@ export default function Register(props) {
 										placeholder="Identifiant"
 										aria-label="Username"
 										bg="#fff"
+										defaultValue={location?.state?.username}
 									/>
 								</InputGroup>
 								{errors.username && <Text fontSize="13px" color="tomato">Nom d'utilisateur inconnu</Text>}

@@ -1,6 +1,6 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Container, Box, Image, Text, Button, Circle, Avatar, Spinner } from "@chakra-ui/react";
+import { Container, Box, Text, Circle, Avatar, AvatarBadge } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
 import { PhoneIcon } from '@chakra-ui/icons'
 
@@ -56,13 +56,23 @@ export default function Users() {
 						dispatch({ type: "SET_SELECTED_USER", payload: user.username })
 					}>
 					<Box display="flex"
-						justifyContent={{ base: "center", md: "start" }}>
+						justifyContent={{ base: "center", md: "start" }}
+
+						css={{
+							overflowY: "scroll",
+							"&::-webkit-scrollbar": {
+								display: "none",
+							},
+						}}
+					>
 						<Circle size="70px" p={0} m={0}>
-							<Avatar icon={<Spinner />} m={1} src={baseURL + user.imageUrl} />
+							<Avatar loading="lazy" m={1} src={baseURL + user.imageUrl} >
+								<AvatarBadge borderColor={selected ? "white" : "#E9E7E1"} boxSize="0.80em" bg="green.500" />
+							</Avatar>
 						</Circle>
 						<Box display={{ base: "none", md: "block" }} alignSelf="center">
-							<Text color="green" textAlign="left">{user.username}</Text>
-							<Text fontWeight="light" textAlign="left">
+							<Text color="#39414f" textAlign="left">{user.username}</Text>
+							<Text fontStyle="italic" fontWeight="thin" textAlign="left">
 								{user.latestMessage ? user.latestMessage.content : "En ligne"}
 							</Text>
 						</Box>
@@ -84,6 +94,12 @@ export default function Users() {
 			p={0}
 			backgroundColor="rgba(244,239,230,0.8)"
 			color="#39414F"
+			css={{
+				overflowX: "scroll",
+				"&::-webkit-scrollbar": {
+					display: "none",
+				},
+			}}
 		>
 			{usersMarkup}
 		</Container>

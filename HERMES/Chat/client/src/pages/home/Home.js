@@ -3,7 +3,7 @@ import React, { Fragment, useEffect } from "react";
 import { gql, useSubscription } from "@apollo/client";
 
 import { useAuthDispatch, useAuthState } from "../../context/auth";
-import { useMessageDispatch } from "../../context/message";
+import { useMessageDispatch, useMessageState } from "../../context/message";
 import {
 	Box,
 	Button,
@@ -17,7 +17,8 @@ import {
 	ModalContent,
 	ModalHeader,
 	Spinner,
-	Container
+	Container,
+	AvatarBadge
 } from "@chakra-ui/react";
 
 import Users from "./Users";
@@ -53,8 +54,8 @@ const NEW_REACTION = gql`
 
 
 const GET_ME = gql`
-	query getUsers {
-		getUsers {
+	query getMe {
+		getMe {
 			username
 			imageUrl
 		}
@@ -66,14 +67,11 @@ export default function Home({ history }) {
 	const authDispatch = useAuthDispatch();
 	const messageDispatch = useMessageDispatch();
 	const dispatch = useMessageDispatch();
+	const { user } = useMessageState();
 
-
-	const { user } = useAuthState();
-
-	// TODO affichage profil
 	const { loading } = useQuery(GET_ME, {
 		onCompleted: (data) =>
-			dispatch({ type: "SET_USERS", payload: data.getUsers }),
+			dispatch({ type: "SET_USER_PROFIL", payload: data.getMe }),
 		onError: (err) => console.log(err),
 	});
 
@@ -84,6 +82,9 @@ export default function Home({ history }) {
 	const { data: reactionData, error: reactionError } = useSubscription(
 		NEW_REACTION,
 	);
+
+
+	const baseURL = process.env.REACT_APP_BASE_URL || "";
 
 	useEffect(() => {
 		if (messageError) console.log(messageError);
@@ -130,6 +131,7 @@ export default function Home({ history }) {
 	return (
 		<Container
 			maxW="90vw"
+			maxH="100vh"
 		>
 			{loading ? <Spinner
 				thickness="3px"
@@ -142,7 +144,6 @@ export default function Home({ history }) {
 				left="50%"
 			/> : (
 				<Fragment>
-
 					<Box
 						display="flex"
 						justifyContent="space-between"
@@ -150,8 +151,7 @@ export default function Home({ history }) {
 						m={3}>
 						<Button
 							onClick={onOpen}
-						>Se déconnecter
-				</Button>
+						>Se déconnecter</Button>
 						<Modal
 							isCentered
 							onClose={onClose}
@@ -170,15 +170,14 @@ export default function Home({ history }) {
 						<Flex>
 							<Box>
 								<Text fontWeight="bold" color="white">
-									Nombalier Adrien
-     					 <Badge ml="1"
-										colorScheme="green">
-										New
-      					</Badge>
+									{user?.username}
+									<Badge ml="1" colorScheme="green">New</Badge>
 								</Text>
 								<Text fontSize="sm" color="white">Developer</Text>
 							</Box>
-							<Avatar icon={<Spinner />} m={1} src="https://bit.ly/sage-adebayo" />
+							<Avatar loading="eager" m={1} src={baseURL + user?.imageUrl} >
+								<AvatarBadge borderColor="#39414f" boxSize="0.80em" bg="green.500" />
+							</Avatar>
 						</Flex>
 					</Box>
 
