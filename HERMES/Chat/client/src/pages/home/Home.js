@@ -13,8 +13,6 @@ import Messages from "./Messages";
 import Header from "./Header";
 import '../../App.scss'
 import { useQuery } from "@apollo/client";
-import Footer from "./Footer";
-
 const NEW_MESSAGE = gql`
 	subscription newMessage {
 		newMessage {
@@ -142,7 +140,6 @@ export default function Home({ history }) {
 					</Fragment>
 				)}
 			</Container >
-			<Footer />
 
 		</Fragment>
 	);
