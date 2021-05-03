@@ -106,7 +106,6 @@ export default function Register(props) {
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
-                mt="50%"
                 borderRadius="10px"
             >
                 <Image src={Logo} alt="logo hermes" width="50%" />
