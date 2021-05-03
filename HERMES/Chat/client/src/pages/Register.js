@@ -15,6 +15,8 @@ import {
     Button,
     Divider,
     SimpleGrid,
+    Avatar,
+    useToast
 } from "@chakra-ui/react";
 import { LockIcon, InfoIcon, AtSignIcon } from "@chakra-ui/icons";
 
@@ -42,6 +44,7 @@ const REGISTER_USER = gql`
 `;
 
 export default function Register(props) {
+    const toast = useToast()
     const [errors, setErrors] = useState({});
     const [imagePreview, setImagePreview] = useState(false);
     const [variables, setVariables] = useState({
@@ -70,39 +73,46 @@ export default function Register(props) {
     };
 
     const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-        update: (_, __) => props.history.push("/login"),
+        update: (_, __) => props.history.push("/login", { username: variables.username }),
         onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
     });
 
-    const submitRegisterForm = (e) => {
+    const submitRegisterForm = async (e) => {
         e.preventDefault();
 
-        registerUser({ variables });
+        await registerUser({ variables }).then((ok) => {
+            if (ok) (
+                toast({
+                    title: `Félicitation ${variables.username}`,
+                    description: "Votre compte a été créé avec succès !",
+                    status: "success",
+                    duration: 5000,
+                    isClosable: true,
+                })
+            )
+        }
+        );
     };
 
     return (
-        <Container>
+        <Container
+            data-aos="fade-down"
+            backgroundColor="#39414f"
+            alignSelf="center">
             <SimpleGrid
                 columns={2}
-                spacing={80}
                 bg="rgba(255, 255, 255, 0.8)"
-                w="242%"
-                h="49vh"
-                pl="96px"
-                position="relative"
-                top="268px"
-                right="342px"
+                borderRadius="10px"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
                 borderRadius="10px"
             >
-                <Box marginTop="113px" w="140%">
-                    <Image src={Logo} alt="logo hermes" width="100%" />
-                </Box>
+                <Image src={Logo} alt="logo hermes" width="50%" />
 
-                <Box marginTop="87px">
-                    <Text
+                <Box >
+                    <Text textAlign="center"
                         fontSize="3xl"
-                        marginLeft="53px"
-                        marginBottom="5px"
                         fontWeight="600"
                     >
                         Inscription
@@ -110,14 +120,12 @@ export default function Register(props) {
                     <form onSubmit={submitRegisterForm}>
                         <Stack
                             spacing={5}
-                            w="72%"
                             justifyContent="center"
                             alignItems="center"
                         >
                             <FormControl
                                 isRequired
                                 value={variables.email}
-                                className={errors.email && "is-invalid"}
                                 onChange={(e) =>
                                     setVariables({ ...variables, email: e.target.value })
                                 }
@@ -127,17 +135,18 @@ export default function Register(props) {
                                 <InputGroup>
                                     <InputLeftElement children={<AtSignIcon />} />
                                     <Input
+                                        isInvalid={errors.email}
                                         type="email"
                                         placeholder="Adresse email"
                                         aria-label="Email"
                                         bg="#fff"
                                     />
                                 </InputGroup>
+                                {errors.email && <Text fontSize="13px" color="tomato">Email déjà existant</Text>}
                             </FormControl>
                             <FormControl
                                 isRequired
                                 value={variables.username}
-                                className={errors.username && "is-invalid"}
                                 onChange={(e) =>
                                     setVariables({ ...variables, username: e.target.value })
                                 }
@@ -147,17 +156,18 @@ export default function Register(props) {
                                 <InputGroup>
                                     <InputLeftElement children={<InfoIcon />} />
                                     <Input
+                                        isInvalid={errors.username}
                                         type="name"
                                         placeholder="Identifiant"
                                         aria-label="Username"
                                         bg="#fff"
                                     />
                                 </InputGroup>
+                                {errors.username && <Text fontSize="13px" color="tomato">Nom d'utilisateur déjà pris</Text>}
                             </FormControl>
                             <FormControl
                                 isRequired
                                 value={variables.password}
-                                className={errors.password && "is-invalid"}
                                 onChange={(e) =>
                                     setVariables({ ...variables, password: e.target.value })
                                 }
@@ -167,17 +177,18 @@ export default function Register(props) {
                                 <InputGroup>
                                     <InputLeftElement children={<LockIcon />} />
                                     <Input
+                                        isInvalid={errors.password}
                                         type="password"
                                         placeholder="Mot de passe"
                                         aria-label="Password"
                                         bg="#fff"
                                     />
                                 </InputGroup>
+                                {errors.password && <Text fontSize="13px" color="tomato">Le mot de passe est incorrect</Text>}
                             </FormControl>
                             <FormControl
                                 isRequired
                                 value={variables.confirmPassword}
-                                className={errors.confirmPassword && "is-invalid"}
                                 onChange={(e) =>
                                     setVariables({
                                         ...variables,
@@ -190,39 +201,45 @@ export default function Register(props) {
                                 <InputGroup>
                                     <InputLeftElement children={<LockIcon />} />
                                     <Input
+                                        isInvalid={errors.confirmPassword}
                                         type="password"
                                         placeholder="Confirmation mot de passe"
                                         aria-label="Password"
                                         bg="#fff"
                                     />
                                 </InputGroup>
+                                {errors.confirmPassword && <Text fontSize="13px" color="tomato">Le mot de passe n'est pas identique</Text>}
                             </FormControl>
                             <FormControl
-                                className={errors.confirmPassword && "is-invalid"}
                                 onChange={getImagePreview}
                                 justifyContent="center"
-                                alignItems="center">
+                                alignItems="center"
+                            >
                                 <InputGroup>
-                                    <InputLeftElement children={<LockIcon />} />
-                                    <Input
-                                        type="file"
-                                        aria-label="File"
-                                        accept="image/*"
-                                        bg="#fff"
+                                    <Button alignSelf="center">
+                                        <Input
+                                            type="file"
+                                            aria-label="File"
+                                            accept="image/*"
+                                            bg="#fff"
+                                            cursor="pointer"
+                                            boxSizing="border-box"
+                                            opacity="0"
+                                            position="absolute"
+                                        />{"Charger une image de profil"}
+                                    </Button>
+                                    <Avatar
+                                        loading="eager"
+                                        w="50px"
+                                        h="50px"
+                                        objectFit="cover"
+                                        borderRadius="50%"
+                                        m={1}
+                                        src={imagePreview}
+                                        alt="Preview"
                                     />
                                 </InputGroup>
                             </FormControl>
-                            {imagePreview && (
-                                <Image
-                                    w="50px"
-                                    h="50px"
-                                    objectFit="cover"
-                                    borderRadius="50%"
-                                    mr={{ md: "2" }}
-                                    src={imagePreview}
-                                    alt="Preview"
-                                />
-                            )}
                             <Divider />
                             <Button
                                 variant="success"
@@ -231,7 +248,7 @@ export default function Register(props) {
                                 bg="#39414f"
                                 color="#fff"
                             >
-                                {loading ? "loading…" : "Je valide"}
+                                {loading ? "loading…" : "S'inscire"}
                             </Button>
 
                             <Text fontSize="sm" textAlign="center">
@@ -241,6 +258,6 @@ export default function Register(props) {
                     </form>
                 </Box>
             </SimpleGrid>
-        </Container>
+        </Container >
     );
 }

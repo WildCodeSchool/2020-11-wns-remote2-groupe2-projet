@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 import moment from "moment";
+import 'moment/locale/fr'
 import { Button, OverlayTrigger, Popover, Tooltip } from "react-bootstrap";
 
 import { useAuthState } from "../../context/auth";
@@ -68,14 +69,16 @@ export default function Message({ message }) {
 			className={classNames("d-flex my-3", {
 				"ml-auto": sent,
 				"mr-auto": received,
-			})}
+			})
+			}
+			data-aos={sent ? "fade-left" : "fade-right"}
 		>
 			{sent && reactButton}
 			<OverlayTrigger
-				placement={sent ? "right" : "left"}
+				placement={!sent ? "right" : "left"}
 				overlay={
 					<Tooltip>
-						{moment(message.createdAt).format("MMM DD, YYYY @ h:mm a")}
+						{moment(message.createdAt).locale('fr').format("DD MMM YYYY à HH:mm")}
 					</Tooltip>
 				}
 				transition={false}
@@ -85,9 +88,10 @@ export default function Message({ message }) {
 						"bg-primary": sent,
 						"bg-secondary": received,
 					})}
+
 				>
 					{message.reactions.length > 0 && (
-						<div className="reactions-div bg-secondary p-1 rounded-pill">
+						<div className="reactions-div bg-secondary p-1 rounded-pill" >
 							{reactionIcons} {message.reactions.length}
 						</div>
 					)}

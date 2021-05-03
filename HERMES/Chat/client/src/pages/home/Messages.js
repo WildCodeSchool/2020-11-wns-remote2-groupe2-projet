@@ -100,13 +100,13 @@ export default function Messages() {
 	}
 
 	return (
-		<Container xs={10} md={8} p={0}>
+		<Container display="flex" flexDirection="column" maxWidth="none" >
 			<Box
 				display="flex"
 				flexDirection="column-reverse"
 				p={3}
 				css={{
-					height: "500px",
+					height: "95%",
 					overflowY: "scroll",
 					"&::-webkit-scrollbar": {
 						display: "none",
@@ -134,7 +134,7 @@ export default function Messages() {
 							value={content}
 							onChange={(e) => setContent(e.target.value)}
 						/>
-						<Box color="#406fe5" ml={2} onClick={submitMessage}>
+						<Box color="#39414f" ml={2} onClick={submitMessage}>
 							<FaPaperPlane size="30px" />
 						</Box>
 					</FormControl>

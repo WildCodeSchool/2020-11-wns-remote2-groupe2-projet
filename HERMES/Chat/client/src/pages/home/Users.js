@@ -1,7 +1,9 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Container, Box, Image, Text } from "@chakra-ui/react";
+import { Container, Box, Text, Circle, Avatar, AvatarBadge } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
+import { PhoneIcon } from '@chakra-ui/icons'
+
 
 const GET_USERS = gql`
 	query getUsers {
@@ -44,42 +46,61 @@ export default function Users() {
 
 			return (
 				<Container
-					as="button"
 					display="flex"
-					justifyContent={{ base: "center", md: "start" }}
-					p="3"
+					justifyContent="space-between"
 					bg={selected ? "white" : ""}
+					as="button"
+					p="3"
 					key={user.username}
 					onClick={() =>
 						dispatch({ type: "SET_SELECTED_USER", payload: user.username })
-					}
-				>
-					<Image
-						w="50px"
-						h="50px"
-						objectFit="cover"
-						borderRadius="50%"
-						mr={{ md: "2" }}
-						src={baseURL + user.imageUrl}
-					/>
-					<Box display={{ base: "none", md: "block" }}>
-						<Text color="green">{user.username}</Text>
-						<Text fontWeight="light">
-							{user.latestMessage ? user.latestMessage.content : "En ligne"}
-						</Text>
+					}>
+					<Box display="flex"
+						justifyContent={{ base: "center", md: "start" }}
+
+						css={{
+							overflowY: "scroll",
+							"&::-webkit-scrollbar": {
+								display: "none",
+							},
+						}}
+					>
+						<Circle size="70px" p={0} m={0}>
+							<Avatar loading="lazy" m={1} src={baseURL + user.imageUrl} >
+								<AvatarBadge borderColor={selected ? "white" : "#E9E7E1"} boxSize="0.80em" bg="green.500" />
+							</Avatar>
+						</Circle>
+						<Box display={{ base: "none", md: "block" }} alignSelf="center">
+							<Text color="#39414f" textAlign="left">{user.username}</Text>
+							<Text fontStyle="italic" fontWeight="thin" textAlign="left">
+								{user.latestMessage ? user.latestMessage.content : "En ligne"}
+							</Text>
+						</Box>
+
 					</Box>
-				</Container>
+					<Box display="flex" alignSelf="center">
+						<Circle size="40px" bg={!selected ? "white" : "#39414f"} color={selected ? "white" : "#39414f"}>
+							<PhoneIcon />
+						</Circle>
+					</Box>
+				</Container >
 			);
 		});
 	}
 	return (
 		<Container
-			maxWidth={{ xs: 2, md: 4 }}
+			width="35vw"
+			borderLeftRadius="10px"
+			m={0}
 			p={0}
-			marginTop="56px"
-			borderRadius="10px"
 			backgroundColor="rgba(244,239,230,0.8)"
 			color="#39414F"
+			css={{
+				overflowX: "scroll",
+				"&::-webkit-scrollbar": {
+					display: "none",
+				},
+			}}
 		>
 			{usersMarkup}
 		</Container>

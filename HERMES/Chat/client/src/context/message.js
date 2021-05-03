@@ -7,6 +7,11 @@ const messageReducer = (state, action) => {
   let usersCopy, userIndex;
   const { username, message, messages, reaction } = action.payload;
   switch (action.type) {
+    case "SET_USER_PROFIL":
+      return {
+        ...state,
+        user: action.payload,
+      };
     case "SET_USERS":
       return {
         ...state,

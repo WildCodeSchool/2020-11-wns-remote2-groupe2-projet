@@ -40,6 +40,19 @@ module.exports = {
 				throw err;
 			}
 		},
+		getMe: async (_, __, { user }) => {
+			try {
+				let me = await User.findOne({
+					attributes: ["username", "email", "imageUrl", "createdAt", /* TODO: Campus */],
+					where: { username: user.username },
+				});
+				console.log("ME", me)
+				return me
+			} catch (err) {
+				console.log(err)
+				throw err
+			}
+		},
 		login: async (_, args) => {
 			const { username, password } = args;
 			let errors = {};
@@ -125,7 +138,7 @@ module.exports = {
 					username,
 					email,
 					password,
-					imageUrl: imageUrl ? `/images/${randomName}` : "/default_user.png",
+					imageUrl: imageUrl ? `/images/${randomName}` : "null",
 				});
 
 				if (imageUrl) {
