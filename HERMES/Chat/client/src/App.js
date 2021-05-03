@@ -17,6 +17,8 @@ function App() {
 			minHeight="100vh"
 			backgroundColor="#39414f"
 			display="flex"
+			flexDirection="column"
+			justifyContent="space-between"
 		>
 			<ApolloProvider>
 				<AuthProvider>
