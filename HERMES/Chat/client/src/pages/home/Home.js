@@ -143,7 +143,7 @@ export default function Home({ history }) {
 	return (
 		<Container
 			maxW="90vw"
-			maxH="100vh"
+			maxH="90vh"
 		>
 			{loading ? <Spinner
 				thickness="3px"
@@ -227,7 +227,7 @@ export default function Home({ history }) {
 						bg="rgba(255, 255, 255, 0.7)"
 						border-radius="10px"
 						display="flex"
-						height="90%"
+						height="80vh"
 					>
 						<Users />
 						<Messages />

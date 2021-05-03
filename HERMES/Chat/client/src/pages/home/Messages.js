@@ -134,7 +134,7 @@ export default function Messages() {
 							value={content}
 							onChange={(e) => setContent(e.target.value)}
 						/>
-						<Box color="#406fe5" ml={2} onClick={submitMessage}>
+						<Box color="#39414f" ml={2} onClick={submitMessage}>
 							<FaPaperPlane size="30px" />
 						</Box>
 					</FormControl>
