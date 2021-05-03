@@ -43,7 +43,7 @@ module.exports = {
 		getMe: async (_, __, { user }) => {
 			try {
 				let me = await User.findOne({
-					attributes: ["username", "imageUrl", "createdAt", /* TODO: Campus */],
+					attributes: ["username", "email", "imageUrl", "createdAt", /* TODO: Campus */],
 					where: { username: user.username },
 				});
 				console.log("ME", me)
