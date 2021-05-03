@@ -228,6 +228,7 @@ export default function Home({ history }) {
 						border-radius="10px"
 						display="flex"
 						height="80vh"
+						borderRadius="10px"
 					>
 						<Users />
 						<Messages />

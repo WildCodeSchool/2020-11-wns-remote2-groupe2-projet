@@ -90,6 +90,7 @@ export default function Users() {
 	return (
 		<Container
 			width="35vw"
+			borderLeftRadius="10px"
 			m={0}
 			p={0}
 			backgroundColor="rgba(244,239,230,0.8)"
