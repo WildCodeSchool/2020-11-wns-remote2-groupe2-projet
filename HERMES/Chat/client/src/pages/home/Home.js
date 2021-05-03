@@ -29,6 +29,7 @@ import {
 
 import Users from "./Users";
 import Messages from "./Messages";
+import '../../App.scss'
 import { useQuery } from "@apollo/client";
 
 const NEW_MESSAGE = gql`

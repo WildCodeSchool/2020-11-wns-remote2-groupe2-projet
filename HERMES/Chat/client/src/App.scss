@@ -1,0 +1,63 @@
+$blue: #166fe5;
+$green: #53a521;
+$border-radius: 0;
+$paragraph-margin-bottom: 0;
+$gray-600: rgb(245, 245, 245);
+@import "~bootstrap/scss/bootstrap.scss";
+
+.bg-row-opacity {
+	background: rgba(255, 255, 255, 0.7);
+	border-radius: 5px;
+}
+
+.img-connexion {
+	width: 62%;
+	justify-content: center;
+}
+
+.content {
+	opacity: 0;
+}
+
+.conteneur:hover .content {
+	opacity: 1;
+}
+
+.toolbar {
+	background-color: #fff;
+}
+
+.user-div:hover {
+	background-color: rgb(255, 255, 255);
+}
+
+.info-text {
+	color: rgba(0, 0, 0, 0.5);
+	text-align: center;
+	margin-bottom: 0.5rem;
+}
+
+.react-button-popover {
+	height: 30px;
+}
+
+.react-icon-button {
+	padding: 0 0.25rem 0 0.25rem;
+	font-size: 1rem;
+	transition: 0.25s;
+	&:hover {
+		text-decoration: none;
+		font-size: 2rem;
+	}
+}
+
+.btn:focus {
+	box-shadow: none;
+}
+
+.reactions-div {
+	position: absolute;
+	right: -10px;
+	bottom: -25px;
+	font-size: 0.9rem;
+}
