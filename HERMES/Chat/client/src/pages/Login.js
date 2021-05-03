@@ -56,7 +56,8 @@ export default function Register(props) {
 	return (
 		<Container
 			data-aos="fade-down"
-			backgroundColor="#39414f">
+			backgroundColor="#39414f"
+			alignSelf="center">
 			<SimpleGrid
 				columns={2}
 				bg="rgba(255, 255, 255, 0.8)"
@@ -64,7 +65,6 @@ export default function Register(props) {
 				display="flex"
 				flexDirection="column"
 				alignItems="center"
-				mt="50%"
 			>
 				<Image fallback={<Spinner size="lg" m={1} />} src={Logo} alt="logo hermes" width="50%" />
 				<Box >

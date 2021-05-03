@@ -97,7 +97,8 @@ export default function Register(props) {
     return (
         <Container
             data-aos="fade-down"
-            backgroundColor="#39414f">
+            backgroundColor="#39414f"
+            alignSelf="center">
             <SimpleGrid
                 columns={2}
                 bg="rgba(255, 255, 255, 0.8)"
