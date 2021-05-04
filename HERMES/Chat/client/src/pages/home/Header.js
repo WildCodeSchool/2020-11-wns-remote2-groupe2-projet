@@ -63,6 +63,7 @@ export default function Header() {
                         <MenuGroup title="Profil">
                             <MenuItem>Mon compte</MenuItem>
                             <MenuItem>Ma classe </MenuItem>
+                            <MenuItem>Mon status </MenuItem>
                         </MenuGroup>
                         <MenuDivider />
                         <MenuGroup title="Paramètres">

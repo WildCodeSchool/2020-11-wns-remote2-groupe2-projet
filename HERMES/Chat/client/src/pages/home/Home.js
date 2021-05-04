@@ -123,9 +123,9 @@ export default function Home({ history }) {
 			<Tabs variant="enclosed" pt={5} maxW="1500px" m="auto">
 				<TabList display="flex" justifyContent="space-between">
 					<Box display="flex">
-						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="bold" w="9vw"><ChatIcon /></Tab>
-						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="bold" w="9vw"><CalendarIcon /></Tab>
-						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="bold" w="9vw"><AttachmentIcon /></Tab>
+						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="bold" w="9vw"><ChatIcon w={5} h={5} /></Tab>
+						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="bold" w="9vw"><CalendarIcon w={5} h={5} /></Tab>
+						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="bold" w="9vw"><AttachmentIcon w={5} h={5} /></Tab>
 					</Box>
 					<Box>
 						<Header />
