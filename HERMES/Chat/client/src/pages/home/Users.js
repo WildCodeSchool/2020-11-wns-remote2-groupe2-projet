@@ -76,7 +76,7 @@ export default function Users() {
 							<Badge fontSize="xs" colorScheme="green">{user?.role}</Badge>
 							<Text fontWeight="600" color="#39414f" textAlign="left">{user.username} - {user.campus}</Text>
 							<Text fontStyle="italic" fontWeight="thin" textAlign="left">
-								{user.latestMessage.content}
+								{user?.latestMessage?.content}
 							</Text>
 						</Box>
 
