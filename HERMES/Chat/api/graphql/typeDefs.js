@@ -5,6 +5,7 @@ module.exports = gql`
     username: String!
     email: String
     campus: String!
+    role: String!
     createdAt: String!
     token: String
     imageUrl: String!
@@ -36,6 +37,7 @@ module.exports = gql`
       username: String!
       email: String
       campus: String!
+      role: String!
       password: String!
       confirmPassword: String!
       imageUrl: Upload!

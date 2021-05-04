@@ -1,6 +1,6 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Container, Box, Text, Circle, Avatar, AvatarBadge } from "@chakra-ui/react";
+import { Container, Box, Text, Circle, Avatar, AvatarBadge, Badge } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
 import { PhoneIcon } from '@chakra-ui/icons'
 
@@ -10,6 +10,7 @@ const GET_USERS = gql`
 		getUsers {
 			username
 			campus
+			role
 			createdAt
 			imageUrl
 			latestMessage {
@@ -72,9 +73,10 @@ export default function Users() {
 							</Avatar>
 						</Circle>
 						<Box display={{ base: "none", md: "block" }} alignSelf="center">
+							<Badge fontSize="xs" colorScheme="green">{user?.role}</Badge>
 							<Text fontWeight="600" color="#39414f" textAlign="left">{user.username} - {user.campus}</Text>
 							<Text fontStyle="italic" fontWeight="thin" textAlign="left">
-								{user.latestMessage ? user.latestMessage.content : "En ligne"}
+								{user.latestMessage.content}
 							</Text>
 						</Box>
 

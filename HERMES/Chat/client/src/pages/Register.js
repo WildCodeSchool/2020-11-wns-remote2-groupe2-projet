@@ -21,12 +21,14 @@ import {
 } from "@chakra-ui/react";
 import { LockIcon, InfoIcon, AtSignIcon } from "@chakra-ui/icons";
 import { campusList } from '../refs/enum/campusList'
+import { rolesList } from '../refs/enum/rolesList'
 
 const REGISTER_USER = gql`
 	mutation register(
 		$username: String!
 		$email: String!
         $campus: String!
+        $role: String!
 		$password: String!
 		$confirmPassword: String!
 		$imageUrl: Upload!
@@ -35,6 +37,7 @@ const REGISTER_USER = gql`
 			username: $username
 			email: $email
             campus: $campus
+            role: $role
 			password: $password
 			confirmPassword: $confirmPassword
 			imageUrl: $imageUrl
@@ -42,6 +45,7 @@ const REGISTER_USER = gql`
 			username
 			email
             campus
+            role
 			createdAt
 			imageUrl
 		}
@@ -56,6 +60,7 @@ export default function Register(props) {
         email: "",
         username: "",
         campus: "",
+        role: "",
         password: "",
         confirmPassword: "",
         imageUrl: "",
@@ -192,7 +197,29 @@ export default function Register(props) {
                                         ))}
                                     </Select>
                                 </InputGroup>
-                                {errors.username && <Text fontSize="13px" color="tomato">Nom d'utilisateur déjà pris</Text>}
+                            </FormControl>
+                            <FormControl
+                                isRequired
+                                value={variables.role}
+                                onChange={(e) =>
+                                    setVariables({ ...variables, role: e.target.value })
+                                }
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <InputGroup>
+                                    <Select
+                                        isInvalid={errors.role}
+                                        type="role"
+                                        placeholder="Votre role"
+                                        aria-label="role"
+                                        bg="#fff"
+                                    >
+                                        {rolesList.map(role => (
+                                            <option value={role.value}>{role.name}</option>
+                                        ))}
+                                    </Select>
+                                </InputGroup>
                             </FormControl>
                             <FormControl
                                 isRequired
