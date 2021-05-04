@@ -15,7 +15,7 @@ module.exports = {
 				if (!user) throw new AuthenticationError("Unauthenticated");
 
 				let users = await User.findAll({
-					attributes: ["username", "imageUrl", "createdAt"],
+					attributes: ["username", "campus", "imageUrl", "createdAt"],
 					where: { username: { [Op.ne]: user.username } },
 				});
 
@@ -43,10 +43,9 @@ module.exports = {
 		getMe: async (_, __, { user }) => {
 			try {
 				let me = await User.findOne({
-					attributes: ["username", "email", "imageUrl", "createdAt", /* TODO: Campus */],
+					attributes: ["username", "email", "campus", "imageUrl", "createdAt"],
 					where: { username: user.username },
 				});
-				console.log("ME", me)
 				return me
 			} catch (err) {
 				console.log(err)
@@ -98,7 +97,8 @@ module.exports = {
 	},
 	Mutation: {
 		register: async (_, args) => {
-			let { username, email, password, confirmPassword, imageUrl } = args;
+			let { username, email, campus, password, confirmPassword, imageUrl } = args;
+			console.log("HELLOWORLD", campus)
 			const { createReadStream, filename } = await imageUrl;
 			let errors = {};
 
@@ -107,6 +107,8 @@ module.exports = {
 				if (email.trim() === "") errors.email = "email must not be empty";
 				if (username.trim() === "")
 					errors.username = "username must not be empty";
+				if (campus.trim() === "")
+					errors.campus = "campus must not be empty";
 				if (password.trim() === "")
 					errors.password = "password must not be empty";
 				if (confirmPassword.trim() === "")
@@ -137,6 +139,7 @@ module.exports = {
 				const user = await User.create({
 					username,
 					email,
+					campus,
 					password,
 					imageUrl: imageUrl ? `/images/${randomName}` : "null",
 				});

@@ -50,6 +50,7 @@ const GET_ME = gql`
 	query getMe {
 		getMe {
 			username
+			campus
 			email
 			imageUrl
 		}

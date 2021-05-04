@@ -9,6 +9,7 @@ const GET_USERS = gql`
 	query getUsers {
 		getUsers {
 			username
+			campus
 			createdAt
 			imageUrl
 			latestMessage {
@@ -71,7 +72,7 @@ export default function Users() {
 							</Avatar>
 						</Circle>
 						<Box display={{ base: "none", md: "block" }} alignSelf="center">
-							<Text color="#39414f" textAlign="left">{user.username}</Text>
+							<Text fontWeight="600" color="#39414f" textAlign="left">{user.username} - {user.campus}</Text>
 							<Text fontStyle="italic" fontWeight="thin" textAlign="left">
 								{user.latestMessage ? user.latestMessage.content : "En ligne"}
 							</Text>

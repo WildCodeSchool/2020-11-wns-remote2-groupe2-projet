@@ -50,11 +50,11 @@ export default function Header() {
                         {user?.username}
                         <Badge ml="1" colorScheme="green">New</Badge>
                     </Text>
-                    <Text fontSize="sm" color="white">Developer</Text>
+                    <Text fontSize="sm" color="white">{user?.campus}</Text>
                 </Box>
 
                 <Menu>
-                    <MenuButton cursor="pointer" as={Avatar} colorScheme="pink">
+                    <MenuButton cursor="pointer" colorScheme="pink">
                         <Avatar loading="eager" m={1} src={baseURL + user?.imageUrl} >
                             <AvatarBadge borderColor="#39414f" boxSize="0.80em" bg="green.500" />
                         </Avatar>
