@@ -4,6 +4,8 @@ module.exports = gql`
   type User {
     username: String!
     email: String
+    campus: String!
+    role: String!
     createdAt: String!
     token: String
     imageUrl: String!
@@ -34,6 +36,8 @@ module.exports = gql`
     register(
       username: String!
       email: String
+      campus: String!
+      role: String!
       password: String!
       confirmPassword: String!
       imageUrl: Upload!

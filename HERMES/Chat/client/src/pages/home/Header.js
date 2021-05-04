@@ -48,21 +48,21 @@ export default function Header() {
                 <Box>
                     <Text fontWeight="bold" color="white">
                         {user?.username}
-                        <Badge ml="1" colorScheme="green">New</Badge>
                     </Text>
-                    <Text fontSize="sm" color="white">Developer</Text>
+                    <Text fontSize="sm" color="white">{user?.campus}</Text>
                 </Box>
 
                 <Menu>
-                    <MenuButton cursor="pointer" as={Avatar} colorScheme="pink">
+                    <MenuButton cursor="pointer" colorScheme="pink">
                         <Avatar loading="eager" m={1} src={baseURL + user?.imageUrl} >
                             <AvatarBadge borderColor="#39414f" boxSize="0.80em" bg="green.500" />
                         </Avatar>
                     </MenuButton>
                     <MenuList>
                         <MenuGroup title="Profil">
+                            <Badge ml="3" colorScheme="green">{user?.role}</Badge>
                             <MenuItem>Mon compte</MenuItem>
-                            <MenuItem>Ma classe </MenuItem>
+                            <MenuItem>Mon campus </MenuItem>
                             <MenuItem>Mon status </MenuItem>
                         </MenuGroup>
                         <MenuDivider />

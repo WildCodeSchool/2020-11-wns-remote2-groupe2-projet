@@ -16,14 +16,19 @@ import {
     Divider,
     SimpleGrid,
     Avatar,
-    useToast
+    useToast,
+    Select
 } from "@chakra-ui/react";
 import { LockIcon, InfoIcon, AtSignIcon } from "@chakra-ui/icons";
+import { campusList } from '../refs/enum/campusList'
+import { rolesList } from '../refs/enum/rolesList'
 
 const REGISTER_USER = gql`
 	mutation register(
 		$username: String!
 		$email: String!
+        $campus: String!
+        $role: String!
 		$password: String!
 		$confirmPassword: String!
 		$imageUrl: Upload!
@@ -31,12 +36,16 @@ const REGISTER_USER = gql`
 		register(
 			username: $username
 			email: $email
+            campus: $campus
+            role: $role
 			password: $password
 			confirmPassword: $confirmPassword
 			imageUrl: $imageUrl
 		) {
 			username
 			email
+            campus
+            role
 			createdAt
 			imageUrl
 		}
@@ -50,6 +59,8 @@ export default function Register(props) {
     const [variables, setVariables] = useState({
         email: "",
         username: "",
+        campus: "",
+        role: "",
         password: "",
         confirmPassword: "",
         imageUrl: "",
@@ -106,7 +117,6 @@ export default function Register(props) {
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
-                borderRadius="10px"
             >
                 <Image src={Logo} alt="logo hermes" width="50%" />
 
@@ -164,6 +174,52 @@ export default function Register(props) {
                                     />
                                 </InputGroup>
                                 {errors.username && <Text fontSize="13px" color="tomato">Nom d'utilisateur déjà pris</Text>}
+                            </FormControl>
+                            <FormControl
+                                isRequired
+                                value={variables.campus}
+                                onChange={(e) =>
+                                    setVariables({ ...variables, campus: e.target.value })
+                                }
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <InputGroup>
+                                    <Select
+                                        isInvalid={errors.campus}
+                                        type="campus"
+                                        placeholder="Votre campus"
+                                        aria-label="campus"
+                                        bg="#fff"
+                                    >
+                                        {campusList.map(campus => (
+                                            <option value={campus.value}>{campus.name}</option>
+                                        ))}
+                                    </Select>
+                                </InputGroup>
+                            </FormControl>
+                            <FormControl
+                                isRequired
+                                value={variables.role}
+                                onChange={(e) =>
+                                    setVariables({ ...variables, role: e.target.value })
+                                }
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <InputGroup>
+                                    <Select
+                                        isInvalid={errors.role}
+                                        type="role"
+                                        placeholder="Votre role"
+                                        aria-label="role"
+                                        bg="#fff"
+                                    >
+                                        {rolesList.map(role => (
+                                            <option value={role.value}>{role.name}</option>
+                                        ))}
+                                    </Select>
+                                </InputGroup>
                             </FormControl>
                             <FormControl
                                 isRequired
