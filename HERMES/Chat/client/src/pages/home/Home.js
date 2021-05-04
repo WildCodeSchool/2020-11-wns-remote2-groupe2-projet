@@ -6,6 +6,11 @@ import {
 	Box,
 	Spinner,
 	Container,
+	Tabs,
+	TabList,
+	Tab,
+	TabPanels,
+	TabPanel,
 } from "@chakra-ui/react";
 
 import Users from "./Users";
@@ -13,6 +18,7 @@ import Messages from "./Messages";
 import Header from "./Header";
 import '../../App.scss'
 import { useQuery } from "@apollo/client";
+import { AttachmentIcon, CalendarIcon, ChatIcon } from "@chakra-ui/icons";
 const NEW_MESSAGE = gql`
 	subscription newMessage {
 		newMessage {
@@ -110,37 +116,53 @@ export default function Home({ history }) {
 
 
 	return (
-		<Fragment>
-			<Container
-				maxW="90vw"
-				maxH="90vh"
-			>
-				<Header />
-				{loading ? <Spinner
-					thickness="3px"
-					speed="0.70s"
-					emptyColor="gray.200"
-					color="#39414f"
-					size="xl"
-					position="absolute"
-					top="50%"
-					left="50%"
-				/> : (
-					<Fragment>
+		<Container
+			maxW="90vw"
+			maxH="90vh"
+		>
+			<Tabs variant="enclosed" pt={5} maxW="1500px" m="auto">
+				<TabList display="flex" justifyContent="space-between">
+					<Box display="flex">
+						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="bold" w="9vw"><ChatIcon w={5} h={5} /></Tab>
+						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="bold" w="9vw"><CalendarIcon w={5} h={5} /></Tab>
+						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="bold" w="9vw"><AttachmentIcon w={5} h={5} /></Tab>
+					</Box>
+					<Box>
+						<Header />
+					</Box>
+				</TabList>
+				<TabPanels>
+					<TabPanel p={0}>
 						<Box
 							bg="rgba(255, 255, 255, 0.7)"
-							border-radius="10px"
 							display="flex"
 							height="85vh"
-							borderRadius="10px"
+							borderBottomRadius="10px"
 						>
 							<Users />
 							<Messages />
 						</Box>
-					</Fragment>
-				)}
-			</Container >
-
-		</Fragment>
+					</TabPanel>
+					<TabPanel p={0}>
+						<Box
+							bg="rgba(255, 255, 255, 0.7)"
+							display="flex"
+							height="85vh"
+							borderBottomRadius="10px"
+						>
+						</Box>
+					</TabPanel>
+					<TabPanel p={0}>
+						<Box
+							bg="rgba(255, 255, 255, 0.7)"
+							display="flex"
+							height="85vh"
+							borderBottomRadius="10px"
+						>
+						</Box>
+					</TabPanel>
+				</TabPanels>
+			</Tabs>
+		</Container >
 	);
 }
