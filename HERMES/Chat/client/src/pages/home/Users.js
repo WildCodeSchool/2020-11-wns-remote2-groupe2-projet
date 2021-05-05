@@ -83,14 +83,14 @@ export default function Users({ onCalling, calling }) {
 					</Box>
 					<Box display="flex" alignSelf="center">
 						{!calling ? (
-							<Button onClick={onCalling} _focus="none" bg={!selected ? "white" : "#39414f"} color={selected ? "white" : "#39414f"}>
+							<Button onClick={() => onCalling(user.username)} _focus="none" bg={!selected ? "white" : "#39414f"} color={selected ? "white" : "#39414f"}>
 								<PhoneIcon />
 							</Button>
 						) : (
-							<Button onClick={onCalling} _focus="none" bg={"#39414f"} color={"white"}>
-								<AddIcon />
-							</Button>
-						)}
+								<Button onClick={onCalling} _focus="none" bg={"#39414f"} color={"white"}>
+									<AddIcon />
+								</Button>
+							)}
 					</Box>
 				</Container >
 			);

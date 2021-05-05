@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4000/graphql",
   "dependencies": {
     "@apollo/client": "^3.3.7",
     "@chakra-ui/icons": "^1.0.12",

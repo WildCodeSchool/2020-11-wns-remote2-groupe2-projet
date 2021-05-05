@@ -103,7 +103,6 @@ export default function Messages({ calling }) {
 		<Container
 			width={calling && "25%"} display="flex" flexDirection="column" maxWidth="none"
 		>
-			{console.log("in messages calling", calling)}
 			<Box
 				display="flex"
 				flexDirection="column-reverse"

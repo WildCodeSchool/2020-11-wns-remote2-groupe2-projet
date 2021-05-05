@@ -47,14 +47,21 @@ const NEW_REACTION = gql`
 `;
 
 
-const GET_ME = gql`
-	query getMe {
-		getMe {
+const GET_USERS = gql`
+	query getUsers {
+		getUsers {
 			username
 			campus
 			role
-			email
+			createdAt
 			imageUrl
+			latestMessage {
+				uuid
+				from
+				to
+				content
+				createdAt
+			}
 		}
 	}
 `;
@@ -64,13 +71,14 @@ export default function Home({ history }) {
 	const messageDispatch = useMessageDispatch();
 	const dispatch = useMessageDispatch();
 
-	const onCalling = () => {
-		setCalling(!calling)
+	const onCalling = (username) => {
+		setCalling(username)
 	}
 	const { user } = useMessageState();
-	const { loading } = useQuery(GET_ME, {
+
+	const { data: usersData } = useQuery(GET_USERS, {
 		onCompleted: (data) =>
-			dispatch({ type: "SET_USER_PROFIL", payload: data.getMe }),
+			dispatch({ type: "SET_USERS", payload: data.getUsers }),
 		onError: (err) => console.log(err),
 	});
 
@@ -81,8 +89,6 @@ export default function Home({ history }) {
 	const { data: reactionData, error: reactionError } = useSubscription(
 		NEW_REACTION,
 	);
-
-
 
 	useEffect(() => {
 		if (messageError) console.log(messageError);
@@ -121,8 +127,6 @@ export default function Home({ history }) {
 		}
 	}, [reactionError, reactionData, user, messageDispatch]);
 
-
-
 	return (
 		<Container
 			maxW="90vw"
@@ -155,8 +159,8 @@ export default function Home({ history }) {
 								width="50%"
 								borderBottomRadius="10px"
 								m={0}>
-								<OnCall />
-							</Container>}
+								<OnCall calling={calling} />
+							</Container >}
 							<Messages calling={calling} />
 						</Box>
 					</TabPanel>

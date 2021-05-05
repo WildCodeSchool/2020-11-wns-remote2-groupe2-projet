@@ -6,12 +6,13 @@ const { sequelize } = require("./models");
 const resolvers = require("./graphql/resolvers");
 const typeDefs = require("./graphql/typeDefs");
 const contextMiddleware = require("./utils/contextMiddleware");
+const socket = require("socket.io");
 
 
 async function startApolloServer() {
 
   const PORT = 4000
-
+  const users = {};
   // ApolloServer
   const server = new ApolloServer({
     typeDefs,
@@ -23,33 +24,34 @@ async function startApolloServer() {
   // Express Server
   const app = express()
   app.use(express.static('public'))
+
   server.applyMiddleware({ app })
 
   const httpServer = http.createServer(app);
-  const io = require('socket.io')(httpServer, {
-    cors: {
-      origin: "*",
-      methods: ["GET", "POST"]
-    }
-  })
+  const io = socket(httpServer);
+
   app.use(cors())
   server.installSubscriptionHandlers(httpServer)
 
   // Socket connection
-  io.on("connection", (socket) => {
-    socket.emit("me", socket.id);
+  io.on('connection', socket => {
+    console.log("SOCKETID", socket.id)
+    if (!users[socket.id]) {
+      users[socket.id] = socket.id;
+    }
+    socket.emit("yourID", socket.id);
+    io.sockets.emit("allUsers", users);
+    socket.on('disconnect', () => {
+      delete users[socket.id];
+    })
 
-    socket.on("disconnect", () => {
-      socket.broadcast.emit("callEnded")
-    });
+    socket.on("callUser", (data) => {
+      io.to(data.userToCall).emit('hey', { signal: data.signalData, from: data.from });
+    })
 
-    socket.on("callUser", ({ userToCall, signalData, from, name }) => {
-      io.to(userToCall).emit("callUser", { signal: signalData, from, name });
-    });
-
-    socket.on("answerCall", (data) => {
-      io.to(data.to).emit("callAccepted", data.signal)
-    });
+    socket.on("acceptCall", (data) => {
+      io.to(data.to).emit('callAccepted', data.signal);
+    })
   });
 
   // Starting
