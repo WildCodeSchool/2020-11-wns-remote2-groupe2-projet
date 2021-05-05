@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import { gql, useSubscription } from "@apollo/client";
 import { useMessageDispatch, useMessageState } from "../../context/message";
@@ -16,6 +16,7 @@ import {
 import Users from "./Users";
 import Messages from "./Messages";
 import Header from "./Header";
+import OnCall from "./OnCall";
 import '../../App.scss'
 import { useQuery } from "@apollo/client";
 import { AttachmentIcon, CalendarIcon, ChatIcon } from "@chakra-ui/icons";
@@ -59,8 +60,13 @@ const GET_ME = gql`
 `;
 
 export default function Home({ history }) {
+	const [calling, setCalling] = useState(false)
 	const messageDispatch = useMessageDispatch();
 	const dispatch = useMessageDispatch();
+
+	const onCalling = () => {
+		setCalling(!calling)
+	}
 	const { user } = useMessageState();
 	const { loading } = useQuery(GET_ME, {
 		onCompleted: (data) =>
@@ -141,8 +147,17 @@ export default function Home({ history }) {
 							height="85vh"
 							borderBottomRadius="10px"
 						>
-							<Users />
-							<Messages />
+							<Users onCalling={onCalling} calling={calling} />
+							{calling && <Container
+								bg="rgba(255, 255, 255, 0.7)"
+								display="flex"
+								height="85vh"
+								width="50%"
+								borderBottomRadius="10px"
+								m={0}>
+								<OnCall />
+							</Container>}
+							<Messages calling={calling} />
 						</Box>
 					</TabPanel>
 					<TabPanel p={0}>

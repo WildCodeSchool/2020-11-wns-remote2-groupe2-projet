@@ -1,8 +1,8 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Container, Box, Text, Circle, Avatar, AvatarBadge, Badge } from "@chakra-ui/react";
+import { Container, Box, Text, Circle, Avatar, AvatarBadge, Badge, Button } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
-import { PhoneIcon } from '@chakra-ui/icons'
+import { AddIcon, PhoneIcon } from '@chakra-ui/icons'
 
 
 const GET_USERS = gql`
@@ -26,7 +26,7 @@ const GET_USERS = gql`
 
 const baseURL = process.env.REACT_APP_BASE_URL || "";
 
-export default function Users() {
+export default function Users({ onCalling, calling }) {
 	const dispatch = useMessageDispatch();
 	const { users } = useMessageState();
 	const selectedUser = users?.find((u) => u.selected === true)?.username;
@@ -82,9 +82,15 @@ export default function Users() {
 
 					</Box>
 					<Box display="flex" alignSelf="center">
-						<Circle size="40px" bg={!selected ? "white" : "#39414f"} color={selected ? "white" : "#39414f"}>
-							<PhoneIcon />
-						</Circle>
+						{!calling ? (
+							<Button onClick={onCalling} _focus="none" bg={!selected ? "white" : "#39414f"} color={selected ? "white" : "#39414f"}>
+								<PhoneIcon />
+							</Button>
+						) : (
+							<Button onClick={onCalling} _focus="none" bg={"#39414f"} color={"white"}>
+								<AddIcon />
+							</Button>
+						)}
 					</Box>
 				</Container >
 			);
@@ -92,7 +98,7 @@ export default function Users() {
 	}
 	return (
 		<Container
-			width="35vw"
+			width={calling && "25%"}
 			borderBottomLeftRadius="10px"
 			m={0}
 			p={0}
