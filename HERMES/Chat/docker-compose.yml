@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  # Create client container
+  client:
+    build: ./client # path to dockerfile
+    stdin_open: true
+    tty: true
+    ports: # Port binding to host from docker container
+      - "3000:3000" # Bind port 3001 of host to 3000 of container
+    container_name: client-docker
+    restart: always
+    volumes:
+      - ./client:/hermes/chat/client
+    links:
+      - api
+
+  # Create api container
+  api:
+    build: ./api
+    ports:
+      - "8080:4000"
+    container_name: api-docker
+    environment:
+      - ./api/.env
+    restart: always
+    volumes:
+      - ./api:/hermes/chat/api
+    links:
+      - db
+
+  # Create db container
+  db:
+    image: mysql:5.7
+    container_name: db-docker
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: chat
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - "3306:3306"
+    expose:
+      # Opens port 3306 on the container
+      - "3306"
+      # Where our data will be persisted
+    volumes:
+      - ./docker/data/db:/var/lib/mysql
+    command:
+      [
+        "mysqld",
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+      ]

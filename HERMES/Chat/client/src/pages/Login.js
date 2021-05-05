@@ -1,85 +1,146 @@
 import React, { useState } from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
 import { gql, useLazyQuery } from "@apollo/client";
-import { Link } from "react-router-dom";
-
+import { Link, useLocation } from "react-router-dom";
+import Logo from "../img/hermes1.png";
 import { useAuthDispatch } from "../context/auth";
+import {
+	Box,
+	Container,
+	FormControl,
+	Text,
+	Image,
+	Input,
+	InputGroup,
+	InputLeftElement,
+	Stack,
+	Button,
+	Divider,
+	SimpleGrid,
+	Spinner,
+} from "@chakra-ui/react";
+import { LockIcon, InfoIcon } from "@chakra-ui/icons";
 
 const LOGIN_USER = gql`
-  query login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      username
-      email
-      createdAt
-      token
-    }
-  }
+	query login($username: String!, $password: String!) {
+		login(username: $username, password: $password) {
+			username
+			email
+			createdAt
+			token
+		}
+	}
 `;
 
 export default function Register(props) {
-  const [variables, setVariables] = useState({
-    username: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({});
-  const dispatch = useAuthDispatch();
+	const location = useLocation()
+	const [variables, setVariables] = useState({
+		username: location?.state?.username,
+		password: "",
+	});
+	const [errors, setErrors] = useState({});
+	const dispatch = useAuthDispatch();
 
-  const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
-    onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
-    onCompleted(data) {
-      dispatch({ type: "LOGIN", payload: data.login });
-      window.location.href = "/";
-    },
-  });
+	const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
+		onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
+		onCompleted(data) {
+			dispatch({ type: "LOGIN", payload: data.login });
+			window.location.href = "/";
+		},
+	});
 
-  const submitLoginForm = (e) => {
-    e.preventDefault();
+	const submitLoginForm = (e) => {
+		e.preventDefault();
 
-    loginUser({ variables });
-  };
-
-  return (
-    <Row className="bg-white py-5 justify-content-center">
-      <Col sm={8} md={6} lg={4}>
-        <h1 className="text-center">Connexion Hermes</h1>
-        <Form onSubmit={submitLoginForm}>
-          <Form.Group>
-            <Form.Label className={errors.username && "text-danger"}>
-              {errors.username ?? "Identifiant"}
-            </Form.Label>
-            <Form.Control
-              type="text"
-              value={variables.username}
-              className={errors.username && "is-invalid"}
-              onChange={(e) =>
-                setVariables({ ...variables, username: e.target.value })
-              }
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label className={errors.password && "text-danger"}>
-              {errors.password ?? "Mot de passe"}
-            </Form.Label>
-            <Form.Control
-              type="password"
-              value={variables.password}
-              className={errors.password && "is-invalid"}
-              onChange={(e) =>
-                setVariables({ ...variables, password: e.target.value })
-              }
-            />
-          </Form.Group>
-          <div className="text-center">
-            <Button variant="success" type="submit" disabled={loading}>
-              {loading ? "loading…" : "Login"}
-            </Button>
-            <br />
-            <small>
-              Vous n'avez pas de compte ? <Link to="/register">S'inscrire</Link>
-            </small>
-          </div>
-        </Form>
-      </Col>
-    </Row>
-  );
+		loginUser({ variables });
+	};
+	return (
+		<Container
+			data-aos="fade-down"
+			backgroundColor="#39414f"
+			alignSelf="center">
+			<SimpleGrid
+				columns={2}
+				bg="rgba(255, 255, 255, 0.8)"
+				borderRadius="10px"
+				display="flex"
+				flexDirection="column"
+				alignItems="center"
+			>
+				<Image fallback={<Spinner size="lg" m={1} />} src={Logo} alt="logo hermes" width="50%" />
+				<Box >
+					<Text textAlign="center"
+						fontSize="3xl"
+						fontWeight="600"
+					>
+						Connexion
+					</Text>
+					<form onSubmit={submitLoginForm}>
+						<Stack
+							spacing={5}
+							justifyContent="center"
+							alignItems="center"
+						>
+							<FormControl
+								isRequired
+								value={variables.username}
+								onChange={(e) =>
+									setVariables({ ...variables, username: e.target.value })
+								}
+								justifyContent="center"
+								alignItems="center"
+							>
+								<InputGroup>
+									<InputLeftElement children={<InfoIcon />} />
+									<Input
+										isInvalid={errors.username}
+										type="name"
+										placeholder="Identifiant"
+										aria-label="Username"
+										bg="#fff"
+										defaultValue={location?.state?.username}
+									/>
+								</InputGroup>
+								{errors.username && <Text fontSize="13px" color="tomato">Nom d'utilisateur inconnu</Text>}
+							</FormControl>
+							<FormControl
+								isRequired
+								value={variables.password}
+								onChange={(e) =>
+									setVariables({ ...variables, password: e.target.value })
+								}
+							>
+								<InputGroup>
+									<InputLeftElement children={<LockIcon />} />
+									<Input
+										isInvalid={errors.password}
+										type="password"
+										placeholder="Mot de passe"
+										// eslint-disable-next-line jsx-a11y/aria-props
+										aria-label="Password"
+										bg="#fff"
+									/>
+								</InputGroup>
+								{errors.password && <Text fontSize="13px" color="tomato">Mot de passe incorrect</Text>}
+							</FormControl>
+							<Divider />
+							<Button
+								variant="success"
+								type="submit"
+								disabled={loading}
+								bg="#39414f"
+								color="#fff"
+							>
+								{loading ? "loading…" : "Se connecter"}
+							</Button>
+							<br />
+							<Text fontSize="sm" textAlign="center">
+								Vous n'avez pas de compte ?{" "}
+								<Link to="/register">S'inscrire</Link>
+							</Text>
+						</Stack>
+					</form>
+				</Box>
+			</SimpleGrid>
+		</Container>
+	);
 }

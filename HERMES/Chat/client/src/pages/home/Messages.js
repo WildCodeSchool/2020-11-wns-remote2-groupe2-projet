@@ -1,10 +1,10 @@
 import React, { useEffect, Fragment, useState } from "react";
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
-import { Col, Form } from "react-bootstrap";
-
+import { FaPaperPlane } from "react-icons/fa";
 import { useMessageDispatch, useMessageState } from "../../context/message";
 
 import Message from "./Message";
+import { Container, Box, Spacer, FormControl, Input } from "@chakra-ui/react";
 
 const SEND_MESSAGE = gql`
 	mutation sendMessage($to: String!, $content: String!) {
@@ -26,11 +26,15 @@ const GET_MESSAGES = gql`
 			to
 			content
 			createdAt
+			reactions {
+				uuid
+				content
+			}
 		}
 	}
 `;
 
-export default function Messages() {
+export default function Messages({ calling }) {
 	const { users } = useMessageState();
 	const dispatch = useMessageDispatch();
 	const [content, setContent] = useState("");
@@ -92,33 +96,52 @@ export default function Messages() {
 			</Fragment>
 		));
 	} else if (messages.length === 0) {
-		selectedChatMarkup = <p>Vous êtes connecté(e), envoyer un message .. </p>;
+		selectedChatMarkup = <p>En ligne, envoyer un message… </p>;
 	}
 
 	return (
-		<Col xs={10} md={8}>
-			<div className="messages-box d-flex flex-column-reverse">
+		<Container
+			width={calling && "25%"} display="flex" flexDirection="column" maxWidth="none"
+		>
+			<Box
+				display="flex"
+				flexDirection="column-reverse"
+				p={3}
+				css={{
+					height: "95%",
+					overflowY: "scroll",
+					"&::-webkit-scrollbar": {
+						display: "none",
+					},
+				}}
+			>
 				{selectedChatMarkup}
-			</div>
-			<div>
-				<Form onSubmit={submitMessage}>
-					<Form.Group className="d-flex align-items-center">
-						<Form.Control
-							type="formtext"
-							className="message-intput rounded-pill p-4 bg-secondary border-0"
+			</Box>
+			<Spacer />
+			<Box px={3} py={2}>
+				<form onSubmit={submitMessage}>
+					<FormControl display="flex" alignItems="center" m={0}>
+						<Input
+							borderRadius="20px"
+							p={6}
+							bg="#f5f5f5"
+							border="0"
+							css={{
+								"::placeholder": {
+									color: "rgba(0, 0, 0, 0.5)",
+								},
+							}}
+							type="text"
 							placeholder="Entrer un message .."
 							value={content}
 							onChange={(e) => setContent(e.target.value)}
 						/>
-						<i
-							className="fas fa-paper-plane fa-2x text-primary ml-2"
-							onClick={submitMessage}
-						>
-							{" "}
-						</i>
-					</Form.Group>
-				</Form>
-			</div>
-		</Col>
+						<Box color="#39414f" ml={2} onClick={submitMessage}>
+							<FaPaperPlane size="30px" />
+						</Box>
+					</FormControl>
+				</form>
+			</Box>
+		</Container>
 	);
 }
