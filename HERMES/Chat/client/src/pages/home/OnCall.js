@@ -18,7 +18,7 @@ export default function OnCall({ calling }) {
     const socket = useRef();
 
     useEffect(() => {
-        socket.current = io.connect("/");
+        socket.current = io.connect("http://localhost:4000");
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
             setStream(stream);
             if (userVideo.current) {
@@ -108,8 +108,8 @@ export default function OnCall({ calling }) {
     return (
         <Container>
             <Box>
-                {UserVideo}
-                {PartnerVideo}
+                USER VIDEO{UserVideo}
+                PARTNER VIDEO{PartnerVideo}
             </Box>
             <Box>
                 {Object.keys(users).map(key => {

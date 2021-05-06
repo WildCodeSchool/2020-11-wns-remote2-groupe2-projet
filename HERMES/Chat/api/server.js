@@ -28,9 +28,14 @@ async function startApolloServer() {
   server.applyMiddleware({ app })
 
   const httpServer = http.createServer(app);
-  const io = socket(httpServer);
-
   app.use(cors())
+  const io = socket(httpServer, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"]
+    }
+  });
+
   server.installSubscriptionHandlers(httpServer)
 
   // Socket connection
@@ -54,8 +59,8 @@ async function startApolloServer() {
     })
   });
 
-  // Starting
   await new Promise(resolve => httpServer.listen(PORT, resolve));
+  // Starting
   sequelize
     .authenticate()
     .then(() => console.log("Database connected !!"))
