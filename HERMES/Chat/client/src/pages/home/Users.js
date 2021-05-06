@@ -87,7 +87,7 @@ export default function Users({ onCalling, calling }) {
 								<PhoneIcon />
 							</Button>
 						) : (
-							<Button onClick={onCalling} _focus="none" bg={"#39414f"} color={"white"}>
+							<Button onClick={() => onCalling(false)} _focus="none" bg={"#39414f"} color={"white"}>
 								<AddIcon />
 							</Button>
 						)}

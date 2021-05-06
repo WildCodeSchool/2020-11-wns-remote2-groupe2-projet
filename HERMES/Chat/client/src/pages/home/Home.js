@@ -20,6 +20,7 @@ import OnCall from "./OnCall";
 import '../../App.scss'
 import { useQuery } from "@apollo/client";
 import { AttachmentIcon, CalendarIcon, ChatIcon } from "@chakra-ui/icons";
+import { ContextProvider } from "../../context/socketContext";
 const NEW_MESSAGE = gql`
 	subscription newMessage {
 		newMessage {
@@ -155,7 +156,11 @@ export default function Home({ history }) {
 								width="50%"
 								borderBottomRadius="10px"
 								m={0}>
-								<OnCall />
+
+								<ContextProvider>
+									<OnCall />
+
+								</ContextProvider>
 							</Container >}
 							<Messages calling={calling} />
 						</Box>
