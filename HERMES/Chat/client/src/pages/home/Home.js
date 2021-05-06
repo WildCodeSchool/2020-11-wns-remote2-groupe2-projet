@@ -47,21 +47,14 @@ const NEW_REACTION = gql`
 `;
 
 
-const GET_USERS = gql`
-	query getUsers {
-		getUsers {
+const GET_ME = gql`
+	query getMe {
+		getMe {
 			username
 			campus
 			role
-			createdAt
+			email
 			imageUrl
-			latestMessage {
-				uuid
-				from
-				to
-				content
-				createdAt
-			}
 		}
 	}
 `;
@@ -75,10 +68,9 @@ export default function Home({ history }) {
 		setCalling(username)
 	}
 	const { user } = useMessageState();
-
-	const { data: usersData } = useQuery(GET_USERS, {
+	const { loading } = useQuery(GET_ME, {
 		onCompleted: (data) =>
-			dispatch({ type: "SET_USERS", payload: data.getUsers }),
+			dispatch({ type: "SET_USER_PROFIL", payload: data.getMe }),
 		onError: (err) => console.log(err),
 	});
 
@@ -89,6 +81,8 @@ export default function Home({ history }) {
 	const { data: reactionData, error: reactionError } = useSubscription(
 		NEW_REACTION,
 	);
+
+
 
 	useEffect(() => {
 		if (messageError) console.log(messageError);
@@ -126,6 +120,8 @@ export default function Home({ history }) {
 			});
 		}
 	}, [reactionError, reactionData, user, messageDispatch]);
+
+
 
 	return (
 		<Container

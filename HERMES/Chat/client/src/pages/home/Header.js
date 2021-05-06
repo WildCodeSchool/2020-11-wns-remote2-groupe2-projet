@@ -22,6 +22,7 @@ export default function Header() {
         authDispatch({ type: "LOGOUT" });
         window.location.href = "/login";
     };
+
     return (
         <Box
             display="flex"
