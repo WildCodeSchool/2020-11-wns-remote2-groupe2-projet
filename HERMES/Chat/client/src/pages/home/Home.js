@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import { gql, useSubscription } from "@apollo/client";
 import { useMessageDispatch, useMessageState } from "../../context/message";
@@ -16,6 +16,7 @@ import {
 import Users from "./Users";
 import Messages from "./Messages";
 import Header from "./Header";
+import OnCall from "./OnCall";
 import '../../App.scss'
 import { useQuery } from "@apollo/client";
 import { AttachmentIcon, CalendarIcon, ChatIcon } from "@chakra-ui/icons";
@@ -46,25 +47,38 @@ const NEW_REACTION = gql`
 `;
 
 
-const GET_ME = gql`
-	query getMe {
-		getMe {
+const GET_USERS = gql`
+	query getUsers {
+		getUsers {
 			username
 			campus
 			role
-			email
+			createdAt
 			imageUrl
+			latestMessage {
+				uuid
+				from
+				to
+				content
+				createdAt
+			}
 		}
 	}
 `;
 
 export default function Home({ history }) {
+	const [calling, setCalling] = useState(false)
 	const messageDispatch = useMessageDispatch();
 	const dispatch = useMessageDispatch();
+
+	const onCalling = (username) => {
+		setCalling(username)
+	}
 	const { user } = useMessageState();
-	const { loading } = useQuery(GET_ME, {
+
+	const { data: usersData } = useQuery(GET_USERS, {
 		onCompleted: (data) =>
-			dispatch({ type: "SET_USER_PROFIL", payload: data.getMe }),
+			dispatch({ type: "SET_USERS", payload: data.getUsers }),
 		onError: (err) => console.log(err),
 	});
 
@@ -75,8 +89,6 @@ export default function Home({ history }) {
 	const { data: reactionData, error: reactionError } = useSubscription(
 		NEW_REACTION,
 	);
-
-
 
 	useEffect(() => {
 		if (messageError) console.log(messageError);
@@ -115,8 +127,6 @@ export default function Home({ history }) {
 		}
 	}, [reactionError, reactionData, user, messageDispatch]);
 
-
-
 	return (
 		<Container
 			maxW="90vw"
@@ -141,8 +151,17 @@ export default function Home({ history }) {
 							height="85vh"
 							borderBottomRadius="10px"
 						>
-							<Users />
-							<Messages />
+							<Users onCalling={onCalling} calling={calling} />
+							{calling && <Container
+								bg="rgba(255, 255, 255, 0.7)"
+								display="flex"
+								height="85vh"
+								width="50%"
+								borderBottomRadius="10px"
+								m={0}>
+								<OnCall calling={calling} />
+							</Container >}
+							<Messages calling={calling} />
 						</Box>
 					</TabPanel>
 					<TabPanel p={0}>
