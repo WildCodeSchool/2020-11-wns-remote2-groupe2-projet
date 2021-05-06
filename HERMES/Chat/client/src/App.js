@@ -12,6 +12,8 @@ import Footer from "./pages/home/Footer";
 import { AuthProvider } from "./context/auth";
 import { MessageProvider } from "./context/message";
 import DynamicRoute from "./util/DynamicRoute";
+import page404 from "./pages/page404";
+import page500 from "./pages/page500";
 
 function App() {
 	return (
@@ -35,6 +37,8 @@ function App() {
 								/>
 								<DynamicRoute path={"/login"} component={Login} guest />
 								<DynamicRoute path={"/register"} component={Register} guest />
+								<DynamicRoute path={"*"} component={page404} guest />
+								<DynamicRoute path={"/page500"} component={page500} guest />
 							</Switch>
 						</BrowserRouter>
 					</MessageProvider>
