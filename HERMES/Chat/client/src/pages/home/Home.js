@@ -155,7 +155,7 @@ export default function Home({ history }) {
 								width="50%"
 								borderBottomRadius="10px"
 								m={0}>
-								<OnCall calling={calling} />
+								<OnCall />
 							</Container >}
 							<Messages calling={calling} />
 						</Box>

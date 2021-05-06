@@ -4,12 +4,13 @@ import Peer from "simple-peer";
 import { Box, Container, Button } from '@chakra-ui/react';
 import { MdCall } from "react-icons/md"
 
-export default function OnCall({ calling }) {
+export default function OnCall() {
     const [yourID, setYourID] = useState("");
-    const [users, setUsers] = useState({});
+    const [callEnded, setCallEnded] = useState(false);
+    const [user, setUser] = useState({});
     const [stream, setStream] = useState();
     const [receivingCall, setReceivingCall] = useState(false);
-    const [caller, setCaller] = useState(calling);
+    const [caller, setCaller] = useState("");
     const [callerSignal, setCallerSignal] = useState();
     const [callAccepted, setCallAccepted] = useState(false);
 
@@ -17,8 +18,11 @@ export default function OnCall({ calling }) {
     const partnerVideo = useRef();
     const socket = useRef();
 
+
+    const baseURL = process.env.REACT_APP_BASE_URL || "";
+
     useEffect(() => {
-        socket.current = io.connect("http://localhost:4000");
+        socket.current = io.connect(`${baseURL}`);
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
             setStream(stream);
             if (userVideo.current) {
@@ -30,12 +34,12 @@ export default function OnCall({ calling }) {
             setYourID(id);
         })
         socket.current.on("allUsers", (users) => {
-            setUsers(users);
+            setUser(Object.keys(users).find(user => user !== yourID));
         })
 
         socket.current.on("hey", (data) => {
             setReceivingCall(true);
-            setCaller(calling);
+            setCaller(data.from);
             setCallerSignal(data.signal);
         })
     }, []);
@@ -82,6 +86,14 @@ export default function OnCall({ calling }) {
         peer.signal(callerSignal);
     }
 
+    function LeaveCall() {
+        setCallEnded(true);
+
+        socket.destroy();
+
+    };
+
+
     let UserVideo;
     if (stream) {
         UserVideo = (
@@ -92,7 +104,7 @@ export default function OnCall({ calling }) {
     let PartnerVideo;
     if (callAccepted) {
         PartnerVideo = (
-            <video playsInline ref={partnerVideo} autoPlay />
+            <video playsInline muted ref={partnerVideo} autoPlay />
         );
     }
 
@@ -101,7 +113,7 @@ export default function OnCall({ calling }) {
         incomingCall = (
             <div>
                 <h1>{caller} vous appel !</h1>
-                <Button onClick={acceptCall}>Accept</Button>
+                <Button onClick={acceptCall}>Accepter</Button>
             </div>
         )
     }
@@ -109,21 +121,19 @@ export default function OnCall({ calling }) {
         <Container>
             <Box>
                 USER VIDEO{UserVideo}
-                PARTNER VIDEO{PartnerVideo}
+                {(stream && !callAccepted) ? (
+                    <Button bg="green.500" color="white" onClick={() => callPeer(user)} rightIcon={<MdCall />}>
+                        Appeler {caller}</Button>
+                ) : PartnerVideo}
             </Box>
             <Box>
-                {Object.keys(users).map(key => {
-                    if (key === yourID) {
-                        return null;
-                    }
-                    return (
-                        <Button bg="green.500" color="white" onClick={() => callPeer(key)} rightIcon={<MdCall />}>Appeler {caller}</Button>
-                    );
-                })}
+
+                {callAccepted && <Button bg="red.500" color="white" onClick={() => LeaveCall} rightIcon={<MdCall />}>Raccrocher</Button>}
+
             </Box>
             <Box>
                 {incomingCall}
             </Box>
-        </Container>
+        </Container >
     );
 }
