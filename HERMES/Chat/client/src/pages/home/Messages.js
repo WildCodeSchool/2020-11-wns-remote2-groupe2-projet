@@ -34,7 +34,7 @@ const GET_MESSAGES = gql`
 	}
 `;
 
-export default function Messages() {
+export default function Messages({ stream }) {
 	const { users } = useMessageState();
 	const dispatch = useMessageDispatch();
 	const [content, setContent] = useState("");
@@ -100,7 +100,9 @@ export default function Messages() {
 	}
 
 	return (
-		<Container display="flex" flexDirection="column" maxWidth="none" >
+		<Container
+			width={stream ? "35%" : "100%"} display="flex" flexDirection="column" maxWidth="none"
+		>
 			<Box
 				display="flex"
 				flexDirection="column-reverse"

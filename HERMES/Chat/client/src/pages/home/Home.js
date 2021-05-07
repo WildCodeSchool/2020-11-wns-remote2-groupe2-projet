@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { gql, useSubscription } from "@apollo/client";
 import { useMessageDispatch, useMessageState } from "../../context/message";
@@ -16,9 +16,11 @@ import {
 import Users from "./Users";
 import Messages from "./Messages";
 import Header from "./Header";
+import OnCall from "./OnCall";
 import '../../App.scss'
 import { useQuery } from "@apollo/client";
 import { AttachmentIcon, CalendarIcon, ChatIcon } from "@chakra-ui/icons";
+import { SocketContext } from "../../context/socketContext";
 const NEW_MESSAGE = gql`
 	subscription newMessage {
 		newMessage {
@@ -61,6 +63,13 @@ const GET_ME = gql`
 export default function Home({ history }) {
 	const messageDispatch = useMessageDispatch();
 	const dispatch = useMessageDispatch();
+	const {
+		stream, setStream
+	} = useContext(SocketContext)
+
+	const onCalling = (username) => {
+		setStream(false)
+	}
 	const { user } = useMessageState();
 	const { loading } = useQuery(GET_ME, {
 		onCompleted: (data) =>
@@ -141,8 +150,10 @@ export default function Home({ history }) {
 							height="85vh"
 							borderBottomRadius="10px"
 						>
-							<Users />
-							<Messages />
+							<Users onCalling={onCalling} stream={stream} />
+							{stream &&
+								<OnCall />}
+							<Messages stream={stream} />
 						</Box>
 					</TabPanel>
 					<TabPanel p={0}>
