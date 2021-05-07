@@ -11,6 +11,8 @@ import { AuthProvider } from "./context/auth";
 import { MessageProvider } from "./context/message";
 import DynamicRoute from "./util/DynamicRoute";
 import { ContextProvider } from "./context/socketContext";
+import page404 from "./pages/page404";
+import page500 from "./pages/page500";
 
 function App() {
 	return (
@@ -27,14 +29,11 @@ function App() {
 						<ContextProvider>
 							<BrowserRouter>
 								<Switch>
-									<DynamicRoute
-										exact
-										path={"/"}
-										component={Home}
-										authenticated
-									/>
+									<DynamicRoute exact path={"/"} component={Home} authenticated />
 									<DynamicRoute path={"/login"} component={Login} guest />
 									<DynamicRoute path={"/register"} component={Register} guest />
+									<DynamicRoute path={"*"} component={page404} guest />
+									<DynamicRoute path={"/page500"} component={page500} guest />
 								</Switch>
 							</BrowserRouter>
 						</ContextProvider>
@@ -42,7 +41,7 @@ function App() {
 				</AuthProvider>
 			</ApolloProvider>
 			<Footer />
-		</Container>
+		</Container >
 	);
 }
 
