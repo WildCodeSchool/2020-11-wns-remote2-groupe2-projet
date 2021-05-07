@@ -10,6 +10,7 @@ import Footer from "./pages/home/Footer";
 import { AuthProvider } from "./context/auth";
 import { MessageProvider } from "./context/message";
 import DynamicRoute from "./util/DynamicRoute";
+import { ContextProvider } from "./context/socketContext";
 
 function App() {
 	return (
@@ -23,18 +24,20 @@ function App() {
 			<ApolloProvider>
 				<AuthProvider>
 					<MessageProvider>
-						<BrowserRouter>
-							<Switch>
-								<DynamicRoute
-									exact
-									path={"/"}
-									component={Home}
-									authenticated
-								/>
-								<DynamicRoute path={"/login"} component={Login} guest />
-								<DynamicRoute path={"/register"} component={Register} guest />
-							</Switch>
-						</BrowserRouter>
+						<ContextProvider>
+							<BrowserRouter>
+								<Switch>
+									<DynamicRoute
+										exact
+										path={"/"}
+										component={Home}
+										authenticated
+									/>
+									<DynamicRoute path={"/login"} component={Login} guest />
+									<DynamicRoute path={"/register"} component={Register} guest />
+								</Switch>
+							</BrowserRouter>
+						</ContextProvider>
 					</MessageProvider>
 				</AuthProvider>
 			</ApolloProvider>

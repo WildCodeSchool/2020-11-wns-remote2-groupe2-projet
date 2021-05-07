@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { gql, useSubscription } from "@apollo/client";
 import { useMessageDispatch, useMessageState } from "../../context/message";
@@ -20,7 +20,7 @@ import OnCall from "./OnCall";
 import '../../App.scss'
 import { useQuery } from "@apollo/client";
 import { AttachmentIcon, CalendarIcon, ChatIcon } from "@chakra-ui/icons";
-import { ContextProvider } from "../../context/socketContext";
+import { SocketContext } from "../../context/socketContext";
 const NEW_MESSAGE = gql`
 	subscription newMessage {
 		newMessage {
@@ -61,12 +61,14 @@ const GET_ME = gql`
 `;
 
 export default function Home({ history }) {
-	const [calling, setCalling] = useState(false)
 	const messageDispatch = useMessageDispatch();
 	const dispatch = useMessageDispatch();
+	const {
+		stream, setStream
+	} = useContext(SocketContext)
 
 	const onCalling = (username) => {
-		setCalling(username)
+		setStream(false)
 	}
 	const { user } = useMessageState();
 	const { loading } = useQuery(GET_ME, {
@@ -148,21 +150,10 @@ export default function Home({ history }) {
 							height="85vh"
 							borderBottomRadius="10px"
 						>
-							<Users onCalling={onCalling} calling={calling} />
-							{calling && <Container
-								bg="rgba(255, 255, 255, 0.7)"
-								display="flex"
-								height="85vh"
-								width="50%"
-								borderBottomRadius="10px"
-								m={0}>
-
-								<ContextProvider>
-									<OnCall />
-
-								</ContextProvider>
-							</Container >}
-							<Messages calling={calling} />
+							<Users onCalling={onCalling} stream={stream} />
+							{stream &&
+								<OnCall />}
+							<Messages stream={stream} />
 						</Box>
 					</TabPanel>
 					<TabPanel p={0}>

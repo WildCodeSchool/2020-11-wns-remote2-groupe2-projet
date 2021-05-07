@@ -6,7 +6,15 @@ const { sequelize } = require("./models");
 const resolvers = require("./graphql/resolvers");
 const typeDefs = require("./graphql/typeDefs");
 const contextMiddleware = require("./utils/contextMiddleware");
+const app = express()
 const socket = require("socket.io");
+const httpServer = http.createServer(app);
+const io = socket(httpServer, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 
 
 async function startApolloServer() {
@@ -22,25 +30,14 @@ async function startApolloServer() {
   await server.start();
 
   // Express Server
-  const app = express()
   app.use(express.static('public'))
 
   server.applyMiddleware({ app })
-
-  const httpServer = http.createServer(app);
-  app.use(cors())
-  const io = socket(httpServer, {
-    cors: {
-      origin: "*",
-      methods: ["GET", "POST"]
-    }
-  });
-
   server.installSubscriptionHandlers(httpServer)
+  app.use(cors())
 
   // Socket connection
-  io.on('connection', socket => {
-    console.log("SOCKETID", socket.id)
+  await io.on('connection', socket => {
     if (!users[socket.id]) {
       users[socket.id] = socket.id;
     }
@@ -59,8 +56,8 @@ async function startApolloServer() {
     })
   });
 
-  await new Promise(resolve => httpServer.listen(PORT, resolve));
   // Starting
+  await new Promise(resolve => httpServer.listen(PORT, resolve));
   sequelize
     .authenticate()
     .then(() => console.log("Database connected !!"))

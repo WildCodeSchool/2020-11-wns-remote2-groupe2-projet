@@ -1,4 +1,4 @@
-import React, { createContext, useState, useRef, useEffect } from 'react';
+import React, { createContext, useState, useRef } from 'react';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 
@@ -23,8 +23,8 @@ const ContextProvider = ({ children }) => {
 
 
 
-    useEffect(() => {
-        socket.current = io.connect(`${baseURL}`);
+    const startCall = async () => {
+        socket.current = io.connect(baseURL);
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then((currentStream) => {
                 setStream(currentStream);
@@ -32,21 +32,20 @@ const ContextProvider = ({ children }) => {
                     userVideo.current.srcObject = currentStream;
                 }
             })
-            .catch(console.log(Error));
 
-        socket.current.on("yourID", (id) => {
+        await socket.current.on("yourID", (id) => {
             setYourID(id);
         })
-        socket.current.on("allUsers", (users) => {
+        await socket.current.on("allUsers", (users) => {
             setUser(Object.keys(users).find(user => user !== yourID));
         })
 
-        socket.current.on("hey", (data) => {
+        await socket.current.on("hey", (data) => {
             setReceivingCall(true);
             setCaller(data.from);
             setCallerSignal(data.signal);
         })
-    }, []);
+    }
 
     const acceptCall = () => {
         setCallAccepted(true);
@@ -94,14 +93,16 @@ const ContextProvider = ({ children }) => {
 
     const LeaveCall = () => {
         setCallEnded(true);
+        setCallAccepted(false);
+        setStream()
 
         socket.current.destroy();
         // window.location.reload();
-
     };
 
     return (
         <SocketContext.Provider value={{
+            socket,
             yourID,
             callEnded,
             user,
@@ -115,7 +116,13 @@ const ContextProvider = ({ children }) => {
             acceptCall,
             callPeer,
             LeaveCall,
-            setCaller
+            setCaller,
+            setStream,
+            setYourID,
+            setReceivingCall,
+            setCallerSignal,
+            startCall,
+            setUser
         }}
         >
             {children}

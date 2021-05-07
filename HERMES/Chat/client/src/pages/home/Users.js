@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Container, Box, Text, Circle, Avatar, AvatarBadge, Badge, Button } from "@chakra-ui/react";
+import { Container, Box, Text, Circle, Avatar, AvatarBadge, Badge, Button, useAccordionDescendantsContext } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
 import { AddIcon, PhoneIcon } from '@chakra-ui/icons'
+import { SocketContext } from "../../context/socketContext";
 
 
 const GET_USERS = gql`
@@ -26,16 +27,24 @@ const GET_USERS = gql`
 
 const baseURL = process.env.REACT_APP_BASE_URL || "";
 
-export default function Users({ onCalling, calling }) {
+export default function Users({ onCalling, stream }) {
 	const dispatch = useMessageDispatch();
 	const { users } = useMessageState();
+	const { startCall } = useContext(SocketContext)
 	const selectedUser = users?.find((u) => u.selected === true)?.username;
+
+	const handleCall = () => {
+		startCall(selectedUser)
+	}
+	console.log("selectedUser", selectedUser)
 
 	const { loading } = useQuery(GET_USERS, {
 		onCompleted: (data) =>
 			dispatch({ type: "SET_USERS", payload: data.getUsers }),
 		onError: (err) => console.log(err),
 	});
+
+
 
 	let usersMarkup;
 	if (!users || loading) {
@@ -82,8 +91,8 @@ export default function Users({ onCalling, calling }) {
 
 					</Box>
 					<Box display="flex" alignSelf="center">
-						{!calling ? (
-							<Button onClick={() => onCalling(user.username)} _focus="none" bg={!selected ? "white" : "#39414f"} color={selected ? "white" : "#39414f"}>
+						{!stream ? (
+							<Button onClick={() => handleCall(user.username)} _focus="none" bg={!selected ? "white" : "#39414f"} color={selected ? "white" : "#39414f"}>
 								<PhoneIcon />
 							</Button>
 						) : (
@@ -98,7 +107,7 @@ export default function Users({ onCalling, calling }) {
 	}
 	return (
 		<Container
-			width={calling && "25%"}
+			width={stream && "25%"}
 			borderBottomLeftRadius="10px"
 			m={0}
 			p={0}
