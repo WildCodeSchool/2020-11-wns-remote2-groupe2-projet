@@ -32,7 +32,7 @@ function App() {
 									<DynamicRoute exact path={"/"} component={Home} authenticated />
 									<DynamicRoute path={"/login"} component={Login} guest />
 									<DynamicRoute path={"/register"} component={Register} guest />
-									<DynamicRoute path={"*"} component={page404} authenticated />
+									<DynamicRoute path={"/*"} component={page404} authenticated />
 									<DynamicRoute path={"/page500"} component={page500} authenticated />
 								</Switch>
 							</BrowserRouter>
