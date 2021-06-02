@@ -17,10 +17,12 @@ import Users from "./Users";
 import Messages from "./Messages";
 import Header from "./Header";
 import OnCall from "./OnCall";
+import Index from '../userInformations/index'
 import '../../App.scss'
 import { useQuery } from "@apollo/client";
 import { AttachmentIcon, CalendarIcon, ChatIcon } from "@chakra-ui/icons";
 import { SocketContext } from "../../context/socketContext";
+
 const NEW_MESSAGE = gql`
 	subscription newMessage {
 		newMessage {
@@ -139,7 +141,10 @@ export default function Home({ history }) {
 						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="bold" w="9vw"><AttachmentIcon w={5} h={5} /></Tab>
 					</Box>
 					<Box>
-						<Header />
+
+						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="bold" w="9vw">
+							<Header />
+						</Tab>
 					</Box>
 				</TabList>
 				<TabPanels>
@@ -172,6 +177,16 @@ export default function Home({ history }) {
 							height="85vh"
 							borderBottomRadius="10px"
 						>
+						</Box>
+					</TabPanel>
+					<TabPanel p={0}>
+						<Box
+							bg="rgba(255, 255, 255, 0.7)"
+							display="flex"
+							height="85vh"
+							borderBottomRadius="10px"
+						>
+							<Index />
 						</Box>
 					</TabPanel>
 				</TabPanels>
