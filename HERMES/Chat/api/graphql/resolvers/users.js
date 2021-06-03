@@ -168,5 +168,44 @@ module.exports = {
 				throw new UserInputError("Bad input", { errors });
 			}
 		},
+
+		update: async (_, args, { user }) => {
+			let { username, email, campus, role, imageUrl } = args;
+			let errors = {};
+
+			try {
+				// Validate input data				
+				if (email.trim() === "") errors.email = "email must not be empty";
+				if (username.trim() === "")
+					errors.username = "username must not be empty";
+				if (campus.trim() === "")
+					errors.campus = "campus must not be empty";
+				if (role.trim() === "")
+					errors.role = "role must not be empty";
+
+				if (Object.keys(errors).length > 0) {
+					throw errors;
+				}
+
+				// const user = await User.findOne({
+				// 	where: { username },
+				// });
+
+				const user = await User.update({ username, email, campus, role }, { where: user.id });
+
+
+				return user;
+			} catch (err) {
+				console.log(err);
+				if (err.name === "SequelizeUniqueConstraintError") {
+					err.errors.forEach(
+						(e) => (errors[e.path] = `${e.path} is already taken`),
+					);
+				} else if (err.name === "SequelizeValidationError") {
+					err.errors.forEach((e) => (errors[e.path] = e.message));
+				}
+				throw new UserInputError("Bad input", { errors });
+			}
+		},
 	},
 };
