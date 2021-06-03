@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import MyProfil from "./MyProfil"
-import { Box, Container, Flex, ListItem, OrderedList, Text } from "@chakra-ui/layout"
-import { Modal, ModalContent, ModalHeader, ModalOverlay } from "@chakra-ui/modal"
-import { useDisclosure } from "@chakra-ui/hooks"
-import { useAuthDispatch } from "../../context/auth"
-import { CloseIcon, InfoIcon, SettingsIcon, StarIcon, TriangleUpIcon } from '@chakra-ui/icons'
-import { Button } from '@chakra-ui/button'
+import Contact from "./Contact"
+import {Box, Container, Flex, ListItem, OrderedList, Text} from "@chakra-ui/layout"
+import {Image, Stack} from "@chakra-ui/react"
+import {Modal, ModalContent, ModalHeader, ModalOverlay} from "@chakra-ui/modal"
+import {useDisclosure} from "@chakra-ui/hooks"
+import {useAuthDispatch} from "../../context/auth"
+import User from "../../img/user.svg"
+import Email from "../../img/email.svg"
+import Parametre from "../../img/parametres.svg"
+import {Button} from '@chakra-ui/button'
 
 export default function Index() {
 
@@ -13,17 +17,17 @@ export default function Index() {
 
     const authDispatch = useAuthDispatch();
 
-    const { isOpen: isOpenDisconnect, onOpen: onOpenDisconnect, onClose: onCloseDisconnect } = useDisclosure()
+    const {isOpen: isOpenDisconnect, onOpen: onOpenDisconnect, onClose: onCloseDisconnect} = useDisclosure()
 
     const handleInformationBlock = () => {
         switch (path) {
             case 'profil':
-                return <MyProfil />
+                return <MyProfil/>
 
 
-            case 'campus':
+            case 'contact':
 
-                break;
+                return <Contact/>
 
             case 'paramètre':
 
@@ -35,7 +39,7 @@ export default function Index() {
     }
 
     const logout = () => {
-        authDispatch({ type: "LOGOUT" });
+        authDispatch({type: "LOGOUT"});
         window.location.href = "/login";
     };
 
@@ -56,22 +60,50 @@ export default function Index() {
                 }}
             >
                 <Flex justifyContent="space-between" flexDirection="column" h="100%">
-                    <OrderedList display="flex" flexDirection="column" m={0}>
-                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'profil' ? "#C4C6CB" : "transparent"} color="#39414F" onClick={() => setPath('profil')}>
-                            <Text mt="10px" fontSize="xl">Mon profil</Text>
+                    <OrderedList display="flex" flexDirection="column" justifyContent={"center"} m={0}>
+                        <ListItem textAlign="center" height="50px" cursor="pointer"
+                                  backgroundColor={path === 'profil' ? "#C4C6CB" : "transparent"} color="#39414F"
+                                  onClick={() => setPath('profil')}>
+                            <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
+                                <Image src={User} alt="user"
+                                       maxWidth="25px"
+                                />
+                                <Text fontSize="xl" display={{base: "none", md: "flex"}} marginLeft="1rem">
+                                    Mon profil
+                                </Text>
+                            </Box>
                         </ListItem>
-                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'campus' ? "#C4C6CB" : "transparent"} color="#39414F" onClick={() => setPath('campus')}>
-                            <Text mt="10px" fontSize="xl">Mon campus</Text>
+
+                        <ListItem textAlign="center" height="50px" cursor="pointer"
+                                  backgroundColor={path === 'contact' ? "#C4C6CB" : "transparent"} color="#39414F"
+                                  onClick={() => setPath('contact')}>
+                            <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
+                                <Image src={Email} alt="user"
+                                       maxWidth="25px"
+                                />
+                                <Text fontSize="xl" display={{base: "none", md: "flex"}} marginLeft="1rem">
+                                    Contact
+                                </Text>
+                            </Box>
                         </ListItem>
-                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'status' ? "#C4C6CB" : "transparent"} color="#39414F" onClick={() => setPath('status')}>
-                            <Text mt="10px" fontSize="xl">Mon status</Text>
-                        </ListItem>
-                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'parametre' ? "#C4C6CB" : "transparent"} color="#39414F" onClick={() => setPath('parametre')}>
-                            <Text mt="10px" fontSize="xl">Paramètre</Text>
+
+                        <ListItem textAlign="center" height="50px" cursor="pointer"
+                                  backgroundColor={path === 'parametre' ? "#C4C6CB" : "transparent"} color="#39414F"
+                                  onClick={() => setPath('parametre')}>
+                            <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
+                                <Image src={Parametre} alt="user"
+                                       maxWidth="25px"
+                                />
+                                <Text fontSize="xl" display={{base: "none", md: "flex"}} marginLeft="1rem">
+                                    Paramètres
+                                </Text>
+                            </Box>
                         </ListItem>
                     </OrderedList>
+
                     <OrderedList display="flex" flexDirection="column" m={0}>
-                        <ListItem textAlign="center" bg="#9B2C2C" cursor="pointer" height="50px" colorScheme="red" color="white" onClick={onOpenDisconnect}>
+                        <ListItem textAlign="center" bg="#9B2C2C" cursor="pointer" height="50px" colorScheme="red"
+                                  color="white" onClick={onOpenDisconnect}>
                             <Text mt="10px" fontSize="xl">Deconnexion</Text>
                         </ListItem>
                     </OrderedList>
@@ -84,9 +116,10 @@ export default function Index() {
                     isOpen={isOpenDisconnect}
                     motionPreset="slideInBottom"
                 >
-                    <ModalOverlay />
+                    <ModalOverlay/>
                     <ModalContent>
-                        <ModalHeader textAlign="center" >Etes-vous sur de vouloir vous déconnecter de HERMES ?</ModalHeader>
+                        <ModalHeader textAlign="center">Etes-vous sur de vouloir vous déconnecter de HERMES
+                            ?</ModalHeader>
                         <Box m={3} display="flex" justifyContent="space-between">
                             <Button bg="#39414f" color="white" width="33%" onClick={onCloseDisconnect}>Non</Button>
                             <Button bg="#39414f" color="white" width="33%" onClick={logout}>Oui</Button>
