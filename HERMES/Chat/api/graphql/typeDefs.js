@@ -11,6 +11,11 @@ module.exports = gql`
     imageUrl: String!
     latestMessage: Message
   }
+  type updatedUser {
+    campus: String!
+    role: String!
+    imageUrl: String!
+  }
   type Message {
     uuid: String!
     content: String!
@@ -42,6 +47,11 @@ module.exports = gql`
       confirmPassword: String!
       imageUrl: Upload!
     ): User!
+    update(
+      campus: String!
+      role: String!
+      imageUrl: Upload!
+    ): updatedUser
     sendMessage(to: String!, content: String!): Message!
     reactToMessage(uuid: String!, content: String!): Reaction!
   }
