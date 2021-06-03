@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import MyProfil from "./MyProfil"
+import Contact from "./Contact"
 import { Box, Container, Flex, ListItem, OrderedList, Text } from "@chakra-ui/layout"
+import { Image } from "@chakra-ui/react"
 import { Modal, ModalContent, ModalHeader, ModalOverlay } from "@chakra-ui/modal"
 import { useDisclosure } from "@chakra-ui/hooks"
 import { useAuthDispatch } from "../../context/auth"
+import User from "../../img/user.svg"
+import Email from "../../img/email.svg"
+import Parametre from "../../img/parametres.svg"
 import { Button } from '@chakra-ui/button'
 
 export default function Index() {
@@ -26,9 +31,9 @@ export default function Index() {
                 return <MyProfil />
 
 
-            case 'campus':
+            case 'contact':
 
-                break;
+                return <Contact />
 
             case 'paramètre':
 
@@ -61,22 +66,50 @@ export default function Index() {
                 }}
             >
                 <Flex justifyContent="space-between" flexDirection="column" h="100%">
-                    <OrderedList display="flex" flexDirection="column" m={0}>
-                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'profil' ? "#6B7383" : "transparent"} onClick={() => onChangePath('profil')}>
-                            <Text mt="10px" fontSize="xl" color={path === 'profil' ? "#E9E7E1" : "#39414f"}>Mon profil</Text>
+                    <OrderedList display="flex" flexDirection="column" justifyContent={"center"} m={0}>
+                        <ListItem textAlign="center" height="50px" cursor="pointer"
+                            backgroundColor={path === 'profil' ? "#C4C6CB" : "transparent"} color="#39414F"
+                            onClick={() => onChangePath('profil')}>
+                            <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
+                                <Image src={User} alt="user"
+                                    maxWidth="25px"
+                                />
+                                <Text fontSize="xl" display={{ base: "none", md: "flex" }} marginLeft="1rem">
+                                    Mon profil
+                                </Text>
+                            </Box>
                         </ListItem>
-                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'campus' ? "#6B7383" : "transparent"} onClick={() => onChangePath('campus')}>
-                            <Text mt="10px" fontSize="xl" color={path === 'campus' ? "#E9E7E1" : "#39414f"}>Mon campus</Text>
+
+                        <ListItem textAlign="center" height="50px" cursor="pointer"
+                            backgroundColor={path === 'contact' ? "#C4C6CB" : "transparent"} color="#39414F"
+                            onClick={() => onChangePath('contact')}>
+                            <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
+                                <Image src={Email} alt="user"
+                                    maxWidth="25px"
+                                />
+                                <Text fontSize="xl" display={{ base: "none", md: "flex" }} marginLeft="1rem">
+                                    Contact
+                                </Text>
+                            </Box>
                         </ListItem>
-                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'status' ? "#6B7383" : "transparent"} onClick={() => onChangePath('status')}>
-                            <Text mt="10px" fontSize="xl" color={path === 'status' ? "#E9E7E1" : "#39414f"}>Mon status</Text>
-                        </ListItem>
-                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'parametre' ? "#6B7383" : "transparent"} onClick={() => onChangePath('parametre')}>
-                            <Text mt="10px" fontSize="xl" color={path === 'parametre' ? "#E9E7E1" : "#39414f"}>Paramètre</Text>
+
+                        <ListItem textAlign="center" height="50px" cursor="pointer"
+                            backgroundColor={path === 'parametre' ? "#C4C6CB" : "transparent"} color="#39414F"
+                            onClick={() => onChangePath('parametre')}>
+                            <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
+                                <Image src={Parametre} alt="user"
+                                    maxWidth="25px"
+                                />
+                                <Text fontSize="xl" display={{ base: "none", md: "flex" }} marginLeft="1rem">
+                                    Paramètres
+                                </Text>
+                            </Box>
                         </ListItem>
                     </OrderedList>
+
                     <OrderedList display="flex" flexDirection="column" m={0}>
-                        <ListItem textAlign="center" bg="#9B2C2C" cursor="pointer" height="50px" colorScheme="red" color="white" onClick={onOpenDisconnect}>
+                        <ListItem textAlign="center" bg="#9B2C2C" cursor="pointer" height="50px" colorScheme="red"
+                            color="white" onClick={onOpenDisconnect}>
                             <Text mt="10px" fontSize="xl">Deconnexion</Text>
                         </ListItem>
                     </OrderedList>
@@ -91,7 +124,8 @@ export default function Index() {
                 >
                     <ModalOverlay />
                     <ModalContent>
-                        <ModalHeader textAlign="center" >Etes-vous sur de vouloir vous déconnecter de HERMES ?</ModalHeader>
+                        <ModalHeader textAlign="center">Etes-vous sur de vouloir vous déconnecter de HERMES
+                            ?</ModalHeader>
                         <Box m={3} display="flex" justifyContent="space-between">
                             <Button bg="#39414f" color="white" width="33%" onClick={onCloseDisconnect}>Non</Button>
                             <Button bg="#39414f" color="white" width="33%" onClick={logout}>Oui</Button>

@@ -4,7 +4,7 @@ import { FaPaperPlane } from "react-icons/fa";
 import { useMessageDispatch, useMessageState } from "../../context/message";
 
 import Message from "./Message";
-import { Container, Box, Spacer, FormControl, Input, Text } from "@chakra-ui/react";
+import { Container, Box, Spacer, FormControl, Input, Text, Stack, SkeletonText, Skeleton } from "@chakra-ui/react";
 
 const SEND_MESSAGE = gql`
 	mutation sendMessage($to: String!, $content: String!) {
@@ -83,7 +83,11 @@ export default function Messages({ stream }) {
 	if (!messages && !messagesLoading) {
 		selectedChatMarkup = <p className="info-text">Selectionnez un contact</p>;
 	} else if (messagesLoading) {
-		selectedChatMarkup = <p className="info-text">Loading</p>;
+		selectedChatMarkup = <Box>
+			<Stack m={5} spacing={8} >
+				<SkeletonText noOfLines={3} spacing="4" />
+			</Stack>
+		</Box>;
 	} else if (messages.length > 0) {
 		selectedChatMarkup = messages.map((message, index) => (
 			<Fragment key={message.uuid}>
