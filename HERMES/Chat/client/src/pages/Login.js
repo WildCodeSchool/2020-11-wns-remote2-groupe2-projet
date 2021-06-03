@@ -57,7 +57,7 @@ export default function Register(props) {
 		<Container
 			data-aos="fade-down"
 			backgroundColor="#39414f"
-			alignSelf="center">
+			mt="15%">
 			<SimpleGrid
 				columns={2}
 				bg="rgba(255, 255, 255, 0.8)"

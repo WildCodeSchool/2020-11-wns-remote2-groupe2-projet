@@ -1,66 +1,65 @@
-import { useForm } from "react-hook-form";
-import React from "react";
-import { Button, FormControl, FormErrorMessage, Input, Stack, Textarea } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Button, FormControl, FormErrorMessage, Heading, Input, InputGroup, InputLeftElement, Stack, Textarea } from "@chakra-ui/react";
 import { Box, Container, Flex } from "@chakra-ui/layout";
 
 function Contact() {
-    const {
-        register,
-        formState: { errors, isSubmitting }
-    } = useForm();
+    const [errors, setErrors] = useState({});
+
 
 
     const baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:4000";
 
     return (
-        <form action="http://localhost:4000/send" method="POST">
-            <Container maxWidth="4xl" mt={32}>
-
-                <Stack display="flex" flexDirection="column" spacing={6}>
-                    <Box flex={1}>
-                        <FormControl isInvalid={errors.sujet}>
-                            <Input
-                                bg={"#E9E7E1"}
-                                id="sujet"
-                                placeholder="Sujet :"
-                                {...register("sujet", {
-                                    required: "Ce champ est obligatoire",
-                                    minLength: { value: 4, message: "Minimum length should be 4" }
-                                })}
-                            />
-                            <FormErrorMessage>
-                                {errors.sujet && errors.sujet.message}
-                            </FormErrorMessage>
+        <Stack spacing="30px">
+            <Heading textAlign="center" color="#E9E7E1">On vous écoute !</Heading>
+            <form action="http://localhost:4000/send" method="POST">
+                <Container maxWidth="4xl" css={{ margin: '0 auto' }}>
+                    <Stack spacing={5} justifyContent="center" alignItems="center">
+                        <FormControl
+                            isRequired
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <InputGroup>
+                                <InputLeftElement />
+                                <Input
+                                    required
+                                    type="subject"
+                                    placeholder="votre sujet"
+                                    aria-label="Sujet"
+                                    bg={'#E9E7E1'}
+                                />
+                            </InputGroup>
                         </FormControl>
-                    </Box>
-                    <Box flex={1}>
-                        <FormControl isInvalid={errors.message}>
-                            <Textarea
-                                bg={"#E9E7E1"}
-                                h="42vh"
-                                id="message"
-                                placeholder="Votre message"
-                                {...register("message", {
-                                    required: "Ce champ est obligatoire",
-                                    minLength: { value: 4, message: "Minimum length should be 4" }
-                                })}
-                            />
-                            <FormErrorMessage>
-                                {errors.message && errors.message.message}
-                            </FormErrorMessage>
+                        <FormControl
+                            isRequired
+                            justifyContent="center"
+                            alignItems="center">
+                            <InputGroup>
+                                <InputLeftElement />
+                                <Textarea
+                                    required
+                                    bg={"#E9E7E1"}
+                                    h="42vh"
+                                    id="message"
+                                    aria-label="message"
+                                    placeholder="Votre message"
+                                />
+                            </InputGroup>
                         </FormControl>
-                    </Box>
-                    <Box>
-                        <Button bg="#39414f" color="white" isLoading={isSubmitting} type="submit"
-                            _hover={{ bg: "#eae7e1", color: "#39414f" }}>
+                        <Button
+                            variant="success"
+                            bg="#39414f"
+                            color="white"
+                            type="submit"
+                            _hover={{ bg: '#eae7e1', color: '#39414f' }}
+                        >
                             Envoyer
-                        </Button>
-                    </Box>
-                </Stack>
-
-            </Container>
-
-        </form>
+					</Button>
+                    </Stack>
+                </Container>
+            </form>
+        </Stack>
     );
 }
 

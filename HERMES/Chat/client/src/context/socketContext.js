@@ -17,6 +17,10 @@ const ContextProvider = ({ children }) => {
     const [callerSignal, setCallerSignal] = useState();
     const [callAccepted, setCallAccepted] = useState(false);
 
+    const [micro, setMicro] = useState(false)
+    const [video, setVideo] = useState(false)
+    const [loading, setLoading] = useState(false)
+
     const userVideo = useRef();
     const partnerVideo = useRef();
     const socket = useRef();
@@ -29,6 +33,8 @@ const ContextProvider = ({ children }) => {
             .then((currentStream) => {
                 setStream(currentStream);
                 if (userVideo.current) {
+                    setMicro(true)
+                    setVideo(true)
                     userVideo.current.srcObject = currentStream;
                 }
             })
@@ -83,22 +89,50 @@ const ContextProvider = ({ children }) => {
                 partnerVideo.current.srcObject = currentStream;
             }
         });
+        setLoading(true)
 
         socket.current.on("callAccepted", signal => {
+            setLoading(false)
             setCallAccepted(true);
             peer.signal(signal);
         })
 
     }
 
+    const muteUnmute = () => {
+        const enabled = stream.getAudioTracks()[0].enabled;
+        if (enabled) {
+            stream.getAudioTracks()[0].enabled = false;
+            setMicro(false)
+        } else {
+            stream.getAudioTracks()[0].enabled = true;
+            setMicro(true)
+        }
+    }
+
+    const playStop = () => {
+        let enabled = stream.getVideoTracks()[0].enabled;
+        if (enabled) {
+            stream.getVideoTracks()[0].enabled = false;
+            setVideo(false)
+        } else {
+            stream.getVideoTracks()[0].enabled = true;
+            setVideo(true)
+        }
+    }
+
     const LeaveCall = () => {
+        stream.getTracks().forEach(function (track) {
+            if (track.readyState === 'live') {
+                track.stop();
+            }
+        });
         setCallEnded(true);
         setCallAccepted(false);
         setStream()
 
         socket.current.destroy();
-        // window.location.reload();
-    };
+    }
 
     return (
         <SocketContext.Provider value={{
@@ -122,7 +156,12 @@ const ContextProvider = ({ children }) => {
             setReceivingCall,
             setCallerSignal,
             startCall,
-            setUser
+            setUser,
+            playStop,
+            muteUnmute,
+            micro,
+            video,
+            loading
         }}
         >
             {children}

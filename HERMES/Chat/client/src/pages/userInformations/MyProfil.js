@@ -12,6 +12,7 @@ import { useToast } from '@chakra-ui/toast';
 import { InfoIcon, AtSignIcon } from '@chakra-ui/icons';
 import { campusList } from '../../refs/enum/campusList';
 import { rolesList } from '../../refs/enum/rolesList';
+import { Heading } from '@chakra-ui/react';
 
 export default function MyProfil(props) {
 	const { user } = useMessageState();
@@ -36,7 +37,6 @@ export default function MyProfil(props) {
 		imageUrl: user?.imageUrl
 	});
 
-	console.table('RESULT', data);
 	const UPDATE_USER = gql`
 		mutation update($username: String!, $email: String, $campus: String!, $role: String!, $imageUrl: Upload) {
 			update(username: $username, email: $email, campus: $campus, role: $role, imageUrl: $imageUrl) {
@@ -83,141 +83,144 @@ export default function MyProfil(props) {
 	};
 
 	return (
-		<form onSubmit={submitUpdateUserInformations}>
-			<Container maxWidth="4xl" css={{ margin: '0 auto' }}>
-				<Stack spacing={5} justifyContent="center" alignItems="center">
-					<FormControl
-						isRequired
-						value={variables.username}
-						onChange={(e) => setVariables({ ...variables, username: e.target.value })}
-						justifyContent="center"
-						alignItems="center"
-					>
-						<InputGroup>
-							<InputLeftElement children={<InfoIcon />} />
-							<Input
-								defaultValue={user?.username}
-								isInvalid={errors.username}
-								type="name"
-								placeholder="Identifiant"
-								aria-label="Username"
-								bg={'#E9E7E1'}
-								value={user?.username}
-								isDisabled={true}
-							/>
-						</InputGroup>
-						{errors.username && (
-							<Text fontSize="13px" color="tomato">
-								Nom d'utilisateur déjà pris
-							</Text>
-						)}
-					</FormControl>
-					<FormControl
-						isRequired
-						value={variables.email}
-						onChange={(e) => setVariables({ ...variables, email: e.target.value })}
-						justifyContent="center"
-						alignItems="center"
-					>
-						<InputGroup>
-							<InputLeftElement children={<AtSignIcon />} />
-							<Input
-								defaultValue={user?.email}
-								isInvalid={errors.email}
-								type="email"
-								placeholder="Adresse email"
-								aria-label="Email"
-								bg={'#E9E7E1'}
-							/>
-						</InputGroup>
-						{errors.email && (
-							<Text fontSize="13px" color="tomato">
-								Email déjà existant
-							</Text>
-						)}
-					</FormControl>
-					<FormControl
-						isRequired
-						value={variables.campus}
-						onChange={(e) => setVariables({ ...variables, campus: e.target.value })}
-						justifyContent="center"
-						alignItems="center"
-					>
-						<InputGroup>
-							<Select
-								value={variables.campus}
-								isInvalid={errors.campus}
-								type="campus"
-								placeholder={user?.campus}
-								aria-label="campus"
-								bg={'#E9E7E1'}
-							>
-								{campusList.map((campus) => (
-									<option value={campus.value}>{campus.name}</option>
-								))}
-							</Select>
-						</InputGroup>
-					</FormControl>
-					<FormControl
-						isRequired
-						value={variables.role}
-						onChange={(e) => setVariables({ ...variables, role: e.target.value })}
-						justifyContent="center"
-						alignItems="center"
-					>
-						<InputGroup>
-							<Select
-								value={variables.role}
-								isInvalid={errors.role}
-								type="role"
-								placeholder={user?.role}
-								aria-label="role"
-								bg={'#E9E7E1'}
-							>
-								{rolesList.map((role) => (
-									<option value={role.value}>{role.name}</option>
-								))}
-							</Select>
-						</InputGroup>
-					</FormControl>
-					<FormControl onChange={getImagePreview} justifyContent="center" alignItems="center">
-						<InputGroup>
-							<Button alignSelf="center" bg={'#E9E7E1'}>
+		<Stack spacing="30px">
+			<Heading textAlign="center" color="#E9E7E1">Mes infos</Heading>
+			<form onSubmit={submitUpdateUserInformations}>
+				<Container maxWidth="4xl" css={{ margin: '0 auto' }}>
+					<Stack spacing={5} justifyContent="center" alignItems="center">
+						<FormControl
+							isRequired
+							value={variables.username}
+							onChange={(e) => setVariables({ ...variables, username: e.target.value })}
+							justifyContent="center"
+							alignItems="center"
+						>
+							<InputGroup>
+								<InputLeftElement children={<InfoIcon />} />
 								<Input
-									type="file"
-									aria-label="File"
-									accept="image/*"
+									defaultValue={user?.username}
+									isInvalid={errors.username}
+									type="name"
+									placeholder="Identifiant"
+									aria-label="Username"
 									bg={'#E9E7E1'}
-									cursor="pointer"
-									boxSizing="border-box"
-									opacity="0"
-									position="absolute"
+									value={user?.username}
+									isDisabled={true}
 								/>
-								{"Changer d'image de profil"}
-							</Button>
-							<Avatar
-								loading="eager"
-								w="50px"
-								h="50px"
-								objectFit="cover"
-								borderRadius="50%"
-								m={1}
-								src={imagePreview}
-								alt="Preview"
-							/>
-						</InputGroup>
-					</FormControl>
-					<Button
-						variant="success"
-						bg="#39414f"
-						color="white"
-						type="submit"
-						_hover={{ bg: '#eae7e1', color: '#39414f' }}
-					>
-						Modifier
+							</InputGroup>
+							{errors.username && (
+								<Text fontSize="13px" color="tomato">
+									Nom d'utilisateur déjà pris
+								</Text>
+							)}
+						</FormControl>
+						<FormControl
+							isRequired
+							value={variables.email}
+							onChange={(e) => setVariables({ ...variables, email: e.target.value })}
+							justifyContent="center"
+							alignItems="center"
+						>
+							<InputGroup>
+								<InputLeftElement children={<AtSignIcon />} />
+								<Input
+									defaultValue={user?.email}
+									isInvalid={errors.email}
+									type="email"
+									placeholder="Adresse email"
+									aria-label="Email"
+									bg={'#E9E7E1'}
+								/>
+							</InputGroup>
+							{errors.email && (
+								<Text fontSize="13px" color="tomato">
+									Email déjà existant
+								</Text>
+							)}
+						</FormControl>
+						<FormControl
+							isRequired
+							value={variables.campus}
+							onChange={(e) => setVariables({ ...variables, campus: e.target.value })}
+							justifyContent="center"
+							alignItems="center"
+						>
+							<InputGroup>
+								<Select
+									value={variables.campus}
+									isInvalid={errors.campus}
+									type="campus"
+									placeholder={user?.campus}
+									aria-label="campus"
+									bg={'#E9E7E1'}
+								>
+									{campusList.map((campus) => (
+										<option value={campus.value}>{campus.name}</option>
+									))}
+								</Select>
+							</InputGroup>
+						</FormControl>
+						<FormControl
+							isRequired
+							value={variables.role}
+							onChange={(e) => setVariables({ ...variables, role: e.target.value })}
+							justifyContent="center"
+							alignItems="center"
+						>
+							<InputGroup>
+								<Select
+									value={variables.role}
+									isInvalid={errors.role}
+									type="role"
+									placeholder={user?.role}
+									aria-label="role"
+									bg={'#E9E7E1'}
+								>
+									{rolesList.map((role) => (
+										<option value={role.value}>{role.name}</option>
+									))}
+								</Select>
+							</InputGroup>
+						</FormControl>
+						<FormControl onChange={getImagePreview} justifyContent="center" alignItems="center">
+							<InputGroup>
+								<Button alignSelf="center" bg={'#E9E7E1'}>
+									<Input
+										type="file"
+										aria-label="File"
+										accept="image/*"
+										bg={'#E9E7E1'}
+										cursor="pointer"
+										boxSizing="border-box"
+										opacity="0"
+										position="absolute"
+									/>
+									{"Changer d'image de profil"}
+								</Button>
+								<Avatar
+									loading="eager"
+									w="50px"
+									h="50px"
+									objectFit="cover"
+									borderRadius="50%"
+									m={1}
+									src={imagePreview}
+									alt="Preview"
+								/>
+							</InputGroup>
+						</FormControl>
+						<Button
+							variant="success"
+							bg="#39414f"
+							color="white"
+							type="submit"
+							_hover={{ bg: '#eae7e1', color: '#39414f' }}
+						>
+							Modifier
 					</Button>
-				</Stack>
-			</Container>
-		</form>
+					</Stack>
+				</Container>
+			</form>
+		</Stack>
 	);
 }

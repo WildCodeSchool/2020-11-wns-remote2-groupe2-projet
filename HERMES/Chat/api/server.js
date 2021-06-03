@@ -37,6 +37,7 @@ async function startApolloServer() {
     extended: true
   }))
 
+  // Send mail service
   app.post('/send', async (req, res) => {
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',

@@ -27,23 +27,21 @@ const GET_USERS = gql`
 
 const baseURL = process.env.REACT_APP_BASE_URL || "";
 
-export default function Users({ onCalling, stream }) {
+export default function Users({ stream }) {
 	const dispatch = useMessageDispatch();
 	const { users } = useMessageState();
-	const { startCall } = useContext(SocketContext)
+	const { startCall, LeaveCall } = useContext(SocketContext)
 	const selectedUser = users?.find((u) => u.selected === true)?.username;
 
 	const handleCall = () => {
 		startCall(selectedUser)
 	}
-	console.log("selectedUser", selectedUser)
 
 	const { loading } = useQuery(GET_USERS, {
 		onCompleted: (data) =>
 			dispatch({ type: "SET_USERS", payload: data.getUsers }),
 		onError: (err) => console.log(err),
 	});
-
 
 
 	let usersMarkup;
@@ -103,8 +101,8 @@ export default function Users({ onCalling, stream }) {
 								<PhoneIcon />
 							</Button>
 						) : (
-							<Button onClick={() => onCalling(false)} _focus="none" bg={"#39414f"} color={"red"}>
-								<AddIcon />
+							<Button onClick={() => LeaveCall()} _focus="none" bg={selected ? "#E9E7E1" : "#39414f"} _hover={{ bg: "red" }} color={selected ? "#39414f" : "#E9E7E1"} >
+								<PhoneIcon css={{ transform: "rotate(135deg)" }} />
 							</Button>
 						)}
 					</Box>
