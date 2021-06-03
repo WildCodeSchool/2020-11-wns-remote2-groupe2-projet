@@ -5,22 +5,15 @@ import { Box, Container, Flex } from "@chakra-ui/layout";
 
 function Contact() {
     const {
-        handleSubmit,
         register,
         formState: { errors, isSubmitting }
     } = useForm();
 
-    function onSubmit(values) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                resolve();
-            }, 3000);
-        });
-    }
+
+    const baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:4000";
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form action="http://localhost:4000/send" method="POST">
             <Container maxWidth="4xl" mt={32}>
 
                 <Stack display="flex" flexDirection="column" spacing={6}>
