@@ -1,15 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import MyProfil from "./MyProfil"
 import { Box, Container, Flex, ListItem, OrderedList, Text } from "@chakra-ui/layout"
 import { Modal, ModalContent, ModalHeader, ModalOverlay } from "@chakra-ui/modal"
 import { useDisclosure } from "@chakra-ui/hooks"
 import { useAuthDispatch } from "../../context/auth"
-import { CloseIcon, InfoIcon, SettingsIcon, StarIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { Button } from '@chakra-ui/button'
 
 export default function Index() {
 
     const [path, setPath] = useState('profil')
+    const onChangePath = (e) => {
+        setPath(e)
+    }
+    useEffect(() => {
+        onChangePath(path)
+    }, [path])
 
     const authDispatch = useAuthDispatch();
 
@@ -57,17 +62,17 @@ export default function Index() {
             >
                 <Flex justifyContent="space-between" flexDirection="column" h="100%">
                     <OrderedList display="flex" flexDirection="column" m={0}>
-                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'profil' ? "#C4C6CB" : "transparent"} color="#39414F" onClick={() => setPath('profil')}>
-                            <Text mt="10px" fontSize="xl">Mon profil</Text>
+                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'profil' ? "#6B7383" : "transparent"} onClick={() => onChangePath('profil')}>
+                            <Text mt="10px" fontSize="xl" color={path === 'profil' ? "#E9E7E1" : "#39414f"}>Mon profil</Text>
                         </ListItem>
-                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'campus' ? "#C4C6CB" : "transparent"} color="#39414F" onClick={() => setPath('campus')}>
-                            <Text mt="10px" fontSize="xl">Mon campus</Text>
+                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'campus' ? "#6B7383" : "transparent"} onClick={() => onChangePath('campus')}>
+                            <Text mt="10px" fontSize="xl" color={path === 'campus' ? "#E9E7E1" : "#39414f"}>Mon campus</Text>
                         </ListItem>
-                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'status' ? "#C4C6CB" : "transparent"} color="#39414F" onClick={() => setPath('status')}>
-                            <Text mt="10px" fontSize="xl">Mon status</Text>
+                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'status' ? "#6B7383" : "transparent"} onClick={() => onChangePath('status')}>
+                            <Text mt="10px" fontSize="xl" color={path === 'status' ? "#E9E7E1" : "#39414f"}>Mon status</Text>
                         </ListItem>
-                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'parametre' ? "#C4C6CB" : "transparent"} color="#39414F" onClick={() => setPath('parametre')}>
-                            <Text mt="10px" fontSize="xl">Paramètre</Text>
+                        <ListItem textAlign="center" height="50px" cursor="pointer" backgroundColor={path === 'parametre' ? "#6B7383" : "transparent"} onClick={() => onChangePath('parametre')}>
+                            <Text mt="10px" fontSize="xl" color={path === 'parametre' ? "#E9E7E1" : "#39414f"}>Paramètre</Text>
                         </ListItem>
                     </OrderedList>
                     <OrderedList display="flex" flexDirection="column" m={0}>
@@ -94,7 +99,14 @@ export default function Index() {
                     </ModalContent>
                 </Modal>
             </Container>
-            <Container width={"75%"} display="flex" flexDirection="column" maxWidth="none">
+            <Container
+                width={"75%"}
+                display="flex"
+                flexDirection="column"
+                maxWidth="none"
+                bg="#6B7383"
+                justifyContent="center"
+                borderBottomRadius="10px">
                 {handleInformationBlock()}
             </Container>
         </>

@@ -59,7 +59,7 @@ export default function Users({ onCalling, stream }) {
 				<Container
 					display="flex"
 					justifyContent="space-between"
-					bg={selected ? "white" : ""}
+					bg={selected ? "#6B7383" : ""}
 					as="button"
 					p="3"
 					key={user.username}
@@ -78,13 +78,13 @@ export default function Users({ onCalling, stream }) {
 					>
 						<Circle size="70px" p={0} m={0}>
 							<Avatar loading="lazy" m={1} src={baseURL + user.imageUrl} >
-								<AvatarBadge borderColor={selected ? "white" : "#E9E7E1"} boxSize="0.80em" bg="green.500" />
+								<AvatarBadge borderColor={selected ? "#6B7383" : "#E9E7E1"} boxSize="0.80em" bg="green.500" />
 							</Avatar>
 						</Circle>
 						<Box display={{ base: "none", md: "block" }} alignSelf="center">
 							<Badge fontSize="xs" colorScheme="green">{user?.role}</Badge>
-							<Text fontWeight="600" color="#39414f" textAlign="left">{user.username} - {user.campus}</Text>
-							<Text fontStyle="italic" fontWeight="thin" textAlign="left">
+							<Text fontWeight="600" color={selected ? "#E9E7E1" : "#39414f"} textAlign="left">{user.username} - {user.campus}</Text>
+							<Text fontStyle="italic" color={selected ? "#E9E7E1" : "#39414f"} fontWeight="thin" textAlign="left">
 								{user?.latestMessage?.content}
 							</Text>
 						</Box>
@@ -92,11 +92,11 @@ export default function Users({ onCalling, stream }) {
 					</Box>
 					<Box display="flex" alignSelf="center">
 						{!stream ? (
-							<Button onClick={() => handleCall(user.username)} _focus="none" bg={!selected ? "white" : "#39414f"} color={selected ? "white" : "#39414f"}>
+							<Button onClick={() => handleCall(user.username)} _focus="none" bg={selected ? "#E9E7E1" : "#39414f"} _hover={{ bg: "#4FD963" }} color={selected ? "#39414f" : "#E9E7E1"}>
 								<PhoneIcon />
 							</Button>
 						) : (
-							<Button onClick={() => onCalling(false)} _focus="none" bg={"#39414f"} color={"white"}>
+							<Button onClick={() => onCalling(false)} _focus="none" bg={"#39414f"} color={"red"}>
 								<AddIcon />
 							</Button>
 						)}
@@ -111,8 +111,7 @@ export default function Users({ onCalling, stream }) {
 			borderBottomLeftRadius="10px"
 			m={0}
 			p={0}
-			backgroundColor="rgba(244,239,230,0.8)"
-			color="#39414F"
+			backgroundColor="#E9E7E1"
 			css={{
 				overflowX: "scroll",
 				"&::-webkit-scrollbar": {

@@ -1900,6 +1900,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fontsource/poppins@^4.4.2":
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/poppins/-/poppins-4.4.2.tgz#4fc2cacf19e4388402f6a0271e39b1dfed867f73"
+  integrity sha512-0Y+lmZTq3Hq87KoPJzzzRpCXqb8yBc0Peh41cg75B+bxTscvSgVnUKLBZQjpRVururT+rPhNswdfYWMuzF7t8A==
+
 "@graphql-typed-document-node/core@^3.0.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.0.tgz#0eee6373e11418bfe0b5638f654df7a4ca6a3950"

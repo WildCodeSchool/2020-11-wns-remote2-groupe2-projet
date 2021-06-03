@@ -20,14 +20,14 @@ export default function Header() {
             m={3}>
             <Flex>
                 <Box>
-                    <Text fontWeight="bold" color="white">
+                    <Text fontWeight="bold" color="#39414f">
                         {user?.username}
                     </Text>
-                    <Text fontSize="sm" color="white">{user?.campus}</Text>
+                    <Text fontSize="sm" color="#39414f">{user?.campus}</Text>
                 </Box>
 
                 <Avatar loading="eager" m={1} src={baseURL + user?.imageUrl} >
-                    <AvatarBadge borderColor="#39414f" boxSize="0.80em" bg="green.500" />
+                    <AvatarBadge borderColor="transparent" boxSize="0" bg="green.500" />
                 </Avatar>
             </Flex>
         </Box>
