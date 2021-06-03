@@ -9,12 +9,14 @@ import { FormControl } from '@chakra-ui/form-control';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/input';
 import { Select } from '@chakra-ui/select';
 import { useToast } from '@chakra-ui/toast';
-import { LockIcon, InfoIcon, AtSignIcon } from "@chakra-ui/icons";
+import { InfoIcon, AtSignIcon } from "@chakra-ui/icons";
 import { campusList } from '../../refs/enum/campusList'
 import { rolesList } from '../../refs/enum/rolesList'
 
 export default function MyProfil(props) {
     const { user } = useMessageState();
+
+    const baseURL = process.env.REACT_APP_BASE_URL || "";
 
     useEffect(() => {
         setData(user)
@@ -23,25 +25,30 @@ export default function MyProfil(props) {
 
     const toast = useToast()
 
-    const baseURL = process.env.REACT_APP_BASE_URL || "";
 
     const [data, setData] = useState(null)
     const [errors, setErrors] = useState({});
     const [imagePreview, setImagePreview] = useState(null);
     const [variables, setVariables] = useState({
-        campus: "",
-        role: "",
-        imageUrl: "",
+        username: user?.username,
+        email: user?.email,
+        campus: user?.campus,
+        role: user?.role,
+        imageUrl: user?.imageUrl,
     });
 
     console.table("RESULT", data)
     const UPDATE_USER = gql`
 	mutation update(
+        $username: String!
+        $email: String
         $campus: String!
         $role: String!
 		$imageUrl: Upload
 	) {
 		update(
+            username: $username
+            email: $email
             campus: $campus
             role: $role
 			imageUrl: $imageUrl
@@ -50,7 +57,6 @@ export default function MyProfil(props) {
 			email
             campus
             role
-			createdAt
 			imageUrl
 		}
 	}

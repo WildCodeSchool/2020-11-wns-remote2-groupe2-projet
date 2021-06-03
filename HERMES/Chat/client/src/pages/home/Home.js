@@ -151,7 +151,7 @@ export default function Home({ history }) {
 				<TabPanels>
 					<TabPanel p={0}>
 						<Box height="3rem" display="flex" bg="#E9E7E1">
-							<Heading fontSize="2xl" mt="10px" ml="2rem" fontWeight="600">Chat</Heading>
+							<Heading fontSize="2xl" mt="10px" ml="2rem" fontWeight="600">Hermes</Heading>
 						</Box>
 						<Box
 							bg="#6B7383"

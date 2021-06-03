@@ -12,6 +12,8 @@ module.exports = gql`
     latestMessage: Message
   }
   type updatedUser {
+    username: String!
+    email: String
     campus: String!
     role: String!
     imageUrl: String!
@@ -48,6 +50,8 @@ module.exports = gql`
       imageUrl: Upload!
     ): User!
     update(
+      username: String!
+      email: String
       campus: String!
       role: String!
       imageUrl: Upload!

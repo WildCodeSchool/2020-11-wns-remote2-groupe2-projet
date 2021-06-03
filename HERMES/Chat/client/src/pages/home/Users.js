@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Container, Box, Text, Circle, Avatar, AvatarBadge, Badge, Button, useAccordionDescendantsContext } from "@chakra-ui/react";
+import { Container, Box, Text, Circle, Avatar, AvatarBadge, Badge, Button, useAccordionDescendantsContext, SkeletonCircle, SkeletonText, Stack } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
 import { AddIcon, PhoneIcon } from '@chakra-ui/icons'
 import { SocketContext } from "../../context/socketContext";
@@ -48,7 +48,14 @@ export default function Users({ onCalling, stream }) {
 
 	let usersMarkup;
 	if (!users || loading) {
-		usersMarkup = <p>Loading..</p>;
+		usersMarkup = <Box>
+			<Stack m={5} spacing={8} display="flex" flexDirection="column">
+				<SkeletonCircle size="10" />
+				<SkeletonText noOfLines={2} spacing="4" />
+				<SkeletonCircle size="10" />
+				<SkeletonText noOfLines={2} spacing="4" />
+			</Stack>
+		</Box>
 	} else if (users.length === 0) {
 		usersMarkup = <p>Aucun utilisateur pour le moment !</p>;
 	} else if (users.length > 0) {
