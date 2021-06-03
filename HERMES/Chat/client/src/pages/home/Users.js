@@ -49,11 +49,11 @@ export default function Users({ onCalling, stream }) {
 	let usersMarkup;
 	if (!users || loading) {
 		usersMarkup = <Box>
-			<Stack m={5} spacing={8} display="flex" flexDirection="column">
+			<Stack m={4} spacing={6} display="flex" flexDirection="column">
 				<SkeletonCircle size="10" />
-				<SkeletonText noOfLines={2} spacing="4" />
+				<SkeletonText noOfLines={2} spacing="2" />
 				<SkeletonCircle size="10" />
-				<SkeletonText noOfLines={2} spacing="4" />
+				<SkeletonText noOfLines={2} spacing="2" />
 			</Stack>
 		</Box>
 	} else if (users.length === 0) {
