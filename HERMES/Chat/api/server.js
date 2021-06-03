@@ -9,8 +9,6 @@ const contextMiddleware = require("./utils/contextMiddleware");
 const app = express()
 const socket = require("socket.io");
 const httpServer = http.createServer(app);
-const nodemailer = require('nodemailer');
-const mailParticipationApproved = require('./mail/template')
 const io = socket(httpServer, {
   cors: {
     origin: "*",
@@ -36,32 +34,6 @@ async function startApolloServer() {
   app.use(express.urlencoded({
     extended: true
   }))
-
-  // Send mail service
-  app.post('/send', async (req, res) => {
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
-      }, tls: {
-        rejectUnauthorized: false
-      }
-    });
-
-    await transporter.sendMail({
-      from: 'me',
-      to: process.env.MAIL_USER,
-      subject: 'Hermes - WildCodeSchool | Demande/Support',
-      html: mailParticipationApproved({
-        sujet: req.body.sujet,
-        message: req.body.message,
-      }),
-    });
-    res.status(200);
-  });
 
   server.applyMiddleware({ app })
   server.installSubscriptionHandlers(httpServer)

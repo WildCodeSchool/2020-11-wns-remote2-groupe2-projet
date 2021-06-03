@@ -33,6 +33,12 @@ module.exports = gql`
     message: Message!
     user: User!
   }
+  type Mail {
+    from: String
+    name: String!
+    subject: String!
+    message: String!
+  }
   type Query {
     getUsers: [User]!
     getMe: User!
@@ -49,6 +55,12 @@ module.exports = gql`
       confirmPassword: String!
       imageUrl: Upload!
     ): User!
+    sendMail(
+      from: String
+      name: String!
+      subject: String!
+      message: String!
+    ): Mail!
     update(
       username: String!
       email: String
