@@ -66,13 +66,8 @@ const GET_ME = gql`
 export default function Home({ history }) {
 	const messageDispatch = useMessageDispatch();
 	const dispatch = useMessageDispatch();
-	const {
-		stream, setStream
-	} = useContext(SocketContext)
+	const { stream } = useContext(SocketContext)
 
-	const onCalling = () => {
-		setStream(false)
-	}
 
 	const { user } = useMessageState();
 	const { loading } = useQuery(GET_ME, {
@@ -156,10 +151,10 @@ export default function Home({ history }) {
 						<Box
 							bg="#6B7383"
 							display="flex"
-							height="85vh"
+							height="75vh"
 							borderBottomRadius="10px"
 						>
-							<Users onCalling={onCalling} stream={stream} />
+							<Users stream={stream} />
 							{stream &&
 								<OnCall />}
 							<Messages stream={stream} />
@@ -172,7 +167,7 @@ export default function Home({ history }) {
 						<Box
 							bg="rgba(255, 255, 255, 0.7)"
 							display="flex"
-							height="85vh"
+							height="75vh"
 							borderBottomRadius="10px"
 						>
 						</Box>
@@ -184,7 +179,7 @@ export default function Home({ history }) {
 						<Box
 							bg="rgba(255, 255, 255, 0.7)"
 							display="flex"
-							height="85vh"
+							height="75vh"
 							borderBottomRadius="10px"
 						>
 						</Box>
@@ -196,7 +191,7 @@ export default function Home({ history }) {
 						<Box
 							bg="rgba(255, 255, 255, 0.7)"
 							display="flex"
-							height="85vh"
+							height="75vh"
 							borderBottomRadius="10px"
 						>
 							<Index />

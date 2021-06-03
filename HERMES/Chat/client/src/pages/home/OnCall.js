@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { Box, Container, Button, Text } from '@chakra-ui/react';
+import { Box, Container, Button, Text, Progress } from '@chakra-ui/react';
 import { MdCall } from "react-icons/md"
 import { SocketContext } from '../../context/socketContext';
+import { SmallCloseIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 export default function OnCall() {
 
@@ -16,17 +17,30 @@ export default function OnCall() {
         user,
         LeaveCall,
         stream,
+        muteUnmute,
+        playStop,
+        micro,
+        video,
+        loading
     } = useContext(SocketContext)
 
     return (
         <Container width="40%" display="flex" flexDirection="column" border="1px" borderColor="#39404F">
             {stream && <video style={{ overflowY: "auto" }} playsInline muted ref={userVideo} autoPlay />}
             {(stream && !callAccepted) ? (
-                <Button bg="green.500" color="white" onClick={() => callPeer(user)} rightIcon={<MdCall />}>
-                    Appeler {caller}</Button>
+                <Box>
+                    {loading && <Progress size="lg" isIndeterminate />}
+                    <Button bg="green.500" color="white" onClick={() => callPeer(user)} rightIcon={<MdCall />}>Appeler {caller}</Button>
+                    <Button bg="purple" color="white" onClick={() => muteUnmute()} rightIcon={<SmallCloseIcon />}>{micro ? "Fermer micro" : "Allumer micro"}</Button>
+                    <Button bg="brown" color="white" onClick={() => playStop()} rightIcon={video ? <ViewOffIcon /> : <ViewIcon />}>{video ? "Fermer caméra" : "Allumer caméra"}</Button>
+                </Box>
             ) : <video style={{ overflowY: "auto" }} playsInline muted ref={partnerVideo} autoPlay />}
 
-            {callAccepted && <Button bg="red.500" color="white" onClick={() => LeaveCall()} rightIcon={<MdCall />}>Raccrocher</Button>}
+            {callAccepted && (
+                <Box>
+                    <Button bg="red.500" color="white" onClick={() => LeaveCall()} rightIcon={<MdCall />}>Raccrocher</Button>
+                </Box>
+            )}
 
 
             {(receivingCall && !callAccepted) && (

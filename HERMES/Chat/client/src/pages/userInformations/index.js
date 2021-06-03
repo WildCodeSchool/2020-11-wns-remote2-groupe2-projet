@@ -68,7 +68,7 @@ export default function Index() {
                 <Flex justifyContent="space-between" flexDirection="column" h="100%">
                     <OrderedList display="flex" flexDirection="column" justifyContent={"center"} m={0}>
                         <ListItem textAlign="center" height="50px" cursor="pointer"
-                            backgroundColor={path === 'profil' ? "#C4C6CB" : "transparent"} color="#39414F"
+                            backgroundColor={path === 'profil' ? "#6B7383" : "transparent"} color={path === 'profil' ? "#E9E7E1" : "#39414F"}
                             onClick={() => onChangePath('profil')}>
                             <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
                                 <Image src={User} alt="user"
@@ -81,7 +81,7 @@ export default function Index() {
                         </ListItem>
 
                         <ListItem textAlign="center" height="50px" cursor="pointer"
-                            backgroundColor={path === 'contact' ? "#C4C6CB" : "transparent"} color="#39414F"
+                            backgroundColor={path === 'contact' ? "#6B7383" : "transparent"} color={path === 'contact' ? "#E9E7E1" : "#39414F"}
                             onClick={() => onChangePath('contact')}>
                             <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
                                 <Image src={Email} alt="user"
@@ -94,7 +94,7 @@ export default function Index() {
                         </ListItem>
 
                         <ListItem textAlign="center" height="50px" cursor="pointer"
-                            backgroundColor={path === 'parametre' ? "#C4C6CB" : "transparent"} color="#39414F"
+                            backgroundColor={path === 'parametre' ? "#6B7383" : "transparent"} color={path === 'parametre' ? "#E9E7E1" : "#39414F"}
                             onClick={() => onChangePath('parametre')}>
                             <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
                                 <Image src={Parametre} alt="user"
