@@ -2,48 +2,53 @@ import React, { useState, useEffect } from 'react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Button } from '@chakra-ui/button';
 import { Container, Stack, Text } from '@chakra-ui/layout';
-import { useMessageState } from '../../context/message';
 import gql from 'graphql-tag';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { FormControl } from '@chakra-ui/form-control';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/input';
 import { Select } from '@chakra-ui/select';
 import { useToast } from '@chakra-ui/toast';
 import { InfoIcon, AtSignIcon } from '@chakra-ui/icons';
 import { campusList } from '../../refs/enum/campusList';
-import { rolesList } from '../../refs/enum/rolesList';
 import { Heading } from '@chakra-ui/react';
 
 export default function MyProfil(props) {
-	const { user } = useMessageState();
 
 	const baseURL = process.env.REACT_APP_BASE_URL || '';
 
+	const GET_ME = gql`
+	query getMe {
+		getMe {
+			username
+			campus
+			role
+			email
+			imageUrl
+		}
+	}
+`;
+	const { _, __, data } = useQuery(GET_ME)
+
 	useEffect(() => {
-		setData(user);
-		setImagePreview(baseURL + user?.imageUrl);
-	}, [user]);
+
+	})
 
 	const toast = useToast();
-
-	const [data, setData] = useState(null);
 	const [errors, setErrors] = useState({});
 	const [imagePreview, setImagePreview] = useState(null);
 	const [variables, setVariables] = useState({
-		username: user?.username,
-		email: user?.email,
-		campus: user?.campus,
-		role: user?.role,
-		imageUrl: user?.imageUrl
+		email: data?.getMe.email,
+		campus: data?.getMe.campus,
+		imageUrl: data?.getMe.imageUrl
 	});
 
+
+
 	const UPDATE_USER = gql`
-		mutation update($username: String!, $email: String, $campus: String!, $role: String!, $imageUrl: Upload) {
-			update(username: $username, email: $email, campus: $campus, role: $role, imageUrl: $imageUrl) {
-				username
+		mutation updateUser( $email: String, $campus: String!, $imageUrl: Upload!) {
+			update(email: $email, campus: $campus,imageUrl: $imageUrl) {
 				email
 				campus
-				role
 				imageUrl
 			}
 		}
@@ -53,9 +58,13 @@ export default function MyProfil(props) {
 		onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors)
 	});
 
+
+	console.log("data", data?.getMe)
+
 	const getImagePreview = (e) => {
 		setImagePreview(false);
 		setVariables({ ...variables, imageUrl: e.target.files[0] });
+		console.log("variables", variables)
 		if (e.target.files && e.target.files.length !== 0) {
 			if (e.target.files[0].type === 'image/jpeg' || e.target.files[0].type === 'image/png') {
 				const reader = new FileReader();
@@ -90,7 +99,6 @@ export default function MyProfil(props) {
 					<Stack spacing={5} justifyContent="center" alignItems="center">
 						<FormControl
 							isRequired
-							value={variables.username}
 							onChange={(e) => setVariables({ ...variables, username: e.target.value })}
 							justifyContent="center"
 							alignItems="center"
@@ -98,25 +106,18 @@ export default function MyProfil(props) {
 							<InputGroup>
 								<InputLeftElement children={<InfoIcon />} />
 								<Input
-									defaultValue={user?.username}
 									isInvalid={errors.username}
 									type="name"
 									placeholder="Identifiant"
 									aria-label="Username"
 									bg={'#E9E7E1'}
-									value={user?.username}
+									value={data?.getMe.username}
 									isDisabled={true}
 								/>
 							</InputGroup>
-							{errors.username && (
-								<Text fontSize="13px" color="tomato">
-									Nom d'utilisateur déjà pris
-								</Text>
-							)}
 						</FormControl>
 						<FormControl
 							isRequired
-							value={variables.email}
 							onChange={(e) => setVariables({ ...variables, email: e.target.value })}
 							justifyContent="center"
 							alignItems="center"
@@ -124,7 +125,7 @@ export default function MyProfil(props) {
 							<InputGroup>
 								<InputLeftElement children={<AtSignIcon />} />
 								<Input
-									defaultValue={user?.email}
+									defaultValue={variables.email}
 									isInvalid={errors.email}
 									type="email"
 									placeholder="Adresse email"
@@ -140,17 +141,16 @@ export default function MyProfil(props) {
 						</FormControl>
 						<FormControl
 							isRequired
-							value={variables.campus}
 							onChange={(e) => setVariables({ ...variables, campus: e.target.value })}
 							justifyContent="center"
 							alignItems="center"
 						>
 							<InputGroup>
 								<Select
-									value={variables.campus}
+									defaultValue={variables.campus}
 									isInvalid={errors.campus}
 									type="campus"
-									placeholder={user?.campus}
+									placeholder={variables.campus}
 									aria-label="campus"
 									bg={'#E9E7E1'}
 								>
@@ -162,23 +162,20 @@ export default function MyProfil(props) {
 						</FormControl>
 						<FormControl
 							isRequired
-							value={variables.role}
 							onChange={(e) => setVariables({ ...variables, role: e.target.value })}
 							justifyContent="center"
 							alignItems="center"
 						>
 							<InputGroup>
 								<Select
-									value={variables.role}
+									value={data?.getMe.role}
 									isInvalid={errors.role}
 									type="role"
-									placeholder={user?.role}
+									placeholder={data?.getMe.role}
 									aria-label="role"
 									bg={'#E9E7E1'}
+									isDisabled={true}
 								>
-									{rolesList.map((role) => (
-										<option value={role.value}>{role.name}</option>
-									))}
 								</Select>
 							</InputGroup>
 						</FormControl>
