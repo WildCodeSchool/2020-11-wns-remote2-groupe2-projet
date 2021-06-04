@@ -47,29 +47,33 @@ export default function Message({ message }) {
 
   const reactButton = (
     <>
-      <Popover
-        closeOnBlur={false}
-        transition={false}
-        rootClose
-        placement="top"
-        initialFocusRef={initRef}
-      >
-        {({ isOpen, onClose }) => (
+      <Popover isLazy rootClose placement="top" initialFocusRef={initRef}>
+        {({ showPopover, setShowPopover }) => (
           <>
             <PopoverTrigger>
-              <Button size="md" height="auto" width="10%">
-                {" "}
-                {isOpen ? "😊" : "😊"}
+              <Button
+                variant="link"
+                size="md"
+                height="auto"
+                width="10%"
+                border="1px"
+                borderRadius="30px"
+              >
+                {showPopover ? "😊" : "😊"}
               </Button>
             </PopoverTrigger>
             <Portal>
               <PopoverContent>
                 <PopoverCloseButton />
-                <PopoverBody>
+                <PopoverBody
+                  borderRadius="30px"
+                  paddingTop="0"
+                  paddingBottom="0"
+                >
                   <PopoverArrow />
                   {reactions.map((reaction) => (
                     <Button
-                      variant="link"
+                      variant="unstyled"
                       className="react-icon-button"
                       key={reaction}
                       onClick={() => react(reaction)}
