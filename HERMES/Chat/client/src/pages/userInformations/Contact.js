@@ -14,10 +14,6 @@ function Contact() {
         message: "",
     });
 
-
-
-    console.log(user)
-
     const SEND_MAIL = gql`
 	mutation sendMail(
         $from: String

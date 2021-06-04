@@ -1,115 +1,101 @@
-module.exports = ({ sujet, message }) => {
+module.exports = ({sujet, message}) => {
     const mail = `
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-        <html xmlns:v="urn:schemas-microsoft-com:vml ">
-          <head>
-            <meta 
-              http-equiv="content-type" 
-              content="text/html; charset=utf-8" 
-            />
-            <meta
-              name="viewport"
-              content="width=device-width; initial-scale=1.0; maximum-scale=1.0"
-            />
-            <link 
-              rel="stylesheet"
-              href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&display=swap" 
-              type='text/css'
-            />
-          </head>
-          <body 
-            leftmargin="0" 
-            topmargin="0" 
-            marginwith="0" 
-            marginheight="0" 
-            style="
-              font-family: 'Roboto Condensed', sans-serif; 
-              font-size: 16px;
-              width:100%;
-              max-width: 800px;
-            "
-          >
-            <table 
-              style="
-                border: 0; 
-                border-top: 20px solid #dc554f; 
-                background-color: #f05d58;
-                width: 100%;
-                height: auto;
-                padding: 20px;
-              "
-              cellpadding="0" 
-              cellspacing="0"
-            >
-              <tbody
-                style="text-align: center;" 
-              >
-                <tr> 
-                  <td> 
-                    <a 
-                      href="https://rosebud.website"
-                      target="_blank"
-                    >
-                      <img 
-                        style="width: 100%; max-width: 240px;"
-                        src="https://i.ibb.co/zHTd7QL/logo.png" 
-                        alt="logo" 
-                        border="0"
-                      />
-                    </a>
-                  </td>
+      <!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Un nouveau message pour vous Hermes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        body {
+            width: 600px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        table {
+            border: none;
+        }
+
+        td {
+            color: #00205A;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        #header {
+            background-color: #39414f;
+        }
+
+        .logo {
+            width: 38%;
+            height: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .metiers {
+            padding: 0 5px 0 5px !important;
+        }
+    </style>
+</head>
+
+<body style="width:600px; margin: 0 auto; padding: 0;">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+        <td>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: none;">
+                <tr id="header" bgcolor="#00205A"
+                    background='#39414f'
+                >
+                    <td align="center"
+                        style="text-align:center;padding:30px 0 30px 0; color: #FFFFFF; font-size: 19px; font-weight: bold; font-family: Arial, sans-serif;text-shadow: 2px 2px 2px #000000;">
+
+                        <p style="text-align: center;"><img class="logo"
+                                                            src="https://i.imgur.com/POGFL6I.png"
+                                                            width="38%" height="100%"
+                                                            style="width: 38%; height:100%; display:block; padding: 10px 0 0 0!important;">
+                        </p>
+                    </td>
                 </tr>
-              </tbody>
-            </table>
-            <table 
-              style="
-                border: 0; 
-                border-top: 20px solid #d1d1c2; 
-                background-color: #DDDDCD;
-                width:100%;
-                height: auto;
-                padding: 40px;
-              " 
-              cellpadding="0" 
-              cellspacing="0"
-            >
-            </table>
-            <h1>${sujet}</h1>
-            <h2>${message}</h2>
-            <table 
-              style="
-              border: 0; 
-              border-top: 20px solid #3f3f3e; 
-              background-color: #363635;
-              width:100%;
-              height: auto;
-              padding: 20px 40px;
-            " 
-              cellpadding="0" 
-              cellspacing="0"
-            >
-              <tbody
-                style="text-align: center"
-              >
-                <tr>  
-                  <td
-                  >
-                    <a 
-                      href="https://ciclic.fr/" 
-                      target="_blank"
-                    >
-                      <img 
-                        height="40px" 
-                        width="auto" 
-                        alt="Ciclic" 
-                        src="https://ciclic.fr/sites/all/themes/tssks/img/logo-footer.png"
-                      />
-                    </a>
-                  </td>
+                <tr style="background-color: #e9e7e1;">
+                    <td style="padding: 20px 16px 20px 16px;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr>
+                                <td>
+                                <h1>${sujet}</h1>
+                                <h2>${message}</h2>
+                                </td>
+                            </tr>
+
+
+
+                <tr>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                           style="background-color: #f47173; padding: 20px 30px">
+                        <tr>
+                            <td width="38%" align="center">
+                                <img class="logo"
+                                     src="https://i.imgur.com/7iXYgAI.png"
+                                     width="38%" height="100px"
+                                     style="width: 38%; height:100px; object-fit: cover; display:block; ">
+                            </td>
+
+                        </tr>
+                    </table>
                 </tr>
-              </tbody>
             </table>
-          </body>
-        </html>`;
+        </td>
+    </tr>
+</table>
+
+</body>
+
+</html>`;
     return mail;
 };
