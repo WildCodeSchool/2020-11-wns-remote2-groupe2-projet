@@ -8,7 +8,6 @@ import {
   PopoverContent,
   PopoverBody,
   PopoverArrow,
-  PopoverCloseButton,
   Portal,
   Button,
   Tooltip,
@@ -47,7 +46,7 @@ export default function Message({ message }) {
 
   const reactButton = (
     <>
-      <Popover isLazy rootClose placement="top" initialFocusRef={initRef}>
+      <Popover isLazy placement="top" initialFocusRef={initRef}>
         {({ showPopover, setShowPopover }) => (
           <>
             <PopoverTrigger>
@@ -64,7 +63,6 @@ export default function Message({ message }) {
             </PopoverTrigger>
             <Portal>
               <PopoverContent>
-                <PopoverCloseButton />
                 <PopoverBody
                   borderRadius="30px"
                   paddingTop="0"
@@ -100,6 +98,7 @@ export default function Message({ message }) {
         data-aos={sent ? "fade-left" : "fade-right"}
       >
         {sent && reactButton}
+
         <Popover
           placement={!sent ? "right" : "left"}
           overlay={
