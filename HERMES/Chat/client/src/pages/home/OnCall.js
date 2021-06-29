@@ -29,8 +29,7 @@ export default function OnCall() {
             {stream && <video style={{ overflowY: "auto" }} playsInline muted ref={userVideo} autoPlay />}
             {(stream && !callAccepted) ? (
                 <Box>
-                    {loading && <Progress size="lg" isIndeterminate />}
-                    <Button bg="green.500" color="white" onClick={() => callPeer(user)} rightIcon={<MdCall />}>Appeler {caller}</Button>
+                    <Button isLoading={loading} bg="green.500" color="white" onClick={() => callPeer(user)} rightIcon={<MdCall />}>{loading ? "En cours…" : "Appeler"}</Button>
                     <Button bg="purple" color="white" onClick={() => muteUnmute()} rightIcon={<SmallCloseIcon />}>{micro ? "Fermer micro" : "Allumer micro"}</Button>
                     <Button bg="brown" color="white" onClick={() => playStop()} rightIcon={video ? <ViewOffIcon /> : <ViewIcon />}>{video ? "Fermer caméra" : "Allumer caméra"}</Button>
                 </Box>

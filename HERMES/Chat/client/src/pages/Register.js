@@ -3,6 +3,7 @@ import { gql, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import Logo from "../img/hermes1.png";
 import LaptopImage from "../img/image-sub.svg";
+import { useBreakpointValue } from '@chakra-ui/media-query'
 import {
     Box,
     Flex,
@@ -54,6 +55,7 @@ const REGISTER_USER = gql`
 `;
 
 export default function Register(props) {
+    const avatarSize = useBreakpointValue({ base: "sm", sm: "md" })
     const toast = useToast()
     const [errors, setErrors] = useState({});
     const [imagePreview, setImagePreview] = useState(false);
@@ -108,16 +110,16 @@ export default function Register(props) {
 
     return (
         <Flex
-            flexDirection="row"
             justifyContent="center"
             maxW="100vw"
             height="fit-content"
-            position="absolute"
-            top="10%"
-            w="100%">
+            w="100%"
+            flexDirection={{ base: "column", md: "row" }}
+            alignItems={{ base: "center" }}
+            p={{ base: "0", md: "4rem" }}>
             <Flex flexDirection="column" alignItems="center" w="70%">
                 <Image src={Logo} alt="logo hermes" width="50%" />
-                <Image src={LaptopImage} alt="laptop image" width="65%" />
+                <Image display={{ base: "none", md: "flex" }} src={LaptopImage} alt="laptop image" width="65%" />
             </Flex>
             <SimpleGrid
                 display="flex"
@@ -306,6 +308,7 @@ export default function Register(props) {
                                         <Text color="#39414f">{"Charger une image de profil"}</Text>
                                     </Button>
                                     <Avatar
+                                        size={avatarSize}
                                         loading="eager"
                                         w="50px"
                                         h="50px"

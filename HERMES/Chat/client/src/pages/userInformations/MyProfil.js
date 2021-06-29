@@ -3,7 +3,7 @@ import { Avatar } from '@chakra-ui/avatar';
 import { Button } from '@chakra-ui/button';
 import { Container, Stack, Text } from '@chakra-ui/layout';
 import gql from 'graphql-tag';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { FormControl } from '@chakra-ui/form-control';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/input';
 import { Select } from '@chakra-ui/select';
@@ -11,32 +11,23 @@ import { useToast } from '@chakra-ui/toast';
 import { InfoIcon, AtSignIcon } from '@chakra-ui/icons';
 import { campusList } from '../../refs/enum/campusList';
 import { Heading } from '@chakra-ui/react';
+import { useBreakpointValue } from '@chakra-ui/media-query'
 
-export default function MyProfil(props) {
+export default function MyProfil({ user }) {
+	const avatarSize = useBreakpointValue({ base: "sm", sm: "md" })
 
 	const baseURL = process.env.REACT_APP_BASE_URL || '';
-
-	const GET_ME = gql`
-	query getMe {
-		getMe {
-			username
-			campus
-			role
-			email
-			imageUrl
-		}
-	}
-`;
-	const { data, refetch } = useQuery(GET_ME)
 
 	const toast = useToast();
 	const [errors, setErrors] = useState({});
 	const [imagePreview, setImagePreview] = useState(null);
 	const [variables, setVariables] = useState({
-		email: data?.getMe.email,
-		campus: data?.getMe.campus,
+		email: "",
+		campus: "",
 		imageUrl: imagePreview
 	});
+
+	console.log(user)
 
 
 
@@ -81,7 +72,6 @@ export default function MyProfil(props) {
 				duration: 5000,
 				isClosable: true
 			});
-			refetch()
 		}
 	};
 
@@ -105,7 +95,7 @@ export default function MyProfil(props) {
 									placeholder="Identifiant"
 									aria-label="Username"
 									bg={'white'}
-									value={data?.getMe.username}
+									defaultValue={user?.username}
 									isDisabled={true}
 									color="#39414F"
 								/>
@@ -120,7 +110,7 @@ export default function MyProfil(props) {
 							<InputGroup>
 								<InputLeftElement children={<AtSignIcon color="#39414F" />} />
 								<Input
-									defaultValue={data?.getMe.email}
+									defaultValue={user?.email}
 									isInvalid={errors.email}
 									type="email"
 									placeholder="Adresse email"
@@ -143,10 +133,9 @@ export default function MyProfil(props) {
 						>
 							<InputGroup>
 								<Select
-									defaultValue={variables.campus}
+									placeholder={user?.campus}
 									isInvalid={errors.campus}
 									type="campus"
-									placeholder={variables.campus}
 									aria-label="campus"
 									bg={'white'}
 									color="#39414F"
@@ -165,10 +154,9 @@ export default function MyProfil(props) {
 						>
 							<InputGroup>
 								<Select
-									value={data?.getMe.role}
+									placeholder={user?.role}
 									isInvalid={errors.role}
 									type="role"
-									placeholder={data?.getMe.role}
 									aria-label="role"
 									bg={'white'}
 									isDisabled={true}
@@ -178,7 +166,7 @@ export default function MyProfil(props) {
 							</InputGroup>
 						</FormControl>
 						<FormControl onChange={getImagePreview} justifyContent="center" alignItems="center">
-							<InputGroup>
+							<InputGroup display="flex" flexDirection={{ base: "column", md: "row" }} alignItems="center"  >
 								<Button alignSelf="center" bg={'white'}>
 									<Input
 										type="file"
@@ -194,13 +182,12 @@ export default function MyProfil(props) {
 									<Text color="#39414F">{"Changer d'image de profil"}</Text>
 								</Button>
 								<Avatar
+									size={avatarSize}
 									loading="eager"
-									w="50px"
-									h="50px"
 									objectFit="cover"
 									borderRadius="50%"
 									m={1}
-									src={baseURL + data?.getMe.imageUrl}
+									// src={baseURL + data?.getMe.imageUrl}
 									alt="Preview"
 								/>
 							</InputGroup>

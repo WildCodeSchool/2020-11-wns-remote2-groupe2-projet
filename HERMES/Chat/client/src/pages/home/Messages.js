@@ -136,7 +136,9 @@ export default function Messages({ stream }) {
 								},
 							}}
 							type="text"
-							placeholder="Entrer un message .."
+							color="#39414f"
+							placeholder="Entrer un message…"
+							_placeholder={{ color: "#39414f", opacity: "0.5" }}
 							value={content}
 							onChange={(e) => setContent(e.target.value)}
 						/>

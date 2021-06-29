@@ -57,11 +57,16 @@ export default function Register(props) {
 	return (
 		<Box>
 			<Flex
-				flexDirection="column"
-				justifyContent="stretch"
+				justifyContent="center"
 				maxW="100vw"
-				minHeight="100vh">
-				<Image alignSelf="center" fallback={<Spinner size="lg" m={1} />} src={Logo} alt="logo hermes" width="30%" mt="5%" />
+				height="fit-content"
+				w="100%"
+				flexDirection="column"
+				alignItems={{ base: "center" }}
+				p={{ base: "0", md: "4rem" }}>
+				<Flex flexDirection="column" alignItems="center" w="70%">
+					<Image fallback={<Spinner size="lg" />} src={Logo} alt="logo hermes" width="50%" />
+				</Flex>
 				<SimpleGrid
 					display="flex"
 					flexDirection="column"
@@ -74,16 +79,16 @@ export default function Register(props) {
 					px={5}
 					pb={5}
 					bg="rgba(255, 255, 255, 0.8)"
-					minW="300px"
+					minW="fit-content"
 					zIndex="10"
+					w="25%"
 				>
 					<Text textAlign="center" fontSize="3xl" fontWeight="600" color="#39414f" my={5}>Connexion</Text>
 					<form onSubmit={submitLoginForm}>
 						<Stack
 							spacing={5}
 							justifyContent="center"
-							alignItems="center"
-							minW="340px">
+							alignItems="center">
 							<FormControl
 								isRequired
 								value={variables.username}

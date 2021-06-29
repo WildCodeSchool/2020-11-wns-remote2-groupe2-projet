@@ -133,12 +133,12 @@ export default function Home({ history }) {
 			<Tabs variant="enclosed" pt={5} maxW="1500px" m="auto">
 				<TabList display="flex" justifyContent="space-between">
 					<Box display="flex">
-						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" w="9vw"><ChatIcon w={5} h={5} /></Tab>
-						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" w="9vw"><CalendarIcon w={5} h={5} /></Tab>
-						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" w="9vw"><AttachmentIcon w={5} h={5} /></Tab>
+						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" ><ChatIcon w={5} h={5} /></Tab>
+						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" ><CalendarIcon w={5} h={5} /></Tab>
+						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" ><AttachmentIcon w={5} h={5} /></Tab>
 					</Box>
-					<Box>
-						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="bold" w="9vw">
+					<Box display="flex">
+						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="bold" >
 							<Header />
 						</Tab>
 					</Box>
@@ -194,7 +194,7 @@ export default function Home({ history }) {
 							height="75vh"
 							borderBottomRadius="10px"
 						>
-							<Index />
+							<Index user={user} />
 						</Box>
 					</TabPanel>
 				</TabPanels>

@@ -11,7 +11,7 @@ import Email from "../../img/email.svg"
 import Parametre from "../../img/parametres.svg"
 import { Button } from '@chakra-ui/button'
 
-export default function Index() {
+export default function Index({ user }) {
 
     const [path, setPath] = useState('profil')
     const onChangePath = (e) => {
@@ -28,7 +28,7 @@ export default function Index() {
     const handleInformationBlock = () => {
         switch (path) {
             case 'profil':
-                return <MyProfil />
+                return <MyProfil user={user} />
 
 
             case 'contact':
@@ -92,14 +92,11 @@ export default function Index() {
                                 </Text>
                             </Box>
                         </ListItem>
-
                         <ListItem textAlign="center" height="50px" cursor="pointer"
                             backgroundColor={path === 'parametre' ? "#DDF3FE" : "transparent"} color="#39414F"
                             onClick={() => onChangePath('parametre')}>
                             <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
-                                <Image src={Parametre} alt="user"
-                                    maxWidth="25px"
-                                />
+                                <Image src={Parametre} alt="user" maxWidth="25px" />
                                 <Text fontSize="xl" display={{ base: "none", md: "flex" }} marginLeft="1rem">
                                     Paramètres
                                 </Text>
