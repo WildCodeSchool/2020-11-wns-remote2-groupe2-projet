@@ -133,23 +133,23 @@ export default function Home({ history }) {
 			<Tabs variant="enclosed" pt={5} maxW="1500px" m="auto">
 				<TabList display="flex" justifyContent="space-between">
 					<Box display="flex">
-						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="600" w="9vw"><ChatIcon w={5} h={5} /></Tab>
-						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="600" w="9vw"><CalendarIcon w={5} h={5} /></Tab>
-						<Tab _focus="none" color="white" _selected={{ color: "#39414f", bg: "#E9E7E1" }} fontWeight="600" w="9vw"><AttachmentIcon w={5} h={5} /></Tab>
+						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" w="9vw"><ChatIcon w={5} h={5} /></Tab>
+						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" w="9vw"><CalendarIcon w={5} h={5} /></Tab>
+						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" w="9vw"><AttachmentIcon w={5} h={5} /></Tab>
 					</Box>
 					<Box>
-						<Tab _focus="none" color="white" _selected={{ bg: "#E9E7E1" }} fontWeight="bold" w="9vw">
+						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="bold" w="9vw">
 							<Header />
 						</Tab>
 					</Box>
 				</TabList>
 				<TabPanels>
 					<TabPanel p={0}>
-						<Box height="3rem" display="flex" bg="#E9E7E1">
-							<Heading fontSize="2xl" mt="10px" ml="2rem" fontWeight="600">Hermes</Heading>
+						<Box height="3rem" display="flex" bg="rgba(255, 255, 255, 0.8)">
+							<Heading fontSize="2xl" mt="10px" ml="2rem" fontWeight="600" color="#39414f">Hermes</Heading>
 						</Box>
 						<Box
-							bg="#6B7383"
+							bg="rgba(255, 255, 255, 0.5)"
 							display="flex"
 							height="75vh"
 							borderBottomRadius="10px"
@@ -161,11 +161,11 @@ export default function Home({ history }) {
 						</Box>
 					</TabPanel>
 					<TabPanel p={0}>
-						<Box height="3rem" display="flex" bg="#E9E7E1">
-							<Heading fontSize="2xl" ml="2rem" mt="10px" fontWeight="600">Mon calendrier</Heading>
+						<Box height="3rem" display="flex" bg="rgba(255, 255, 255, 0.8)">
+							<Heading fontSize="2xl" ml="2rem" mt="10px" fontWeight="600" color="#39414f">Mon calendrier</Heading>
 						</Box>
 						<Box
-							bg="rgba(255, 255, 255, 0.7)"
+							bg="rgba(255, 255, 255, 0.8)"
 							display="flex"
 							height="75vh"
 							borderBottomRadius="10px"
@@ -173,11 +173,11 @@ export default function Home({ history }) {
 						</Box>
 					</TabPanel>
 					<TabPanel p={0}>
-						<Box height="3rem" display="flex" bg="#E9E7E1">
-							<Heading fontSize="2xl" ml="2rem" mt="10px" fontWeight="600">Mes fichiers</Heading>
+						<Box height="3rem" display="flex" bg="rgba(255, 255, 255, 0.8)">
+							<Heading fontSize="2xl" ml="2rem" mt="10px" fontWeight="600" color="#39414f">Mes fichiers</Heading>
 						</Box>
 						<Box
-							bg="rgba(255, 255, 255, 0.7)"
+							bg="rgba(255, 255, 255, 0.8)"
 							display="flex"
 							height="75vh"
 							borderBottomRadius="10px"
@@ -185,11 +185,11 @@ export default function Home({ history }) {
 						</Box>
 					</TabPanel>
 					<TabPanel p={0}>
-						<Box height="3rem" display="flex" bg="#E9E7E1">
-							<Heading fontSize="2xl" ml="2rem" mt="10px" fontWeight="600">Mon compte</Heading>
+						<Box height="3rem" display="flex" bg="rgba(255, 255, 255, 0.8)">
+							<Heading fontSize="2xl" ml="2rem" mt="10px" fontWeight="600" color="#39414f">Mon compte</Heading>
 						</Box>
 						<Box
-							bg="rgba(255, 255, 255, 0.7)"
+							bg="rgba(255, 255, 255, 0.8)"
 							display="flex"
 							height="75vh"
 							borderBottomRadius="10px"

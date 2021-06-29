@@ -6,7 +6,6 @@ import Home from "./pages/home/Home";
 import ApolloProvider from "./ApolloProvider";
 import { BrowserRouter, Switch } from "react-router-dom";
 import Footer from "./pages/home/Footer";
-
 import { AuthProvider } from "./context/auth";
 import { MessageProvider } from "./context/message";
 import DynamicRoute from "./util/DynamicRoute";
@@ -17,12 +16,11 @@ import page500 from "./pages/page500";
 function App() {
 	return (
 		<Container
+			position="relative"
 			maxW="100vw"
 			minHeight="100vh"
-			backgroundColor="#39414f"
-			display="flex"
-			flexDirection="column"
-			justifyContent="space-between"
+			p={0}
+			bg="#bae6fd"
 		>
 			<ApolloProvider>
 				<AuthProvider>

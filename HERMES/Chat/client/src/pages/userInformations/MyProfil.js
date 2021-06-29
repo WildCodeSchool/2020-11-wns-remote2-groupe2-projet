@@ -27,11 +27,7 @@ export default function MyProfil(props) {
 		}
 	}
 `;
-	const { _, __, data } = useQuery(GET_ME)
-
-	useEffect(() => {
-
-	})
+	const { data, refetch } = useQuery(GET_ME)
 
 	const toast = useToast();
 	const [errors, setErrors] = useState({});
@@ -39,7 +35,7 @@ export default function MyProfil(props) {
 	const [variables, setVariables] = useState({
 		email: data?.getMe.email,
 		campus: data?.getMe.campus,
-		imageUrl: data?.getMe.imageUrl
+		imageUrl: imagePreview
 	});
 
 
@@ -58,13 +54,10 @@ export default function MyProfil(props) {
 		onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors)
 	});
 
-
-	console.log("data", data?.getMe)
-
 	const getImagePreview = (e) => {
 		setImagePreview(false);
 		setVariables({ ...variables, imageUrl: e.target.files[0] });
-		console.log("variables", variables)
+
 		if (e.target.files && e.target.files.length !== 0) {
 			if (e.target.files[0].type === 'image/jpeg' || e.target.files[0].type === 'image/png') {
 				const reader = new FileReader();
@@ -79,21 +72,22 @@ export default function MyProfil(props) {
 	const submitUpdateUserInformations = async (e) => {
 		e.preventDefault();
 
-		await updateUser({ variables }).then((ok) => {
-			if (ok)
-				toast({
-					title: `Mon compte`,
-					description: 'Vos informations ont bien été mise à jour.',
-					status: 'success',
-					duration: 5000,
-					isClosable: true
-				});
-		});
+		const result = await updateUser({ variables })
+		if (result) {
+			toast({
+				title: `Mon compte`,
+				description: 'Vos informations ont bien été mise à jour.',
+				status: 'success',
+				duration: 5000,
+				isClosable: true
+			});
+			refetch()
+		}
 	};
 
 	return (
 		<Stack spacing="30px">
-			<Heading textAlign="center" color="#E9E7E1">Mes infos</Heading>
+			<Heading textAlign="center" color="#39414F">Mes infos</Heading>
 			<form onSubmit={submitUpdateUserInformations}>
 				<Container maxWidth="4xl" css={{ margin: '0 auto' }}>
 					<Stack spacing={5} justifyContent="center" alignItems="center">
@@ -104,15 +98,16 @@ export default function MyProfil(props) {
 							alignItems="center"
 						>
 							<InputGroup>
-								<InputLeftElement children={<InfoIcon />} />
+								<InputLeftElement children={<InfoIcon color="#39414F" />} />
 								<Input
 									isInvalid={errors.username}
 									type="name"
 									placeholder="Identifiant"
 									aria-label="Username"
-									bg={'#E9E7E1'}
+									bg={'white'}
 									value={data?.getMe.username}
 									isDisabled={true}
+									color="#39414F"
 								/>
 							</InputGroup>
 						</FormControl>
@@ -123,14 +118,15 @@ export default function MyProfil(props) {
 							alignItems="center"
 						>
 							<InputGroup>
-								<InputLeftElement children={<AtSignIcon />} />
+								<InputLeftElement children={<AtSignIcon color="#39414F" />} />
 								<Input
-									defaultValue={variables.email}
+									defaultValue={data?.getMe.email}
 									isInvalid={errors.email}
 									type="email"
 									placeholder="Adresse email"
 									aria-label="Email"
-									bg={'#E9E7E1'}
+									bg={'white'}
+									color="#39414F"
 								/>
 							</InputGroup>
 							{errors.email && (
@@ -152,7 +148,8 @@ export default function MyProfil(props) {
 									type="campus"
 									placeholder={variables.campus}
 									aria-label="campus"
-									bg={'#E9E7E1'}
+									bg={'white'}
+									color="#39414F"
 								>
 									{campusList.map((campus) => (
 										<option value={campus.value}>{campus.name}</option>
@@ -173,26 +170,28 @@ export default function MyProfil(props) {
 									type="role"
 									placeholder={data?.getMe.role}
 									aria-label="role"
-									bg={'#E9E7E1'}
+									bg={'white'}
 									isDisabled={true}
+									color="#39414F"
 								>
 								</Select>
 							</InputGroup>
 						</FormControl>
 						<FormControl onChange={getImagePreview} justifyContent="center" alignItems="center">
 							<InputGroup>
-								<Button alignSelf="center" bg={'#E9E7E1'}>
+								<Button alignSelf="center" bg={'white'}>
 									<Input
 										type="file"
 										aria-label="File"
 										accept="image/*"
-										bg={'#E9E7E1'}
+										bg={'white'}
 										cursor="pointer"
 										boxSizing="border-box"
 										opacity="0"
 										position="absolute"
+										color="#39414F"
 									/>
-									{"Changer d'image de profil"}
+									<Text color="#39414F">{"Changer d'image de profil"}</Text>
 								</Button>
 								<Avatar
 									loading="eager"
@@ -201,7 +200,7 @@ export default function MyProfil(props) {
 									objectFit="cover"
 									borderRadius="50%"
 									m={1}
-									src={imagePreview}
+									src={baseURL + data?.getMe.imageUrl}
 									alt="Preview"
 								/>
 							</InputGroup>

@@ -64,7 +64,7 @@ export default function Users({ stream }) {
 				<Container
 					display="flex"
 					justifyContent="space-between"
-					bg={selected ? "#6B7383" : ""}
+					bg={selected ? "#DDF3FE" : ""}
 					as="button"
 					p="3"
 					key={user.username}
@@ -83,13 +83,13 @@ export default function Users({ stream }) {
 					>
 						<Circle size="70px" p={0} m={0}>
 							<Avatar loading="lazy" m={1} src={baseURL + user.imageUrl} >
-								<AvatarBadge borderColor={selected ? "#6B7383" : "#E9E7E1"} boxSize="0.80em" bg="green.500" />
+								<AvatarBadge borderColor={selected ? "#DDF3FE" : "rgba(255, 255, 255, 1)"} boxSize="0.80em" bg="green.500" />
 							</Avatar>
 						</Circle>
 						<Box display={{ base: "none", md: "block" }} alignSelf="center">
 							<Badge fontSize="xs" colorScheme="green">{user?.role}</Badge>
-							<Text fontWeight="600" color={selected ? "#E9E7E1" : "#39414f"} textAlign="left">{user.username} - {user.campus}</Text>
-							<Text fontStyle="italic" color={selected ? "#E9E7E1" : "#39414f"} fontWeight="thin" textAlign="left">
+							<Text fontWeight="600" color="#39414f" textAlign="left">{user.username} - {user.campus}</Text>
+							<Text fontStyle="italic" color="#39414f" fontWeight="thin" textAlign="left">
 								{user?.latestMessage?.content}
 							</Text>
 						</Box>
@@ -97,7 +97,7 @@ export default function Users({ stream }) {
 					</Box>
 					<Box display="flex" alignSelf="center">
 						{!stream ? (
-							<Button onClick={() => handleCall(user.username)} _focus="none" bg={selected ? "#E9E7E1" : "#39414f"} _hover={{ bg: "#4FD963" }} color={selected ? "#39414f" : "#E9E7E1"}>
+							<Button onClick={() => handleCall(user.username)} _focus="none" bg={selected ? "#41BDF8" : "#DDF3FE"} _hover={{ bg: "#4FD963" }} color={selected ? "#39414f" : "#E9E7E1"}>
 								<PhoneIcon />
 							</Button>
 						) : (
@@ -116,7 +116,7 @@ export default function Users({ stream }) {
 			borderBottomLeftRadius="10px"
 			m={0}
 			p={0}
-			backgroundColor="#E9E7E1"
+			bg="rgba(255, 255, 255, 0.8)"
 			css={{
 				overflowX: "scroll",
 				"&::-webkit-scrollbar": {

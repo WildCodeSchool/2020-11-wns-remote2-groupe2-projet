@@ -59,7 +59,7 @@ function Contact() {
 
     return (
         <Stack spacing="30px">
-            <Heading textAlign="center" color="#E9E7E1">On vous écoute !</Heading>
+            <Heading textAlign="center" color="#39414F">On vous écoute !</Heading>
             <form onSubmit={submitMailForm} method="POST">
                 <Container maxWidth="4xl" css={{ margin: '0 auto' }}>
                     <Stack spacing={5} justifyContent="center" alignItems="center">
@@ -73,8 +73,9 @@ function Contact() {
                                     required
                                     type="subject"
                                     placeholder="Sujet"
+                                    _placeholder={{ color: "#39414f", opacity: "0.5" }}
                                     aria-label="Sujet"
-                                    bg={'#E9E7E1'}
+                                    bg={"white"}
                                     onChange={(e) =>
                                         setVariables({ ...variables, subject: e.target.value })
                                     }
@@ -89,7 +90,8 @@ function Contact() {
                             <InputGroup>
                                 <Textarea
                                     required
-                                    bg={"#E9E7E1"}
+                                    bg={"white"}
+                                    _placeholder={{ color: "#39414f", opacity: "0.5" }}
                                     h="42vh"
                                     id="message"
                                     aria-label="message"
@@ -103,10 +105,10 @@ function Contact() {
                         </FormControl>
                         <Button
                             variant="success"
-                            bg="#39414f"
-                            color="white"
                             type="submit"
-                            _hover={{ bg: '#eae7e1', color: '#39414f' }}
+                            disabled={loading}
+                            bg="#41BDF8"
+                            color="#fff"
                         >
                             Envoyer
 					</Button>
