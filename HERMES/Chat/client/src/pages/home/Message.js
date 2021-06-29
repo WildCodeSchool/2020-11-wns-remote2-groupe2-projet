@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import classNames from "classnames";
-import moment from "moment";
-import "moment/locale/fr";
+import React, { useState } from 'react';
+import classNames from 'classnames';
+import moment from 'moment';
+import 'moment/locale/fr';
 import {
+  Box,
+  Text,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -11,12 +13,12 @@ import {
   Portal,
   Button,
   Tooltip,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
-import { useAuthState } from "../../context/auth";
-import { gql, useMutation } from "@apollo/client";
+import { useAuthState } from '../../context/auth';
+import { gql, useMutation } from '@apollo/client';
 
-const reactions = ["❤️", "😆", "😯", "😢", "😡", "👍", "👎"];
+const reactions = ['❤️', '😆', '😯', '😢', '😡', '👍', '👎'];
 
 const REACT_TO_MESSAGE = gql`
   mutation reactToMessage($uuid: String!, $content: String!) {
@@ -46,33 +48,33 @@ export default function Message({ message }) {
 
   const reactButton = (
     <>
-      <Popover isLazy placement="top" initialFocusRef={initRef}>
+      <Popover isLazy placement='top' initialFocusRef={initRef}>
         {({ showPopover, setShowPopover }) => (
           <>
             <PopoverTrigger>
               <Button
-                variant="link"
-                size="md"
-                height="auto"
-                width="10%"
-                border="1px"
-                borderRadius="30px"
+                variant='link'
+                size='md'
+                height='auto'
+                width='10%'
+                border='1px'
+                borderRadius='30px'
               >
-                {showPopover ? "😊" : "😊"}
+                {showPopover ? '😊' : '😊'}
               </Button>
             </PopoverTrigger>
             <Portal>
               <PopoverContent>
                 <PopoverBody
-                  borderRadius="30px"
-                  paddingTop="0"
-                  paddingBottom="0"
+                  borderRadius='30px'
+                  paddingTop='0'
+                  paddingBottom='0'
                 >
                   <PopoverArrow />
                   {reactions.map((reaction) => (
                     <Button
-                      variant="unstyled"
-                      className="react-icon-button"
+                      variant='unstyled'
+                      className='react-icon-button'
                       key={reaction}
                       onClick={() => react(reaction)}
                     >
@@ -90,47 +92,47 @@ export default function Message({ message }) {
 
   return (
     <>
-      <div
-        className={classNames("d-flex my-3", {
-          "ml-auto": sent,
-          "mr-auto": received,
+      <Box
+        className={classNames('d-flex my-3', {
+          'ml-auto': sent,
+          'mr-auto': received,
         })}
-        data-aos={sent ? "fade-left" : "fade-right"}
+        data-aos={sent ? 'fade-left' : 'fade-right'}
       >
         {sent && reactButton}
 
         <Popover
-          placement={!sent ? "right" : "left"}
+          placement={!sent ? 'right' : 'left'}
           overlay={
             <Tooltip>
               {moment(message.createdAt)
-                .locale("fr")
-                .format("DD MMM YYYY à HH:mm")}
+                .locale('fr')
+                .format('DD MMM YYYY à HH:mm')}
             </Tooltip>
           }
           transition={false}
         >
-          <div
-            className={classNames("py-2 px-3 rounded-pill position-relative", {
-              "bg-primary": sent,
-              "bg-secondary": received,
+          <Box
+            className={classNames('py-2 px-3 rounded-pill position-relative', {
+              'bg-primary': sent,
+              'bg-secondary': received,
             })}
           >
             {message.reactions.length > 0 && (
-              <div className="reactions-div bg-secondary p-1 rounded-pill">
+              <Box className='reactions-div bg-secondary p-1 rounded-pill'>
                 {reactionIcons} {message.reactions.length}
-              </div>
+              </Box>
             )}
-            <p
-              className={classNames({ "text-white": sent })}
+            <Text
+              className={classNames({ 'text-white': sent })}
               key={message.uuid}
             >
               {message.content}
-            </p>
-          </div>
+            </Text>
+          </Box>
         </Popover>
         {received && reactButton}
-      </div>
+      </Box>
     </>
   );
 }
