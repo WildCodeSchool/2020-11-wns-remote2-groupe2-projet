@@ -6,8 +6,9 @@ WORKDIR /hermes/chat
 ENV PATH /chat/node_modules/.bin:$PATH
 # install application dependencies
 COPY package.json ./
-RUN yarn install --force
+RUN yarn install --force 
 # add app
 COPY . ./
+EXPOSE 3000
 # start app
 CMD ["npm", "start"]
