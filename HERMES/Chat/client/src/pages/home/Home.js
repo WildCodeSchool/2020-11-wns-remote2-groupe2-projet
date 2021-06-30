@@ -153,10 +153,11 @@ export default function Home({ history }) {
 							display="flex"
 							height="75vh"
 							borderBottomRadius="10px"
+							flexDirection={{ base: "column", md: "row" }}
+							justifyContent={{ base: "space-between" }}
 						>
 							<Users stream={stream} />
-							{stream &&
-								<OnCall />}
+							{stream && <OnCall />}
 							<Messages stream={stream} />
 						</Box>
 					</TabPanel>

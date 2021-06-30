@@ -171,28 +171,29 @@ module.exports = {
 
 		update: async (_, args, { user }) => {
 			const { email, campus, imageUrl } = args;
-			const { createReadStream, filename } = await imageUrl;
+			console.log("IMAGE", imageUrl)
 			let errors = {};
+			let newImageUrl = false
 
 			try {
 				// Validate input data				
 				if (email.trim() === "") errors.email = "email must not be empty";
 				if (campus.trim() === "") errors.campus = "campus must not be empty";
+				if (typeof imageUrl === "object") newImageUrl = await imageUrl
 				if (Object.keys(errors).length > 0) {
 					throw errors;
 				}
-				console.log("args", args)
 
-				if (filename) {
-					const { ext } = path.parse(filename);
+				if (newImageUrl) {
+					const { ext } = path.parse(newImageUrl.filename);
 					randomName = generateRandomString(12) + ext;
 				}
 
-				const updatedUser = await User.update({ email, campus, imageUrl }, { where: { username: user.username } });
+				const updatedUser = await User.update({ email, campus, imageUrl: newImageUrl ? `/images/${randomName}` : imageUrl }, { where: { username: user.username } });
 
 				//TODO : Fix
-				if (imageUrl) {
-					const stream = await createReadStream();
+				if (newImageUrl) {
+					const stream = await newImageUrl.createReadStream();
 					const pathName = path.join(
 						__dirname,
 						`../../public/images/${randomName}`,

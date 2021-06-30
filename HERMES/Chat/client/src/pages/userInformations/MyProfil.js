@@ -20,12 +20,13 @@ export default function MyProfil({ user }) {
 
 	const toast = useToast();
 	const [errors, setErrors] = useState({});
-	const [imagePreview, setImagePreview] = useState(null);
-	const [variables, setVariables] = useState({
-		email: "",
-		campus: "",
-		imageUrl: imagePreview
-	});
+	const [imagePreview, setImagePreview] = useState(false);
+	const [variables, setVariables] = useState(false);
+
+	useEffect(() => {
+		setImagePreview(baseURL + user?.imageUrl)
+		setVariables({ email: user?.email, campus: user?.campus, imageUrl: baseURL + user?.imageUrl })
+	}, [user])
 
 	console.log(user)
 
@@ -61,8 +62,6 @@ export default function MyProfil({ user }) {
 	};
 
 	const submitUpdateUserInformations = async (e) => {
-		e.preventDefault();
-
 		const result = await updateUser({ variables })
 		if (result) {
 			toast({
@@ -83,19 +82,18 @@ export default function MyProfil({ user }) {
 					<Stack spacing={5} justifyContent="center" alignItems="center">
 						<FormControl
 							isRequired
-							onChange={(e) => setVariables({ ...variables, username: e.target.value })}
+							// onChange={(e) => setVariables({ ...variables, username: e.target.value })}
 							justifyContent="center"
 							alignItems="center"
 						>
 							<InputGroup>
 								<InputLeftElement children={<InfoIcon color="#39414F" />} />
 								<Input
-									isInvalid={errors.username}
+									defaultValue={user?.username}
 									type="name"
 									placeholder="Identifiant"
 									aria-label="Username"
 									bg={'white'}
-									defaultValue={user?.username}
 									isDisabled={true}
 									color="#39414F"
 								/>
@@ -111,7 +109,6 @@ export default function MyProfil({ user }) {
 								<InputLeftElement children={<AtSignIcon color="#39414F" />} />
 								<Input
 									defaultValue={user?.email}
-									isInvalid={errors.email}
 									type="email"
 									placeholder="Adresse email"
 									aria-label="Email"
@@ -119,11 +116,11 @@ export default function MyProfil({ user }) {
 									color="#39414F"
 								/>
 							</InputGroup>
-							{errors.email && (
+							{/* {errors.email && (
 								<Text fontSize="13px" color="tomato">
 									Email déjà existant
 								</Text>
-							)}
+							)} */}
 						</FormControl>
 						<FormControl
 							isRequired
@@ -133,15 +130,14 @@ export default function MyProfil({ user }) {
 						>
 							<InputGroup>
 								<Select
-									placeholder={user?.campus}
-									isInvalid={errors.campus}
+									// isInvalid={errors.campus}
 									type="campus"
 									aria-label="campus"
 									bg={'white'}
 									color="#39414F"
 								>
 									{campusList.map((campus) => (
-										<option value={campus.value}>{campus.name}</option>
+										<option selected={variables.campus === campus.value} value={campus.value}>{campus.name}</option>
 									))}
 								</Select>
 							</InputGroup>
@@ -155,7 +151,7 @@ export default function MyProfil({ user }) {
 							<InputGroup>
 								<Select
 									placeholder={user?.role}
-									isInvalid={errors.role}
+									// isInvalid={errors.role}
 									type="role"
 									aria-label="role"
 									bg={'white'}
@@ -187,7 +183,7 @@ export default function MyProfil({ user }) {
 									objectFit="cover"
 									borderRadius="50%"
 									m={1}
-									// src={baseURL + data?.getMe.imageUrl}
+									src={imagePreview}
 									alt="Preview"
 								/>
 							</InputGroup>

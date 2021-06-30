@@ -105,8 +105,11 @@ export default function Messages({ stream }) {
 
 	return (
 		<Container
-			width={stream ? "35%" : "100%"} display="flex" flexDirection="column" maxWidth="none"
-		>
+			display="flex"
+			flexDirection="column"
+			maxWidth="none"
+			width={{ base: "100%", md: stream ? "35%" : "100%" }}
+			maxH={{ base: "25vh", md: " 100%" }}>
 			<Box
 				display="flex"
 				flexDirection="column-reverse"

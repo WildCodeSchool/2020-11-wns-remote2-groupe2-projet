@@ -1,8 +1,7 @@
 import React, { useState, useContext } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Container, Box, Text, Circle, Avatar, AvatarBadge, Badge, Button, useAccordionDescendantsContext, SkeletonCircle, SkeletonText, Stack } from "@chakra-ui/react";
+import { Container, Box, Text, Circle, Avatar, AvatarBadge, Badge, IconButton, SkeletonCircle, SkeletonText, Stack } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
-import { AddIcon, PhoneIcon } from '@chakra-ui/icons'
 import { SocketContext } from "../../context/socketContext";
 
 
@@ -30,12 +29,9 @@ const baseURL = process.env.REACT_APP_BASE_URL || "";
 export default function Users({ stream }) {
 	const dispatch = useMessageDispatch();
 	const { users } = useMessageState();
+	const [calledIndex, setCalledIndex] = useState(null)
 	const { startCall, LeaveCall } = useContext(SocketContext)
 	const selectedUser = users?.find((u) => u.selected === true)?.username;
-
-	const handleCall = () => {
-		startCall(selectedUser)
-	}
 
 	const { loading } = useQuery(GET_USERS, {
 		onCompleted: (data) =>
@@ -43,6 +39,15 @@ export default function Users({ stream }) {
 		onError: (err) => console.log(err),
 	});
 
+	const handleCallingInformations = (index) => {
+		if (stream) {
+			LeaveCall()
+			setCalledIndex(null)
+		} else {
+			startCall(selectedUser)
+			setCalledIndex(index)
+		}
+	}
 
 	let usersMarkup;
 	if (!users || loading) {
@@ -57,8 +62,9 @@ export default function Users({ stream }) {
 	} else if (users.length === 0) {
 		usersMarkup = <p>Aucun utilisateur pour le moment !</p>;
 	} else if (users.length > 0) {
-		usersMarkup = users.map((user) => {
+		usersMarkup = users.map((user, index) => {
 			const selected = selectedUser === user.username;
+			console.log("IINNDDEEX", calledIndex)
 
 			return (
 				<Container
@@ -96,15 +102,10 @@ export default function Users({ stream }) {
 
 					</Box>
 					<Box display="flex" alignSelf="center">
-						{!stream ? (
-							<Button onClick={() => handleCall(user.username)} _focus="none" bg={selected ? "#41BDF8" : "#DDF3FE"} _hover={{ bg: "#4FD963" }} color={selected ? "#39414f" : "#E9E7E1"}>
-								<PhoneIcon />
-							</Button>
-						) : (
-							<Button onClick={() => LeaveCall()} _focus="none" bg={selected ? "#E9E7E1" : "#39414f"} _hover={{ bg: "red" }} color={selected ? "#39414f" : "#E9E7E1"} >
-								<PhoneIcon css={{ transform: "rotate(135deg)" }} />
-							</Button>
-						)}
+						<IconButton display={(stream && index !== calledIndex) && "none"} isRound _hover={!stream && { bg: "green.500" }} _focus="none" bg={!stream ? "white" : "red.500"} onClick={() => handleCallingInformations(index)} >
+							{stream ? <i className="fas fa-phone-slash" style={{ color: "#39414f" }}></i>
+								: <i className="fas fa-phone" style={{ color: "#39414f" }}></i>}
+						</IconButton>
 					</Box>
 				</Container >
 			);
@@ -112,7 +113,8 @@ export default function Users({ stream }) {
 	}
 	return (
 		<Container
-			width={stream && "25%"}
+			width={{ base: "100%", md: stream && "25%" }}
+			maxH={{ base: "25vh", md: "100%" }}
 			borderBottomLeftRadius="10px"
 			m={0}
 			p={0}
