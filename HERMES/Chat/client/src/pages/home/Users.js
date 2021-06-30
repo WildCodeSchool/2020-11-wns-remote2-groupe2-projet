@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Container, Box, Text, Circle, Avatar, AvatarBadge, Badge, IconButton, SkeletonCircle, SkeletonText, Stack } from "@chakra-ui/react";
+import { Container, Box, Text, Circle, Avatar, AvatarBadge, Badge, IconButton, SkeletonCircle, SkeletonText, Stack, InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
 import { useMessageDispatch, useMessageState } from "../../context/message";
 import { SocketContext } from "../../context/socketContext";
+import { SearchIcon } from "@chakra-ui/icons";
 
 
 const GET_USERS = gql`
@@ -30,6 +31,9 @@ export default function Users({ stream }) {
 	const dispatch = useMessageDispatch();
 	const { users } = useMessageState();
 	const [calledIndex, setCalledIndex] = useState(null)
+
+	// todo: filter
+	const [nameFilter, setNameFilter] = useState("")
 	const { startCall, LeaveCall } = useContext(SocketContext)
 	const selectedUser = users?.find((u) => u.selected === true)?.username;
 
@@ -64,7 +68,6 @@ export default function Users({ stream }) {
 	} else if (users.length > 0) {
 		usersMarkup = users.map((user, index) => {
 			const selected = selectedUser === user.username;
-			console.log("IINNDDEEX", calledIndex)
 
 			return (
 				<Container
@@ -113,6 +116,7 @@ export default function Users({ stream }) {
 	}
 	return (
 		<Container
+			position="relative"
 			width={{ base: "100%", md: stream && "25%" }}
 			maxH={{ base: "25vh", md: "100%" }}
 			borderBottomLeftRadius="10px"
@@ -126,7 +130,14 @@ export default function Users({ stream }) {
 				},
 			}}
 		>
-			{usersMarkup}
+			<InputGroup zIndex="10" position="fixed" w="auto">
+				<InputLeftElement
+					pointerEvents="none"
+					children={<SearchIcon color="#39414f" />}
+				/>
+				<Input border="none" onChange={e => setNameFilter(e.target.value)} _focus="none" color="#39414f" type="name" _placeholder={{ color: "#39414f", opacity: "0.5" }} placeholder="Rechercher…" />
+			</InputGroup>
+			<Box pt="2.5rem">{usersMarkup}</Box>
 		</Container>
 	);
 }

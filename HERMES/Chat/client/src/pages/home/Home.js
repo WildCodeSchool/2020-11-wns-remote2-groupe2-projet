@@ -146,7 +146,7 @@ export default function Home({ history }) {
 				<TabPanels>
 					<TabPanel p={0}>
 						<Box height="3rem" display="flex" bg="rgba(255, 255, 255, 0.8)">
-							<Heading fontSize="2xl" mt="10px" ml="2rem" fontWeight="600" color="#39414f">Hermes</Heading>
+							<Heading fontSize="2xl" alignSelf="center" ml="2rem" fontWeight="600" color="#39414f">Hermes</Heading>
 						</Box>
 						<Box
 							bg="rgba(255, 255, 255, 0.5)"
@@ -163,7 +163,7 @@ export default function Home({ history }) {
 					</TabPanel>
 					<TabPanel p={0}>
 						<Box height="3rem" display="flex" bg="rgba(255, 255, 255, 0.8)">
-							<Heading fontSize="2xl" ml="2rem" mt="10px" fontWeight="600" color="#39414f">Mon calendrier</Heading>
+							<Heading fontSize="2xl" ml="2rem" alignSelf="center" fontWeight="600" color="#39414f">Mon calendrier</Heading>
 						</Box>
 						<Box
 							bg="rgba(255, 255, 255, 0.8)"
@@ -175,7 +175,7 @@ export default function Home({ history }) {
 					</TabPanel>
 					<TabPanel p={0}>
 						<Box height="3rem" display="flex" bg="rgba(255, 255, 255, 0.8)">
-							<Heading fontSize="2xl" ml="2rem" mt="10px" fontWeight="600" color="#39414f">Mes fichiers</Heading>
+							<Heading fontSize="2xl" ml="2rem" alignSelf="center" fontWeight="600" color="#39414f">Mes fichiers</Heading>
 						</Box>
 						<Box
 							bg="rgba(255, 255, 255, 0.8)"
@@ -187,7 +187,7 @@ export default function Home({ history }) {
 					</TabPanel>
 					<TabPanel p={0}>
 						<Box height="3rem" display="flex" bg="rgba(255, 255, 255, 0.8)">
-							<Heading fontSize="2xl" ml="2rem" mt="10px" fontWeight="600" color="#39414f">Mon compte</Heading>
+							<Heading fontSize="2xl" ml="2rem" alignSelf="center" fontWeight="600" color="#39414f">Mon compte</Heading>
 						</Box>
 						<Box
 							bg="rgba(255, 255, 255, 0.8)"
