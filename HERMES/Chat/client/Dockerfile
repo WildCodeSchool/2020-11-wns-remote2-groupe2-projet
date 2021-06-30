@@ -1,16 +1,13 @@
-# Base image
-FROM node:latest
-# Make folder to put our files in
-RUN mkdir -p /hermes/chat/client
-# Set working directory so that all
-WORKDIR /hermes/chat/client
-# Copy package json and install dependencies
-COPY package*.json ./
-RUN npm rebuild node-sass
-RUN npm install --silent
-# Copy our app
-COPY . .
-# Expose port to access server
-EXPOSE 3000
-# Command to run our app
-CMD [ "npm", "start" ]
+# pull the official base image
+FROM node:alpine3.11
+# set working direction
+WORKDIR /hermes/chat
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /chat/node_modules/.bin:$PATH
+# install application dependencies
+COPY package.json ./
+RUN yarn install --force
+# add app
+COPY . ./
+# start app
+CMD ["npm", "start"]

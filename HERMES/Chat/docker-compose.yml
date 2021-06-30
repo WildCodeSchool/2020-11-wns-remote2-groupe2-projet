@@ -1,6 +1,31 @@
 version: "3.8"
 
 services:
+  # Create db container
+  db:
+    image: mysql:5.7
+    container_name: db-docker
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: chat
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - "3308:3306"
+    expose:
+      # Opens port 3306 on the container
+      - "3308"
+      # Where our data will be persisted
+    volumes:
+      - ./docker/data/db:/var/lib/mysql
+    command:
+      [
+        "mysqld",
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+      ]
   # Create client container
   client:
     build: ./client # path to dockerfile
@@ -29,28 +54,3 @@ services:
     links:
       - db
 
-  # Create db container
-  db:
-    image: mysql:5.7
-    container_name: db-docker
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: chat
-      MYSQL_USER: root
-      MYSQL_PASSWORD: password
-    ports:
-      # <Port exposed> : < MySQL Port running inside container>
-      - "3306:3306"
-    expose:
-      # Opens port 3306 on the container
-      - "3306"
-      # Where our data will be persisted
-    volumes:
-      - ./docker/data/db:/var/lib/mysql
-    command:
-      [
-        "mysqld",
-        "--character-set-server=utf8mb4",
-        "--collation-server=utf8mb4_unicode_ci",
-      ]
