@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import MyProfil from "./MyProfil"
 import Contact from "./Contact"
+import Setting from "./Setting"
 import { Box, Container, Flex, ListItem, OrderedList, Text } from "@chakra-ui/layout"
 import { Image } from "@chakra-ui/react"
 import { Modal, ModalContent, ModalHeader, ModalOverlay } from "@chakra-ui/modal"
@@ -35,9 +36,9 @@ export default function Index({ user }) {
 
                 return <Contact />
 
-            case 'paramètre':
+            case 'parametre':
 
-                break;
+                return <Setting />
 
             default:
                 break;

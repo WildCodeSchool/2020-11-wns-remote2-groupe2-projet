@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Box, Container, Button, Text, IconButton } from '@chakra-ui/react';
 import { MdCall } from "react-icons/md"
 import { SocketContext } from '../../context/socketContext';
-import { SmallCloseIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 
 export default function OnCall() {
