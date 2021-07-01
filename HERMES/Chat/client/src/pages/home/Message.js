@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import classNames from 'classnames';
 import moment from 'moment';
 import 'moment/locale/fr';
 import {
+  VStack,
   Box,
   Text,
   Popover,
@@ -12,11 +12,12 @@ import {
   PopoverArrow,
   Portal,
   Button,
-  Tooltip,
+  IconButton
 } from '@chakra-ui/react';
-
 import { useAuthState } from '../../context/auth';
 import { gql, useMutation } from '@apollo/client';
+import useSound from 'use-sound';
+import ReactSound from '../../sounds/reactSound.mp3'
 
 const reactions = ['❤️', '😆', '😯', '😢', '😡', '👍', '👎'];
 
@@ -30,8 +31,13 @@ const REACT_TO_MESSAGE = gql`
 
 export default function Message({ message }) {
   const { user } = useAuthState();
+  const [play] = useSound(ReactSound);
   const sent = message.from === user.username;
+  const bottomRightRadius = sent ? 0 : 32;
+  const bottomLeftRadius = sent ? 32 : 0;
+  const alignment = sent ? "flex-end" : "flex-start";
   const received = !sent;
+
   const [showPopover, setShowPopover] = useState(false);
   const reactionIcons = [...new Set(message.reactions.map((r) => r.content))];
 
@@ -41,90 +47,68 @@ export default function Message({ message }) {
   });
 
   const react = (reaction) => {
+    play()
     reactToMessage({ variables: { uuid: message.uuid, content: reaction } });
   };
 
   const initRef = React.useRef();
 
+
   const reactButton = (
     <>
       <Popover isLazy placement='top' initialFocusRef={initRef}>
-        {({ showPopover, setShowPopover }) => (
-          <>
-            <PopoverTrigger>
-              <Button
-                variant='link'
-                size='md'
-                height='auto'
-                width='10%'
-                border='1px'
-                borderRadius='30px'
-              >
-                {showPopover ? '😊' : '😊'}
-              </Button>
-            </PopoverTrigger>
-            <Portal>
-              <PopoverContent>
-                <PopoverBody
-                  borderRadius='30px'
-                  paddingTop='0'
-                  paddingBottom='0'
-                >
-                  <PopoverArrow />
-                  {reactions.map((reaction) => (
-                    <Button
-                      variant='unstyled'
-                      className='react-icon-button'
-                      key={reaction}
-                      onClick={() => react(reaction)}
-                    >
-                      {reaction}
-                    </Button>
-                  ))}
-                </PopoverBody>
-              </PopoverContent>
-            </Portal>
-          </>
-        )}
+        <>
+          <PopoverTrigger>
+            <IconButton m="2px" bg="transparent" isRound _hover="none" _focus="none"><i class="fas fa-laugh-beam"></i></IconButton>
+          </PopoverTrigger>
+          <Portal>
+            <PopoverContent _focus="none" borderRadius="9999px">
+              <PopoverBody>
+                <PopoverArrow />
+                {reactions.map((reaction) => (
+                  <Button
+                    variant='unstyled'
+                    key={reaction}
+                    onClick={() => react(reaction)}
+                    _hover={{ textDecoration: "none", fontSize: "lg", transition: "0.25" }}
+                  >
+                    {reaction}
+                  </Button>
+                ))}
+              </PopoverBody>
+            </PopoverContent>
+          </Portal>
+        </>
       </Popover>
     </>
   );
 
   return (
-    <>
+    <VStack mt={6} alignSelf={alignment} maxW="60%" mb="10px">
       <Box
-        className={classNames('d-flex my-3', {
-          'ml-auto': sent,
-          'mr-auto': received,
-        })}
-        data-aos={sent ? 'fade-left' : 'fade-right'}
+        display="flex"
+        bg={sent ? "blue.50" : "gray.100"}
+        p={sent ? "12px 18px 12px 12px" : "12px 12px 12px 18px"}
+        minW="min-content"
+        wordBreak="break-word"
+        borderTopLeftRadius={32}
+        borderTopRightRadius={32}
+        borderBottomLeftRadius={bottomLeftRadius}
+        borderBottomRightRadius={bottomRightRadius}
+        alignItems="center"
       >
         {sent && reactButton}
-
         <Popover
           placement={!sent ? 'right' : 'left'}
-          overlay={
-            <Tooltip>
-              {moment(message.createdAt)
-                .locale('fr')
-                .format('DD MMM YYYY à HH:mm')}
-            </Tooltip>
-          }
-          transition={false}
-        >
-          <Box
-            className={classNames('py-2 px-3 rounded-pill position-relative', {
-              'bg-primary': sent,
-              'bg-secondary': received,
-            })}
-          >
+          transition={false}>
+          <Box position="relative" >
             {message.reactions.length > 0 && (
-              <Box className='reactions-div bg-secondary p-1 rounded-pill'>
-                {reactionIcons} {message.reactions.length}
+              <Box position="absolute" right="-20px" bottom="-25px" fontSize="md">
+                <Text color="#39414f">{reactionIcons} {message.reactions.length}</Text>
               </Box>
             )}
             <Text
-              className={classNames({ 'text-white': sent })}
+              color="#39414f"
               key={message.uuid}
             >
               {message.content}
@@ -133,6 +117,11 @@ export default function Message({ message }) {
         </Popover>
         {received && reactButton}
       </Box>
-    </>
+      <Text alignSelf={alignment} fontSize="xs" color="gray">
+        {moment(message.createdAt)
+          .locale('fr')
+          .format('DD MMM YYYY à HH:mm')}
+      </Text>
+    </VStack >
   );
 }

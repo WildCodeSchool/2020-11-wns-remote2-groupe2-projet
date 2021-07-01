@@ -19,7 +19,6 @@ import Messages from "./Messages";
 import Header from "./Header";
 import OnCall from "./OnCall";
 import Index from '../userInformations/index'
-import '../../App.scss'
 import { useQuery } from "@apollo/client";
 import { AttachmentIcon, CalendarIcon, ChatIcon } from "@chakra-ui/icons";
 import { SocketContext } from "../../context/socketContext";
@@ -128,17 +127,16 @@ export default function Home({ history }) {
 	return (
 		<Container
 			maxW="90vw"
-			maxH="90vh"
-		>
+			maxH="90vh">
 			<Tabs variant="enclosed" pt={5} maxW="1500px" m="auto">
 				<TabList display="flex" justifyContent="space-between">
 					<Box display="flex">
-						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" ><ChatIcon w={5} h={5} /></Tab>
-						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" ><CalendarIcon w={5} h={5} /></Tab>
-						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" ><AttachmentIcon w={5} h={5} /></Tab>
+						<Tab border="none" minW={{ base: "", md: "100px" }} _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" ><ChatIcon w={5} h={5} /></Tab>
+						<Tab border="none" minW={{ base: "", md: "100px" }} _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" ><CalendarIcon w={5} h={5} /></Tab>
+						<Tab border="none" minW={{ base: "", md: "100px" }} _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="600" ><AttachmentIcon w={5} h={5} /></Tab>
 					</Box>
 					<Box display="flex">
-						<Tab _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="bold" >
+						<Tab minW={{ base: "", md: "100px" }} _focus="none" color="#39414f" _selected={{ bg: "rgba(255, 255, 255, 0.8)" }} fontWeight="bold" >
 							<Header />
 						</Tab>
 					</Box>

@@ -132,8 +132,8 @@ export default function MyProfil({ user }) {
 									bg={'white'}
 									color="#39414F"
 								>
-									{campusList.map((campus) => (
-										<option selected={variables.campus === campus.value} value={campus.value}>{campus.name}</option>
+									{campusList.map((campus, index) => (
+										<option selected={variables.campus === campus.value} value={campus.value} key={index}>{campus.name}</option>
 									))}
 								</Select>
 							</InputGroup>

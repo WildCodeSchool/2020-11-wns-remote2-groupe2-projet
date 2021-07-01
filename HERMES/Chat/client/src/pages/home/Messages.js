@@ -5,10 +5,8 @@ import { useMessageDispatch, useMessageState } from '../../context/message';
 
 import Message from './Message';
 import {
-  Container,
+  Flex,
   Box,
-  Spacer,
-  FormControl,
   Input,
   Text,
   Stack,
@@ -117,53 +115,37 @@ export default function Messages({ stream }) {
   }
 
   return (
-    <Container
-      display="flex"
+    <Flex
       flexDirection="column"
-      maxWidth="none"
-      width={{ base: "100%", md: stream ? "35%" : "100%" }}
-      maxH={{ base: "35vh", md: " 100%" }}>
-      <Box
-        display='flex'
-        flexDirection='column-reverse'
-        p={3}
-        css={{
-          height: '95%',
-          overflowY: 'scroll',
-          '&::-webkit-scrollbar': {
-            display: 'none',
-          },
-        }}
-      >
+      width={{ base: "full", md: stream ? "35%" : "full" }}
+      maxH={{ base: "35vh", md: "full" }}>
+      <Flex px={6} overflowY="auto" flexDirection="column-reverse" flex={1}>
         {selectedChatMarkup}
-      </Box>
-      <Spacer />
-      <Box px={3} py={2}>
-        <form onSubmit={submitMessage}>
-          <FormControl display='flex' alignItems='center' m={0}>
-            <Input
-              borderRadius='20px'
-              p={6}
-              bg='#f5f5f5'
-              border='0'
-              css={{
-                '::placeholder': {
-                  color: 'rgba(0, 0, 0, 0.5)',
-                },
-              }}
-              type='text'
-              color="#39414f"
-              placeholder='Entrer un message…'
-              _placeholder={{ color: "#39414f", opacity: "0.5" }}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-            <Box color='#39414f' ml={2} onClick={submitMessage}>
-              <FaPaperPlane size='30px' />
-            </Box>
-          </FormControl>
-        </form>
-      </Box>
-    </Container>
+      </Flex>
+      <form onSubmit={submitMessage}>
+        <Flex pl={4} pr={2} py={2} borderTopColor="gray.100" borderTopWidth={1}>
+          <Input
+            borderRadius='20px'
+            p={6}
+            bg='#f5f5f5'
+            border='0'
+            css={{
+              '::placeholder': {
+                color: 'rgba(0, 0, 0, 0.5)',
+              },
+            }}
+            type='text'
+            color="#39414f"
+            placeholder='Entrer un message…'
+            _placeholder={{ color: "#39414f", opacity: "0.5" }}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <Box color='#39414f' ml={2} onClick={submitMessage} alignSelf="center">
+            <FaPaperPlane size='30px' />
+          </Box>
+        </Flex>
+      </form>
+    </Flex>
   );
 }
