@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - '.:/hemes/chat'
-      - '/hermes/chat/node_modules'
+      - '.:/hemes/chat/client'
+      - '/hermes/chat/client/node_modules'
     ports:
       - 3000:3000
     environment:

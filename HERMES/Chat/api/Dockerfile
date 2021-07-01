@@ -1,16 +1,17 @@
-# Base image
-FROM node:alpine
-# Make folder to put our files in
-RUN mkdir -p /hermes/chat/api
-# Set working directory so that all subsequent command runs in this folder
+
+FROM node:alpine3.11
+# set working direction
 WORKDIR /hermes/chat/api
-# Copy package json and install dependencies
-COPY package*.json ./
-RUN npm install
-# Copy our app
-COPY . .
-RUN npm run migratedb
-# Expose port to access server
-EXPOSE 8080
-# Command to run our app
-CMD [ "npm", "run", "dev" ]
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH hermes/chat/api/node_modules/.bin:$PATH
+# install application dependencies
+COPY package.json ./
+RUN yarn add sequelize
+
+RUN yarn install --force 
+
+# add app
+COPY . ./
+EXPOSE 3000
+# start app
+CMD ["yarn", "start"]
