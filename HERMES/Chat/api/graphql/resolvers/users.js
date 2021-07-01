@@ -171,7 +171,6 @@ module.exports = {
 
 		update: async (_, args, { user }) => {
 			const { email, campus, imageUrl } = args;
-			console.log("IMAGE", imageUrl)
 			let errors = {};
 			let newImageUrl = false
 

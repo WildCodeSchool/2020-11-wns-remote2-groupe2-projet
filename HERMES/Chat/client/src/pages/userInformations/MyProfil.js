@@ -28,10 +28,6 @@ export default function MyProfil({ user }) {
 		setVariables({ email: user?.email, campus: user?.campus, imageUrl: baseURL + user?.imageUrl })
 	}, [user])
 
-	console.log(user)
-
-
-
 	const UPDATE_USER = gql`
 		mutation updateUser( $email: String, $campus: String!, $imageUrl: Upload!) {
 			update(email: $email, campus: $campus,imageUrl: $imageUrl) {
