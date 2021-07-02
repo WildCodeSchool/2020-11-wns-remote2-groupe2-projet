@@ -4,7 +4,7 @@ import Peer from 'simple-peer';
 
 const SocketContext = createContext();
 
-const baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:4000";
+const baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:8080";
 
 const ContextProvider = ({ children }) => {
 

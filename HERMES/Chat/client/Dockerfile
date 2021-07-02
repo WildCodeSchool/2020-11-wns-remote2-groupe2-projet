@@ -6,11 +6,10 @@ RUN mkdir -p /hermes/chat/client
 WORKDIR /hermes/chat/client
 # Copy package json and install dependencies
 COPY package*.json ./
-RUN npm rebuild node-sass
-RUN npm install --silent
+RUN yarn install
 # Copy our app
 COPY . .
 # Expose port to access server
 EXPOSE 3000
 # Command to run our app
-CMD [ "npm", "start" ]
+CMD [ "yarn", "start" ]

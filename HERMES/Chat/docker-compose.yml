@@ -3,12 +3,12 @@ version: "3.8"
 services:
   # Create client container
   client:
-    build: ./client # path to dockerfile
+    image: lefernix/hermes-react-client:test
     stdin_open: true
     tty: true
     ports: # Port binding to host from docker container
       - "3000:3000" # Bind port 3001 of host to 3000 of container
-    container_name: client-docker
+    container_name: client-hermes
     restart: always
     volumes:
       - ./client:/hermes/chat/client
@@ -17,10 +17,10 @@ services:
 
   # Create api container
   api:
-    build: ./api
+    image: lefernix/hermes-node-api:test
     ports:
       - "8080:4000"
-    container_name: api-docker
+    container_name: api-hermes
     environment:
       - ./api/.env
     restart: always
@@ -32,7 +32,7 @@ services:
   # Create db container
   db:
     image: mysql:5.7
-    container_name: db-docker
+    container_name: db-hermes
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password

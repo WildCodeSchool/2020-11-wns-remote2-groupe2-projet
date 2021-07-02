@@ -6,10 +6,10 @@ RUN mkdir -p /hermes/chat/api
 WORKDIR /hermes/chat/api
 # Copy package json and install dependencies
 COPY package*.json ./
-RUN npm install
+RUN yarn install
 # Copy our app
 COPY . .
-RUN npm run migratedb
+# RUN npm run migratedb
 # Expose port to access server
 EXPOSE 8080
 # Command to run our app

@@ -11,7 +11,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { createUploadLink } from "apollo-upload-client";
 
 let uploadLink = createUploadLink({
-	uri: `http://localhost:4000/graphql`,
+	uri: `http://localhost:8080/graphql`,
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -27,7 +27,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const wsLink = new WebSocketLink({
-	uri: `ws://localhost:4000/graphql`,
+	uri: `ws://localhost:8080/graphql`,
 	options: {
 		reconnect: true,
 		connectionParams: {
