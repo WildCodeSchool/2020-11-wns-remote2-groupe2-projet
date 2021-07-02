@@ -110,7 +110,7 @@ export default function Messages({ stream }) {
     ));
   } else if (messages.length === 0) {
     selectedChatMarkup = (
-      <Text color={'#E9E7E1'}>En ligne, envoyer un message… </Text>
+      <Text color="#39414f">En ligne, envoyer un message… </Text>
     );
   }
 
