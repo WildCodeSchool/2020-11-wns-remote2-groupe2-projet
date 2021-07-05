@@ -4,3 +4,4 @@ docker/data/db/**
 .env
 development.env
 production.env
+/.idea

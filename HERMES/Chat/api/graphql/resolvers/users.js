@@ -170,33 +170,40 @@ module.exports = {
 		},
 
 		update: async (_, args, { user }) => {
-			let { username, email, campus, role, imageUrl } = args;
+			const { email, campus, imageUrl } = args;
 			let errors = {};
+			let newImageUrl = false
 
 			try {
 				// Validate input data				
 				if (email.trim() === "") errors.email = "email must not be empty";
-				if (username.trim() === "")
-					errors.username = "username must not be empty";
-				if (campus.trim() === "")
-					errors.campus = "campus must not be empty";
-				if (role.trim() === "")
-					errors.role = "role must not be empty";
-
+				if (campus.trim() === "") errors.campus = "campus must not be empty";
+				if (typeof imageUrl === "object") newImageUrl = await imageUrl
 				if (Object.keys(errors).length > 0) {
 					throw errors;
 				}
 
-				// const user = await User.findOne({
-				// 	where: { username },
-				// });
+				if (newImageUrl) {
+					const { ext } = path.parse(newImageUrl.filename);
+					randomName = generateRandomString(12) + ext;
+				}
 
-				const user = await User.update({ username, email, campus, role }, { where: user.id });
+				const updatedUser = await User.update({ email, campus, imageUrl: newImageUrl ? `/images/${randomName}` : imageUrl }, { where: { username: user.username } });
+
+				//TODO : Fix
+				if (newImageUrl) {
+					const stream = await newImageUrl.createReadStream();
+					const pathName = path.join(
+						__dirname,
+						`../../public/images/${randomName}`,
+					);
+					await stream.pipe(createWriteStream(pathName));
+				}
 
 
-				return user;
+				return updatedUser;
 			} catch (err) {
-				console.log(err);
+				console.log(err, err);
 				if (err.name === "SequelizeUniqueConstraintError") {
 					err.errors.forEach(
 						(e) => (errors[e.path] = `${e.path} is already taken`),

@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "../img/hermes1.png";
+import FooterLogin from "../img/footer-login.png";
 import { useAuthDispatch } from "../context/auth";
 import {
 	Box,
-	Container,
+	Flex,
 	FormControl,
 	Text,
 	Image,
@@ -54,32 +55,40 @@ export default function Register(props) {
 		loginUser({ variables });
 	};
 	return (
-		<Container
-			data-aos="fade-down"
-			backgroundColor="#39414f"
-			mt="15%">
-			<SimpleGrid
-				columns={2}
-				bg="rgba(255, 255, 255, 0.8)"
-				borderRadius="10px"
-				display="flex"
+		<Box>
+			<Flex
+				justifyContent="center"
+				maxW="100vw"
+				height="fit-content"
+				w="100%"
 				flexDirection="column"
-				alignItems="center"
-			>
-				<Image fallback={<Spinner size="lg" m={1} />} src={Logo} alt="logo hermes" width="50%" />
-				<Box >
-					<Text textAlign="center"
-						fontSize="3xl"
-						fontWeight="600"
-					>
-						Connexion
-					</Text>
+				alignItems={{ base: "center" }}
+				p={{ base: "0", md: "4rem" }}>
+				<Flex flexDirection="column" alignItems="center" w="70%">
+					<Image fallback={<Spinner size="lg" />} src={Logo} alt="logo hermes" width="50%" />
+				</Flex>
+				<SimpleGrid
+					display="flex"
+					flexDirection="column"
+					columns={2}
+					borderRadius="10px"
+					alignItems="center"
+					data-aos="fade-down"
+					width="max-content"
+					alignSelf="center"
+					px={5}
+					pb={5}
+					bg="rgba(255, 255, 255, 0.8)"
+					minW="fit-content"
+					zIndex="10"
+					w="25%"
+				>
+					<Text textAlign="center" fontSize="3xl" fontWeight="600" color="#39414f" my={5}>Connexion</Text>
 					<form onSubmit={submitLoginForm}>
 						<Stack
 							spacing={5}
 							justifyContent="center"
-							alignItems="center"
-						>
+							alignItems="center">
 							<FormControl
 								isRequired
 								value={variables.username}
@@ -87,16 +96,17 @@ export default function Register(props) {
 									setVariables({ ...variables, username: e.target.value })
 								}
 								justifyContent="center"
-								alignItems="center"
-							>
+								alignItems="center">
 								<InputGroup>
-									<InputLeftElement children={<InfoIcon />} />
+									<InputLeftElement children={<InfoIcon color="#39414f" />} />
 									<Input
 										isInvalid={errors.username}
 										type="name"
 										placeholder="Identifiant"
+										_placeholder={{ color: "#39414f", opacity: "0.5" }}
 										aria-label="Username"
 										bg="#fff"
+										color="#39414f"
 										defaultValue={location?.state?.username}
 									/>
 								</InputGroup>
@@ -110,14 +120,15 @@ export default function Register(props) {
 								}
 							>
 								<InputGroup>
-									<InputLeftElement children={<LockIcon />} />
+									<InputLeftElement children={<LockIcon color="#39414f" />} />
 									<Input
 										isInvalid={errors.password}
 										type="password"
 										placeholder="Mot de passe"
-										// eslint-disable-next-line jsx-a11y/aria-props
+										_placeholder={{ color: "#39414f", opacity: "0.5" }}
 										aria-label="Password"
 										bg="#fff"
+										color="#39414f"
 									/>
 								</InputGroup>
 								{errors.password && <Text fontSize="13px" color="tomato">Mot de passe incorrect</Text>}
@@ -127,20 +138,22 @@ export default function Register(props) {
 								variant="success"
 								type="submit"
 								disabled={loading}
-								bg="#39414f"
+								bg="#41BDF8"
 								color="#fff"
 							>
 								{loading ? "loading…" : "Se connecter"}
 							</Button>
 							<br />
-							<Text fontSize="sm" textAlign="center">
+							<Text fontSize="sm" textAlign="center"
+								color="#39414f">
 								Vous n'avez pas de compte ?{" "}
 								<Link to="/register">S'inscrire</Link>
 							</Text>
 						</Stack>
 					</form>
-				</Box>
-			</SimpleGrid>
-		</Container>
+				</SimpleGrid>
+			</Flex>
+			<Image src={FooterLogin} position="absolute" alt="footer-login" width="100%" bottom="0" />
+		</Box>
 	);
 }

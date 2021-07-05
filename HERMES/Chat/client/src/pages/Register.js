@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import Logo from "../img/hermes1.png";
+import LaptopImage from "../img/image-sub.svg";
+import { useBreakpointValue } from '@chakra-ui/media-query'
 import {
     Box,
-    Container,
+    Flex,
     FormControl,
     Text,
     Image,
@@ -53,6 +55,7 @@ const REGISTER_USER = gql`
 `;
 
 export default function Register(props) {
+    const avatarSize = useBreakpointValue({ base: "sm", sm: "md" })
     const toast = useToast()
     const [errors, setErrors] = useState({});
     const [imagePreview, setImagePreview] = useState(false);
@@ -106,25 +109,40 @@ export default function Register(props) {
     };
 
     return (
-        <Container
-            data-aos="fade-down"
-            backgroundColor="#39414f"
-            alignSelf="center"
-            mt="5%">
+        <Flex
+            justifyContent="center"
+            maxW="100vw"
+            height="fit-content"
+            w="100%"
+            flexDirection={{ base: "column", md: "row" }}
+            alignItems={{ base: "center" }}
+            p={{ base: "0", md: "4rem" }}>
+            <Flex flexDirection="column" alignItems="center" w="70%">
+                <Image src={Logo} alt="logo hermes" width="50%" />
+                <Image display={{ base: "none", md: "flex" }} src={LaptopImage} alt="laptop image" width="65%" />
+            </Flex>
             <SimpleGrid
-                columns={2}
-                bg="rgba(255, 255, 255, 0.8)"
-                borderRadius="10px"
                 display="flex"
                 flexDirection="column"
+                columns={2}
+                borderRadius="10px"
                 alignItems="center"
-            >
-                <Image src={Logo} alt="logo hermes" width="50%" />
+                data-aos="fade-down"
+                width="max-content"
+                alignSelf="center"
+                px={5}
+                pb={5}
+                bg="rgba(255, 255, 255, 0.8)"
+                minW="fit-content"
+                zIndex="10"
+                w="25%">
 
-                <Box >
+                <Box h="100%">
                     <Text textAlign="center"
                         fontSize="3xl"
                         fontWeight="600"
+                        color="#39414f"
+                        my={5}
                     >
                         Inscription
 					</Text>
@@ -144,13 +162,15 @@ export default function Register(props) {
                                 alignItems="center"
                             >
                                 <InputGroup>
-                                    <InputLeftElement children={<AtSignIcon />} />
+                                    <InputLeftElement children={<AtSignIcon color="#39414f" />} />
                                     <Input
                                         isInvalid={errors.email}
                                         type="email"
                                         placeholder="Adresse email"
+                                        _placeholder={{ color: "#39414f", opacity: "0.5" }}
                                         aria-label="Email"
                                         bg="#fff"
+                                        color="#39414f"
                                     />
                                 </InputGroup>
                                 {errors.email && <Text fontSize="13px" color="tomato">Email déjà existant</Text>}
@@ -165,13 +185,15 @@ export default function Register(props) {
                                 alignItems="center"
                             >
                                 <InputGroup>
-                                    <InputLeftElement children={<InfoIcon />} />
+                                    <InputLeftElement children={<InfoIcon color="#39414f" />} />
                                     <Input
                                         isInvalid={errors.username}
                                         type="name"
                                         placeholder="Identifiant"
+                                        _placeholder={{ color: "#39414f", opacity: "0.5" }}
                                         aria-label="Username"
                                         bg="#fff"
+                                        color="#39414f"
                                     />
                                 </InputGroup>
                                 {errors.username && <Text fontSize="13px" color="tomato">Nom d'utilisateur déjà pris</Text>}
@@ -190,8 +212,10 @@ export default function Register(props) {
                                         isInvalid={errors.campus}
                                         type="campus"
                                         placeholder="Votre campus"
+                                        _placeholder={{ color: "#39414f", opacity: "0.5" }}
                                         aria-label="campus"
                                         bg="#fff"
+                                        color="#39414f"
                                     >
                                         {campusList.map(campus => (
                                             <option value={campus.value}>{campus.name}</option>
@@ -213,8 +237,10 @@ export default function Register(props) {
                                         isInvalid={errors.role}
                                         type="role"
                                         placeholder="Votre role"
+                                        _placeholder={{ color: "#39414f", opacity: "0.5" }}
                                         aria-label="role"
                                         bg="#fff"
+                                        color="#39414f"
                                     >
                                         {rolesList.map(role => (
                                             <option value={role.value}>{role.name}</option>
@@ -232,13 +258,15 @@ export default function Register(props) {
                                 alignItems="center"
                             >
                                 <InputGroup>
-                                    <InputLeftElement children={<LockIcon />} />
+                                    <InputLeftElement children={<LockIcon color="#39414f" />} />
                                     <Input
                                         isInvalid={errors.password}
                                         type="password"
                                         placeholder="Mot de passe"
+                                        _placeholder={{ color: "#39414f", opacity: "0.5" }}
                                         aria-label="Password"
                                         bg="#fff"
+                                        color="#39414f"
                                     />
                                 </InputGroup>
                                 {errors.password && <Text fontSize="13px" color="tomato">Le mot de passe est incorrect</Text>}
@@ -256,13 +284,15 @@ export default function Register(props) {
                                 alignItems="center"
                             >
                                 <InputGroup>
-                                    <InputLeftElement children={<LockIcon />} />
+                                    <InputLeftElement children={<LockIcon color="#39414f" />} />
                                     <Input
                                         isInvalid={errors.confirmPassword}
                                         type="password"
                                         placeholder="Confirmation mot de passe"
+                                        _placeholder={{ color: "#39414f", opacity: "0.5" }}
                                         aria-label="Password"
                                         bg="#fff"
+                                        color="#39414f"
                                     />
                                 </InputGroup>
                                 {errors.confirmPassword && <Text fontSize="13px" color="tomato">Le mot de passe n'est pas identique</Text>}
@@ -274,18 +304,11 @@ export default function Register(props) {
                             >
                                 <InputGroup>
                                     <Button alignSelf="center">
-                                        <Input
-                                            type="file"
-                                            aria-label="File"
-                                            accept="image/*"
-                                            bg="#fff"
-                                            cursor="pointer"
-                                            boxSizing="border-box"
-                                            opacity="0"
-                                            position="absolute"
-                                        />{"Charger une image de profil"}
+                                        <Input type="file" aria-label="File" accept="image/*" bg="#fff" color="#39414f" cursor="pointer" boxSizing="border-box" opacity="0" position="absolute" />
+                                        <Text color="#39414f">{"Charger une image de profil"}</Text>
                                     </Button>
                                     <Avatar
+                                        size={avatarSize}
                                         loading="eager"
                                         w="50px"
                                         h="50px"
@@ -302,19 +325,19 @@ export default function Register(props) {
                                 variant="success"
                                 type="submit"
                                 disabled={loading}
-                                bg="#39414f"
+                                bg="#41BDF8"
                                 color="#fff"
                             >
                                 {loading ? "loading…" : "S'inscire"}
                             </Button>
 
-                            <Text fontSize="sm" textAlign="center">
+                            <Text fontSize="sm" textAlign="center" color="#39414f">
                                 Vous avez un compte ? <Link to={"/login"}>Se connecter</Link>
                             </Text>
                         </Stack>
                     </form>
                 </Box>
             </SimpleGrid>
-        </Container >
+        </Flex >
     );
 }

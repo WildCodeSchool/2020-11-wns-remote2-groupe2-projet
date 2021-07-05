@@ -16,6 +16,7 @@ const ContextProvider = ({ children }) => {
     const [caller, setCaller] = useState("");
     const [callerSignal, setCallerSignal] = useState();
     const [callAccepted, setCallAccepted] = useState(false);
+    const [targetName, setTargetName] = useState("")
 
     const [micro, setMicro] = useState(false)
     const [video, setVideo] = useState(false)
@@ -27,7 +28,7 @@ const ContextProvider = ({ children }) => {
 
 
 
-    const startCall = async () => {
+    const startCall = async (username) => {
         socket.current = io.connect(baseURL);
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then((currentStream) => {
@@ -38,7 +39,7 @@ const ContextProvider = ({ children }) => {
                     userVideo.current.srcObject = currentStream;
                 }
             })
-
+        setTargetName(username)
         await socket.current.on("yourID", (id) => {
             setYourID(id);
         })
@@ -161,7 +162,8 @@ const ContextProvider = ({ children }) => {
             muteUnmute,
             micro,
             video,
-            loading
+            loading,
+            targetName
         }}
         >
             {children}

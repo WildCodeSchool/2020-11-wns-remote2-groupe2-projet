@@ -1,106 +1,127 @@
-import React, { useState } from "react";
-import classNames from "classnames";
-import moment from "moment";
-import 'moment/locale/fr'
-import { Button, OverlayTrigger, Popover, Tooltip } from "react-bootstrap";
+import React, { useState } from 'react';
+import moment from 'moment';
+import 'moment/locale/fr';
+import {
+  VStack,
+  Box,
+  Text,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  PopoverArrow,
+  Portal,
+  Button,
+  IconButton
+} from '@chakra-ui/react';
+import { useAuthState } from '../../context/auth';
+import { gql, useMutation } from '@apollo/client';
+import useSound from 'use-sound';
+import ReactSound from '../../sounds/reactSound.mp3'
 
-import { useAuthState } from "../../context/auth";
-import { gql, useMutation } from "@apollo/client";
-
-const reactions = ["❤️", "😆", "😯", "😢", "😡", "👍", "👎"];
+const reactions = ['❤️', '😆', '😯', '😢', '😡', '👍', '👎'];
 
 const REACT_TO_MESSAGE = gql`
-	mutation reactToMessage($uuid: String!, $content: String!) {
-		reactToMessage(uuid: $uuid, content: $content) {
-			uuid
-		}
-	}
+  mutation reactToMessage($uuid: String!, $content: String!) {
+    reactToMessage(uuid: $uuid, content: $content) {
+      uuid
+    }
+  }
 `;
 
 export default function Message({ message }) {
-	const { user } = useAuthState();
-	const sent = message.from === user.username;
-	const received = !sent;
-	const [showPopover, setShowPopover] = useState(false);
-	const reactionIcons = [...new Set(message.reactions.map((r) => r.content))];
+  const { user } = useAuthState();
+  const [play] = useSound(ReactSound);
+  const sent = message.from === user.username;
+  const bottomRightRadius = sent ? 0 : 32;
+  const bottomLeftRadius = sent ? 32 : 0;
+  const alignment = sent ? "flex-end" : "flex-start";
+  const received = !sent;
 
-	const [reactToMessage] = useMutation(REACT_TO_MESSAGE, {
-		onError: (err) => console.log(err),
-		onCompleted: (data) => setShowPopover(false),
-	});
+  const [showPopover, setShowPopover] = useState(false);
+  const reactionIcons = [...new Set(message.reactions.map((r) => r.content))];
 
-	const react = (reaction) => {
-		reactToMessage({ variables: { uuid: message.uuid, content: reaction } });
-	};
+  const [reactToMessage] = useMutation(REACT_TO_MESSAGE, {
+    onError: (err) => console.log(err),
+    onCompleted: (data) => setShowPopover(false),
+  });
 
-	const reactButton = (
-		<OverlayTrigger
-			trigger="click"
-			placement="top"
-			show={showPopover}
-			onToggle={setShowPopover}
-			transition={false}
-			rootClose
-			overlay={
-				<Popover className="rounded-pill">
-					<Popover.Content className="d-flex px-0 py-1 align-items-center react-button-popover">
-						{reactions.map((reaction) => (
-							<Button
-								variant="link"
-								className="react-icon-button"
-								key={reaction}
-								onClick={() => react(reaction)}
-							>
-								{reaction}
-							</Button>
-						))}
-					</Popover.Content>
-				</Popover>
-			}
-		>
-			<Button variant="link" className="px-2">
-				<i className="far fa-smile"></i>
-			</Button>
-		</OverlayTrigger>
-	);
+  const react = (reaction) => {
+    play()
+    reactToMessage({ variables: { uuid: message.uuid, content: reaction } });
+  };
 
-	return (
-		<div
-			className={classNames("d-flex my-3", {
-				"ml-auto": sent,
-				"mr-auto": received,
-			})
-			}
-			data-aos={sent ? "fade-left" : "fade-right"}
-		>
-			{sent && reactButton}
-			<OverlayTrigger
-				placement={!sent ? "right" : "left"}
-				overlay={
-					<Tooltip>
-						{moment(message.createdAt).locale('fr').format("DD MMM YYYY à HH:mm")}
-					</Tooltip>
-				}
-				transition={false}
-			>
-				<div
-					className={classNames("py-2 px-3 rounded-pill position-relative", {
-						"bg-primary": sent,
-						"bg-secondary": received,
-					})}
+  const initRef = React.useRef();
 
-				>
-					{message.reactions.length > 0 && (
-						<div className="reactions-div bg-secondary p-1 rounded-pill" >
-							{reactionIcons} {message.reactions.length}
-						</div>
-					)}
-					<p className={classNames({ "text-white": sent })} key={message.uuid}>
-						{message.content}
-					</p>
-				</div>
-			</OverlayTrigger>
-			{received && reactButton}
-		</div>
-	);
+
+  const reactButton = (
+    <>
+      <Popover isLazy placement='top' initialFocusRef={initRef}>
+        <>
+          <PopoverTrigger>
+            <IconButton m="2px" bg="transparent" isRound _hover="none" _focus="none"><i class="fas fa-laugh-beam"></i></IconButton>
+          </PopoverTrigger>
+          <Portal>
+            <PopoverContent _focus="none" borderRadius="9999px">
+              <PopoverBody>
+                <PopoverArrow />
+                {reactions.map((reaction) => (
+                  <Button
+                    variant='unstyled'
+                    key={reaction}
+                    onClick={() => react(reaction)}
+                    _hover={{ textDecoration: "none", fontSize: "lg", transition: "0.25" }}
+                  >
+                    {reaction}
+                  </Button>
+                ))}
+              </PopoverBody>
+            </PopoverContent>
+          </Portal>
+        </>
+      </Popover>
+    </>
+  );
+
+  return (
+    <VStack mt={6} alignSelf={alignment} maxW="60%" mb="10px">
+      <Box
+        display="flex"
+        bg={sent ? "blue.50" : "gray.100"}
+        p={sent ? "12px 18px 12px 12px" : "12px 12px 12px 18px"}
+        minW="min-content"
+        wordBreak="break-word"
+        borderTopLeftRadius={32}
+        borderTopRightRadius={32}
+        borderBottomLeftRadius={bottomLeftRadius}
+        borderBottomRightRadius={bottomRightRadius}
+        alignItems="center"
+      >
+        {sent && reactButton}
+        <Popover
+          placement={!sent ? 'right' : 'left'}
+          transition={false}>
+          <Box position="relative" >
+            {message.reactions.length > 0 && (
+              <Box position="absolute" right="-20px" bottom="-25px" fontSize="md">
+                <Text color="#39414f">{reactionIcons} {message.reactions.length}</Text>
+              </Box>
+            )}
+            <Text
+              color="#39414f"
+              key={message.uuid}
+            >
+              {message.content}
+            </Text>
+          </Box>
+        </Popover>
+        {received && reactButton}
+      </Box>
+      <Text alignSelf={alignment} fontSize="xs" color="gray">
+        {moment(message.createdAt)
+          .locale('fr')
+          .format('DD MMM YYYY à HH:mm')}
+      </Text>
+    </VStack >
+  );
 }

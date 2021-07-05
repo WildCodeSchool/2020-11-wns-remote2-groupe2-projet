@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Button } from '@chakra-ui/button';
 import { Container, Stack, Text } from '@chakra-ui/layout';
-import { useMessageState } from '../../context/message';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
 import { FormControl } from '@chakra-ui/form-control';
@@ -11,39 +10,29 @@ import { Select } from '@chakra-ui/select';
 import { useToast } from '@chakra-ui/toast';
 import { InfoIcon, AtSignIcon } from '@chakra-ui/icons';
 import { campusList } from '../../refs/enum/campusList';
-import { rolesList } from '../../refs/enum/rolesList';
 import { Heading } from '@chakra-ui/react';
+import { useBreakpointValue } from '@chakra-ui/media-query'
 
-export default function MyProfil(props) {
-	const { user } = useMessageState();
+export default function MyProfil({ user }) {
+	const avatarSize = useBreakpointValue({ base: "sm", sm: "md" })
 
 	const baseURL = process.env.REACT_APP_BASE_URL || '';
 
-	useEffect(() => {
-		setData(user);
-		setImagePreview(baseURL + user?.imageUrl);
-	}, [user]);
-
 	const toast = useToast();
-
-	const [data, setData] = useState(null);
 	const [errors, setErrors] = useState({});
-	const [imagePreview, setImagePreview] = useState(null);
-	const [variables, setVariables] = useState({
-		username: user?.username,
-		email: user?.email,
-		campus: user?.campus,
-		role: user?.role,
-		imageUrl: user?.imageUrl
-	});
+	const [imagePreview, setImagePreview] = useState(false);
+	const [variables, setVariables] = useState(false);
+
+	useEffect(() => {
+		setImagePreview(baseURL + user?.imageUrl)
+		setVariables({ email: user?.email, campus: user?.campus, imageUrl: baseURL + user?.imageUrl })
+	}, [user])
 
 	const UPDATE_USER = gql`
-		mutation update($username: String!, $email: String, $campus: String!, $role: String!, $imageUrl: Upload) {
-			update(username: $username, email: $email, campus: $campus, role: $role, imageUrl: $imageUrl) {
-				username
+		mutation updateUser( $email: String, $campus: String!, $imageUrl: Upload!) {
+			update(email: $email, campus: $campus,imageUrl: $imageUrl) {
 				email
 				campus
-				role
 				imageUrl
 			}
 		}
@@ -56,6 +45,7 @@ export default function MyProfil(props) {
 	const getImagePreview = (e) => {
 		setImagePreview(false);
 		setVariables({ ...variables, imageUrl: e.target.files[0] });
+
 		if (e.target.files && e.target.files.length !== 0) {
 			if (e.target.files[0].type === 'image/jpeg' || e.target.files[0].type === 'image/png') {
 				const reader = new FileReader();
@@ -68,139 +58,124 @@ export default function MyProfil(props) {
 	};
 
 	const submitUpdateUserInformations = async (e) => {
-		e.preventDefault();
-
-		await updateUser({ variables }).then((ok) => {
-			if (ok)
-				toast({
-					title: `Mon compte`,
-					description: 'Vos informations ont bien été mise à jour.',
-					status: 'success',
-					duration: 5000,
-					isClosable: true
-				});
-		});
+		const result = await updateUser({ variables })
+		if (result) {
+			toast({
+				title: `Mon compte`,
+				description: 'Vos informations ont bien été mise à jour.',
+				status: 'success',
+				duration: 5000,
+				isClosable: true
+			});
+		}
 	};
 
 	return (
 		<Stack spacing="30px">
-			<Heading textAlign="center" color="#E9E7E1">Mes infos</Heading>
+			<Heading textAlign="center" color="#39414F">Mes infos</Heading>
 			<form onSubmit={submitUpdateUserInformations}>
 				<Container maxWidth="4xl" css={{ margin: '0 auto' }}>
 					<Stack spacing={5} justifyContent="center" alignItems="center">
 						<FormControl
 							isRequired
-							value={variables.username}
-							onChange={(e) => setVariables({ ...variables, username: e.target.value })}
+							// onChange={(e) => setVariables({ ...variables, username: e.target.value })}
 							justifyContent="center"
 							alignItems="center"
 						>
 							<InputGroup>
-								<InputLeftElement children={<InfoIcon />} />
+								<InputLeftElement children={<InfoIcon color="#39414F" />} />
 								<Input
 									defaultValue={user?.username}
-									isInvalid={errors.username}
 									type="name"
 									placeholder="Identifiant"
 									aria-label="Username"
-									bg={'#E9E7E1'}
-									value={user?.username}
+									bg={'white'}
 									isDisabled={true}
+									color="#39414F"
 								/>
 							</InputGroup>
-							{errors.username && (
-								<Text fontSize="13px" color="tomato">
-									Nom d'utilisateur déjà pris
-								</Text>
-							)}
 						</FormControl>
 						<FormControl
 							isRequired
-							value={variables.email}
 							onChange={(e) => setVariables({ ...variables, email: e.target.value })}
 							justifyContent="center"
 							alignItems="center"
 						>
 							<InputGroup>
-								<InputLeftElement children={<AtSignIcon />} />
+								<InputLeftElement children={<AtSignIcon color="#39414F" />} />
 								<Input
 									defaultValue={user?.email}
-									isInvalid={errors.email}
 									type="email"
 									placeholder="Adresse email"
 									aria-label="Email"
-									bg={'#E9E7E1'}
+									bg={'white'}
+									color="#39414F"
 								/>
 							</InputGroup>
-							{errors.email && (
+							{/* {errors.email && (
 								<Text fontSize="13px" color="tomato">
 									Email déjà existant
 								</Text>
-							)}
+							)} */}
 						</FormControl>
 						<FormControl
 							isRequired
-							value={variables.campus}
 							onChange={(e) => setVariables({ ...variables, campus: e.target.value })}
 							justifyContent="center"
 							alignItems="center"
 						>
 							<InputGroup>
 								<Select
-									value={variables.campus}
-									isInvalid={errors.campus}
+									// isInvalid={errors.campus}
 									type="campus"
-									placeholder={user?.campus}
 									aria-label="campus"
-									bg={'#E9E7E1'}
+									bg={'white'}
+									color="#39414F"
 								>
-									{campusList.map((campus) => (
-										<option value={campus.value}>{campus.name}</option>
+									{campusList.map((campus, index) => (
+										<option selected={variables.campus === campus.value} value={campus.value} key={index}>{campus.name}</option>
 									))}
 								</Select>
 							</InputGroup>
 						</FormControl>
 						<FormControl
 							isRequired
-							value={variables.role}
 							onChange={(e) => setVariables({ ...variables, role: e.target.value })}
 							justifyContent="center"
 							alignItems="center"
 						>
 							<InputGroup>
 								<Select
-									value={variables.role}
-									isInvalid={errors.role}
-									type="role"
 									placeholder={user?.role}
+									// isInvalid={errors.role}
+									type="role"
 									aria-label="role"
-									bg={'#E9E7E1'}
+									bg={'white'}
+									isDisabled={true}
+									color="#39414F"
 								>
-									{rolesList.map((role) => (
-										<option value={role.value}>{role.name}</option>
-									))}
 								</Select>
 							</InputGroup>
 						</FormControl>
 						<FormControl onChange={getImagePreview} justifyContent="center" alignItems="center">
-							<InputGroup>
-								<Button alignSelf="center" bg={'#E9E7E1'}>
+							<InputGroup display="flex" flexDirection={{ base: "column", md: "row" }} alignItems="center"  >
+								<Button alignSelf="center" bg={'white'}>
 									<Input
 										type="file"
 										aria-label="File"
 										accept="image/*"
-										bg={'#E9E7E1'}
+										bg={'white'}
 										cursor="pointer"
 										boxSizing="border-box"
 										opacity="0"
 										position="absolute"
+										color="#39414F"
 									/>
-									{"Changer d'image de profil"}
+									<Text color="#39414F">{"Changer d'image de profil"}</Text>
 								</Button>
 								<Avatar
+									size={avatarSize}
 									loading="eager"
-									w="50px"
-									h="50px"
 									objectFit="cover"
 									borderRadius="50%"
 									m={1}

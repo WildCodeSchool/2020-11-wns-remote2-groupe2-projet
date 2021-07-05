@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import MyProfil from "./MyProfil"
 import Contact from "./Contact"
+import Setting from "./Setting"
 import { Box, Container, Flex, ListItem, OrderedList, Text } from "@chakra-ui/layout"
 import { Image } from "@chakra-ui/react"
 import { Modal, ModalContent, ModalHeader, ModalOverlay } from "@chakra-ui/modal"
@@ -11,7 +12,7 @@ import Email from "../../img/email.svg"
 import Parametre from "../../img/parametres.svg"
 import { Button } from '@chakra-ui/button'
 
-export default function Index() {
+export default function Index({ user }) {
 
     const [path, setPath] = useState('profil')
     const onChangePath = (e) => {
@@ -28,16 +29,16 @@ export default function Index() {
     const handleInformationBlock = () => {
         switch (path) {
             case 'profil':
-                return <MyProfil />
+                return <MyProfil user={user} />
 
 
             case 'contact':
 
                 return <Contact />
 
-            case 'paramètre':
+            case 'parametre':
 
-                break;
+                return <Setting />
 
             default:
                 break;
@@ -56,7 +57,7 @@ export default function Index() {
                 borderBottomLeftRadius="10px"
                 m={0}
                 p={0}
-                backgroundColor="rgba(244,239,230,0.8)"
+                bg="rgba(255, 255, 255, 0.8)"
                 color="#39414F"
                 css={{
                     overflowX: "scroll",
@@ -68,7 +69,7 @@ export default function Index() {
                 <Flex justifyContent="space-between" flexDirection="column" h="100%">
                     <OrderedList display="flex" flexDirection="column" justifyContent={"center"} m={0}>
                         <ListItem textAlign="center" height="50px" cursor="pointer"
-                            backgroundColor={path === 'profil' ? "#6B7383" : "transparent"} color={path === 'profil' ? "#E9E7E1" : "#39414F"}
+                            backgroundColor={path === 'profil' ? "#DDF3FE" : "transparent"} color="#39414F"
                             onClick={() => onChangePath('profil')}>
                             <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
                                 <Image src={User} alt="user"
@@ -81,7 +82,7 @@ export default function Index() {
                         </ListItem>
 
                         <ListItem textAlign="center" height="50px" cursor="pointer"
-                            backgroundColor={path === 'contact' ? "#6B7383" : "transparent"} color={path === 'contact' ? "#E9E7E1" : "#39414F"}
+                            backgroundColor={path === 'contact' ? "#DDF3FE" : "transparent"} color="#39414F"
                             onClick={() => onChangePath('contact')}>
                             <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
                                 <Image src={Email} alt="user"
@@ -92,14 +93,11 @@ export default function Index() {
                                 </Text>
                             </Box>
                         </ListItem>
-
                         <ListItem textAlign="center" height="50px" cursor="pointer"
-                            backgroundColor={path === 'parametre' ? "#6B7383" : "transparent"} color={path === 'parametre' ? "#E9E7E1" : "#39414F"}
+                            backgroundColor={path === 'parametre' ? "#DDF3FE" : "transparent"} color="#39414F"
                             onClick={() => onChangePath('parametre')}>
                             <Box display="flex" flexDirection={"row"} justifyContent="center" mt="8px">
-                                <Image src={Parametre} alt="user"
-                                    maxWidth="25px"
-                                />
+                                <Image src={Parametre} alt="user" maxWidth="25px" />
                                 <Text fontSize="xl" display={{ base: "none", md: "flex" }} marginLeft="1rem">
                                     Paramètres
                                 </Text>
@@ -138,7 +136,7 @@ export default function Index() {
                 display="flex"
                 flexDirection="column"
                 maxWidth="none"
-                bg="#6B7383"
+                bg="#DDF3FE"
                 justifyContent="center"
                 borderBottomRadius="10px">
                 {handleInformationBlock()}
