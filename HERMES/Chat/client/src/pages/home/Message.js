@@ -96,7 +96,7 @@ export default function Message({ message }) {
         borderBottomLeftRadius={bottomLeftRadius}
         borderBottomRightRadius={bottomRightRadius}
         alignItems="center"
-      >
+        data-aos={!sent ? "fade-left" : "fade-right"}>
         {sent && reactButton}
         <Popover
           placement={!sent ? 'right' : 'left'}
@@ -116,7 +116,7 @@ export default function Message({ message }) {
           </Box>
         </Popover>
         {received && reactButton}
-      </Box>
+      </Box >
       <Text alignSelf={alignment} fontSize="xs" color="gray">
         {moment(message.createdAt)
           .locale('fr')

@@ -31,7 +31,7 @@ services:
 
   # Create db container
   db:
-    image: mysql:5.7
+    image: lefernix/hermes-mysql-db:test
     container_name: db-hermes
     restart: always
     environment:
