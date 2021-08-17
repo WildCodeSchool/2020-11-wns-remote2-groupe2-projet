@@ -13,8 +13,6 @@ export default function Header() {
 
     console.log("BASEURL", baseURL + user?.imageUrl)
 
-
-
     return (
         <Box
             display="flex"

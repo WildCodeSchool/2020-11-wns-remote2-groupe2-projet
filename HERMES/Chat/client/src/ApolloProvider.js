@@ -10,7 +10,7 @@ import { setContext } from "@apollo/client/link/context";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { createUploadLink } from "apollo-upload-client";
 
-let uploadLink = createUploadLink({
+const httpLink = createUploadLink({
 	uri: `http://localhost:8080/graphql`,
 });
 
@@ -45,7 +45,7 @@ const splitLink = split(
 		);
 	},
 	wsLink,
-	authLink.concat(uploadLink),
+	authLink.concat(httpLink),
 );
 
 const client = new ApolloClient({

@@ -217,8 +217,8 @@ export default function Register(props) {
                                         bg="#fff"
                                         color="#39414f"
                                     >
-                                        {campusList.map(campus => (
-                                            <option value={campus.value}>{campus.name}</option>
+                                        {campusList.map((campus, index) => (
+                                            <option value={campus.value} key={index}>{campus.name}</option>
                                         ))}
                                     </Select>
                                 </InputGroup>
@@ -242,8 +242,8 @@ export default function Register(props) {
                                         bg="#fff"
                                         color="#39414f"
                                     >
-                                        {rolesList.map(role => (
-                                            <option value={role.value}>{role.name}</option>
+                                        {rolesList.map((role, index) => (
+                                            <option value={role.value} key={index}>{role.name}</option>
                                         ))}
                                     </Select>
                                 </InputGroup>

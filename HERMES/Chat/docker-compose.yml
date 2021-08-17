@@ -17,10 +17,9 @@ services:
 
   # Create api container
   api:
-    image: lefernix/hermes-node-api:test
+    build: ./api
     ports:
       - "8080:4000"
-    container_name: api-hermes
     environment:
       - ./api/.env
     restart: always
@@ -54,3 +53,17 @@ services:
         "--character-set-server=utf8mb4",
         "--collation-server=utf8mb4_unicode_ci",
       ]
+
+  # nginx:
+  #   depends_on:
+  #     api:
+  #       condition: service_started
+  #     client:
+  #       condition: service_started
+  #   image: nginx:1.19.10
+  #   restart: always
+  #   ports:
+  #     - 4000:80
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf
+  #     - /api/public:/public

@@ -1,5 +1,5 @@
 # Base image
-FROM node:alpine
+FROM node:12.18.3
 # Make folder to put our files in
 RUN mkdir -p /hermes/chat/api
 # Set working directory so that all subsequent command runs in this folder
